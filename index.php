@@ -37,18 +37,19 @@
     function new_photo(){
         var camera_hidden = document.getElementById("camera_hidden");
         camera_hidden.src = "<?=$image?>?"+Math.random();
-        camera_hidden.onload = setTimeout(new_photo,100);
+        camera_hidden.onload = function(){
+            document.getElementById("camera_online").src = camera_hidden.src;
+            setTimeout(new_photo,100);
+        };
         //camera_hidden.onerror = setTimeout(new_photo,3000);
     };
     setTimeout(new_photo,1);
 
-    document.getElementById("camera_online").onload = function(){
-        document.getElementById("camera_online").src = document.getElementById("camera_hidden").src;
-    };
 
-    document.getElementById("camera_online").onerror = function(){
+
+    /*document.getElementById("camera_online").onerror = function(){
         document.getElementById("camera_online").src = document.getElementById("camera_hidden").src;
-    };
+    };*/
 </script>
 </body>
 </html>
