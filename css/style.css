@@ -12,7 +12,7 @@ body{
      width: 100%;
      height: 100%;
      color: #fff;
-     background: #2b2a29;
+     background: #fff;
 }
 /* Кнопка телефона */
 
@@ -256,12 +256,12 @@ a:focus{
 }
 .navbar-default .navbar-nav > li > a:hover{
   font-weight: bold;
-  color: #fff;
-  background-color: #37474f;
+  color: #f1a83b;
 }
 
 .navbar-default .navbar-nav > li > a:focus {
-  color: #fff;
+  color: #f1a83b;
+  font-weight: bold;
   background-color: transparent;
 }
 
@@ -322,17 +322,37 @@ a:focus{
      left: 0;
      width: 100%;
      vertical-align: middle;
-     margin: 60px 0 0 0;
+     margin: 20px 0 0 0;
+     text-align: center;
+     height: 150px;
+     padding: 20px 0;
+}
+
+.content_other{
+     top:100%;
+     left: 0;
+     width: 100%;
+     vertical-align: middle;
+     margin: 40px 0 0 0;
      text-align: center;
      
 }
 
 .name{
-     color: #fff;
+     color: #2b2a29;
      font-size:55px;
      font-weight: bold;
      line-height:normal;
-     padding: 5px 5px 5px 5px;
+     padding: 15px 5px 5px 5px;
+     
+}
+
+.name_other{
+     color: #fff;
+     font-size:45px;
+     font-weight: bold;
+     line-height:normal;
+     padding: 0 5px 25px 5px;
      
 }
 
@@ -347,42 +367,52 @@ a:focus{
      color: #e3197f;
 }
 
+#cherta_ind{
+        height: 2px;
+        background-color: #2b2a29;
+        border-top: none;
+        margin: 10px 0 0 0;
+        margin-bottom: 40px;
+}
+
 .content_price{
      position: absolute;
      left: 0;
      width: 100%;
      height: 150px;
      padding: 45px 0;
-     background: #75b1a9;
-      -webkit-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
-        -moz-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
-          -o-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
-             box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+     
 }
 
 
+#cherta{
+        height: 2px;
+        background-color: #2b2a29;
+        border-top: none;
+        margin: 100px 0 0 0;
+}
+
 
 .name_price{
-     color: #fff;
+     color: #2b2a29;
+     text-align: center;
      font-size:36px;
      font-weight: bold;
      line-height:normal;
-     padding: 5px 5px 5px 45px;
 }
 
 /* Таблица */
 .cont_price{
       top:100%;
       width: 100%;
-      background: #f1a83b;
-      padding: 180px 0 0 0;
+      padding: 60px 0 0 0;
 }
 
 .table_posit{
       top:100%;
       width: 100%;
       padding: 5px 45px;
-      border-top: 5px solid #f1a83b;
+      
       border-spacing: 0 5px;
       border-collapse:separate;
           
@@ -415,7 +445,7 @@ a:focus{
       color: #2b2a29;
       font-weight: bold;
       text-align: center;
-      background: #f6c77a;
+      background: #f0f0f0;
       margin: 3px 0;
 }
 
@@ -426,7 +456,7 @@ a:focus{
       line-height: normal;
       color: #2b2a29;
       text-align: center;
-      background: #f6c77a;
+      background: #f0f0f0;
       margin: 3px 0;
       padding: 3px 0 0 0;
       
@@ -440,11 +470,74 @@ a:focus{
       line-height: normal;
       color: #2b2a29;
       text-align: left;
-      background: #f6c77a;
+      background: #f0f0f0;
       padding: 3px 0 0 35px;
       margin: 3px 0;
       
 }
+
+
+
+
+
+
+
+
+
+#tab-h_invers{
+      color: #2b2a29;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+      padding: 15px 5px;
+      margin-top: 0;
+}
+    
+#tab_b_invers{
+      height:100%;
+      min-height: 60px;
+      font-size: 16px;
+      line-height: normal;
+      color: #2b2a29;
+      font-weight: bold;
+      text-align: center;
+      background: #fff;
+      margin: 3px 0;
+}
+
+#tab_n_invers{
+      height:60px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: center;
+      background: #fff;
+      margin: 3px 0;
+      padding: 3px 0 0 0;
+      
+}
+
+
+
+#tab_n_n_invers{
+      height:60px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: left;
+      background: #fff;
+      padding: 3px 0 0 35px;
+      margin: 3px 0;
+      
+}
+
+
+
+
+
+
+
+
 
 .tab-block{
       height:100%;
@@ -475,25 +568,131 @@ a:focus{
       text-align: center;
 }
 
+.btn{
+    padding: 0 10px;
+}
 
 .btn-secondary{
+    
     color: #fff;
     font-size: 20px;
     font-weight: bold;
-    background: #e31980;
-    margin: 5px 0 0 0;
-    
+    background: #f1a83b;
+    margin: 3px 0;
 }
 
 #cherta_tab{
-        height: 5px;
-        background-color: #f6c77a;
+        height: 3px;
+        background-color: #f0f0f0;
         border-top: none;
         
 }
 
+caption {
+      padding-top: 0;
+      padding-bottom: 0;
+}
 
 /* Конец таблицы */
+
+/* Карта */
+
+.map{
+    margin: 50px 0 0 0;
+}
+
+.contact_list{
+    margin: 30px 0 0 0;
+    padding: 30px 30px;
+}
+
+.map_text_b{
+    font-size: 28px;
+    font-weight: bold;
+    color: #2b2a29;
+    line-height: 70px;
+    
+}
+
+.map_text_r{
+    font-size: 23px;
+    color: #2b2a29;
+    
+}
+
+.map_text_social{
+    letter-spacing: 5px;
+    font-size: 28px;
+    
+    
+    color: #2b2a29;
+    
+}
+
+
+/* Конец блока Карт */
+
+/* Тренеры */
+
+.img_position{
+         left: 0;
+         width: 100%;
+         height: 150px;
+         padding: 45px 0;
+         text-align: center;
+}
+
+#img_coach{
+        margin: 35px 0 0 0;
+        border-radius: 50%;
+        -webkit-box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
+        -moz-box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
+          -o-box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
+             box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
+}
+
+.coach_name{
+        color: #2b2a29;
+        font-weight: bold;
+        font-size: 28px;
+        padding: 17px 0 3px 0;
+        margin-bottom: 1px;
+    
+}
+
+.coach_prof{
+        color: #969696;
+        font-size: 23px;
+        margin: 0 0;
+    
+}
+
+.coach_work{
+        color: #969696;
+        font-size: 20px;
+    
+}
+
+
+/* Конец блока тренеров */
+
+/* Дети */
+
+.children_block{
+    margin: 70px 0 0 0;
+}
+
+.chil_text{
+     margin: 50px 0;
+     padding: 0 30px;
+     color: #2b2a29;
+     font-size: 20px;
+     text-indent: 50px;
+     text-align: justify;
+}
+
+
+/* Конец блока Дети */
 
 /* Контент */
 
@@ -511,7 +710,8 @@ a:focus{
 .special_offer{
       top:100%;
       width: 100%;
-      background: #954a81;
+      height: 410px;
+      background: #f0f0f0;
       padding: 25px 0 0 0;
 }
 
@@ -550,16 +750,15 @@ a:focus{
 
 .thumbnail {
       padding: 5px 5px;
-      margin-bottom: 10px;
-      line-height: 1.42857143;
+      margin: 5px 0;
+      margin-bottom: 80px;
+      line-height: 1.4;
       height: 340px;
       max-height: 100%;
       background-color: transparent;
-      border: 2px solid #75b1a9;
-      border-radius: 1px;
-      -webkit-transition: border .2s ease-in-out;
-           -o-transition: border .2s ease-in-out;
-              transition: border .2s ease-in-out;
+      background: #f0f0f0;
+      border: none;
+      
 }
 
 .caption #bold-name{
@@ -569,7 +768,7 @@ a:focus{
 }
 
 .caption #regular-name{
-      color: #fff;
+      color: #2b2a29;
       font-size: 16px;
 }
 
@@ -586,13 +785,14 @@ a:focus{
       text-decoration: none;
 }
 
+
 /* Видеотрансляция */
 
 .onlain-tr{
    
      color: #2b2a29;
-     background: #f1a83b;
-     margin: 40px 0;
+     background: #f0f0f0;
+     
      padding: 15px 0 40px 0;
 }
 
@@ -606,31 +806,60 @@ a:focus{
      margin: 15px 0;
 }
 
+
+
+
 /* Партнеры */
 
-#cherta{
-        height: 2px;
-        background-color: #75b1a9;
-        border-top: none;
-        margin: 40px 0 0 0;
+#slideout {
+            z-index: 1000;
+            position: fixed;
+			top: 200px;
+			left: 0;
+			width: 35px;
+			padding: 12px 0;
+			text-align: center;
+			background: #f1a83b;
+              -webkit-transition-duration: 0.3s;
+              -moz-transition-duration: 0.3s;
+              -o-transition-duration: 0.3s;
+              transition-duration: 0.3s;
+            border-radius: 0 5px 5px 0;
+}
+#slideout_inner {
+            z-index: 1000;
+            position: fixed;
+			top: 200px;
+			left: -170px;
+			background: #f0f0f0;
+			width: 170px;
+			text-align: center;
+			height: 560px;
+            padding: 15px 0;
+            
+              -webkit-transition-duration: 0.3s;
+              -moz-transition-duration: 0.3s;
+              -o-transition-duration: 0.3s;
+              transition-duration: 0.3s;
+            border-radius: 0 0 5px 0;
+}
+#slideout:hover {
+  left: 170px;
+    
+}
+#slideout:hover #slideout_inner {
+  left: 0;
+  
 }
 
-#partners-name{
-         text-align: center;
-         font-weight: bold;
-         padding: 0 0 10px 0;
+.logo_position{
+            padding: 10px 0;
 }
 
-.partner-pic{
-        text-align: center;
-        padding: 25px 0;
-        
-}
 
-#p-pic{
-        
-        padding: 0 20px;
-}
+ 
+
+
 
 /* Подвал */
 
@@ -641,9 +870,7 @@ footer{
 }
 
 .foot-text{
-        
-        
-        padding-top: 50px;
+        padding: 50px 0;
         
         
 }
