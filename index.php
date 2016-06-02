@@ -24,7 +24,7 @@
 <body>
 <? $image = "/www/image.php"; ?>
 <div class="wrapper">
-    <a href="#" id="uptocall-mini"><div class="uptocall-mini-phone"></div></a>
+
     <a href="#" class="scrollup">Наверх</a>
     <!-- Линия для связи -->
     <div class="communication hidden-xs hidden-sm">
@@ -32,10 +32,10 @@
             <div class="row">
 
                 <div class="social-ic pull-left">
-                    <a href="https://vk.com/levelup76" class = "social-icon si-border si-vk"><i class="fa fa-vk"></i><i class="fa fa-vk"></i></a>
-                    <a href="#" class = "social-icon si-border si-instagram"><i class="fa fa-instagram"></i><i class="fa fa-instagram"></i> </a>
-                    <a href="#" class = "social-icon si-border si-tripadvisor"><i class="fa fa-tripadvisor"></i><i class="fa fa-tripadvisor"></i> </a>
-                    <a href="#" class = "social-icon si-border si-facebook"><i class="fa fa-facebook"></i><i class="fa fa-facebook"></i></a>
+                    <a href="https://vk.com/levelup76" target="_blank" class = "social-icon si-border si-vk"><i class="fa fa-vk"></i><i class="fa fa-vk"></i></a>
+                    <a href="#" target="_blank"  class = "social-icon si-border si-instagram"><i class="fa fa-instagram"></i><i class="fa fa-instagram"></i> </a>
+                    <a href="#" target="_blank"  class = "social-icon si-border si-tripadvisor"><i class="fa fa-tripadvisor"></i><i class="fa fa-tripadvisor"></i> </a>
+                    <a href="#" target="_blank"  class = "social-icon si-border si-facebook"><i class="fa fa-facebook"></i><i class="fa fa-facebook"></i></a>
                 </div>
 
                 <div class="contact pull-right">
@@ -65,7 +65,7 @@
                 <ul id="menu-main-menu" class="nav navbar-nav navbar-right">
                     <li id="" class="item-menu"><a href="price.html">Цены</a></li>
                     <li id="" class="item-menu"><a href="children_celebration.html">Детские праздники</a></li>
-                    <li id="" class="item-menu"><a href="#">Спортивная школа</a></li>
+                    <li id="" class="item-menu"><a href="sport_school.html">Спортивная школа</a></li>
                     <li id="" class="item-menu"><a href="coaches.html">Тренеры</a></li>
                     <li id="" class="item-menu"><a href="maps.html">Схема проезда</a></li>
                 </ul>
@@ -103,6 +103,7 @@
             <span class="glyphicon glyphicon-chevron-right"></span>
         </a>
     </div>
+    <!-- Конец Карусели фотографий -->
 
     <!-- Заголовок и контент -->
     <div class="container">
@@ -128,50 +129,50 @@
 
 
     <!-- Заметки -->
-    <div class="container">
-        <div class="row notes">
-            <div class="col-lg-3 col-sm-6">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h3 id="bold-name">Прыжки на батуте</h3>
-                        <p id="regular-name">Думаете, что батутный парк –  это лишь развлечения? Попрыгать на батуте в течение 10 минут равносильно 30-ти минутам бега. Кроме того, занятия на батуте укрепляют вестибулярный аппарат и способствуют уменьшению головных болей.</p>
-                        <p id="more-name"><a href="#">Подробнее...</a>
-                        </p>
-                    </div>
-                </div>
+    <div class="container" id="notes_white">
+        <div class="row">
+            <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
+                <img src="img/up_ind.png" id="img_notes" class="img-responsive" alt="Responsive image">
             </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h3 id="bold-name">Мероприятия</h3>
-                        <p id="regular-name">...</p>
-                        <p id="more-name"><a href="#">Подробнее...</a>
-                        </p>
-                    </div>
-                </div>
+            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-8">
+                <p id="bold-name">ПРЫЖКИ НА БАТУТЕ - ЭТО ПОЛЕЗНО!</p>
+                <p id="regular-name">Прыжки на батуте дарят удивительное чувство бодрости, прилива сил и энергии. Это происходит потому, что во время
+                    прыжков в кровь активно выделяются адреналин и эндорфины, точно так же как и при занятиях экстремальными и небезопасными видами спорта. Именно поэтому батут чрезвычайно полезен людям, находящимся в стрессовых состояниях и депрессии.</p>
+                <p id="more-name"></p>
             </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h3 id="bold-name">Дни рождения</h3>
-                        <p id="regular-name">...</p>
-                        <p id="more-name"><a href="#">Подробнее...</a>
-                        </p>
-                    </div>
+        </div>
+    </div>
+
+    <div  class="notes_grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-8">
+                    <p id="bold-name">ХОТИТЕ ВЕСЕЛО ОТМЕТИТЬ ДЕНЬ РОЖДЕНИЯ?</p>
+                    <p id="regular-name">Батутный центр «LevelUP» предлагает вам попробовать новый формат праздника – море положительных эмоций и яркие впечатления сделают любое мероприятие незабываемым. Подарите своему ребенку настоящую радость. Ваши дети и их друзья могут выплеснуть свою энергию, получая удовольствие, прыгая на наших батутных дорожках, взмывая вверх, мягко приземляясь в поролоновую яму.</p>
+                    <p id="more-name"><a href="children_celebration.html">Подробнее...</a></p>
                 </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="thumbnail">
-                    <div class="caption">
-                        <h3 id="bold-name">Групповые занятия</h3>
-                        <p id="regular-name">...</p>
-                        <p id="more-name"><a href="#">Подробнее...</a>
-                        </p>
-                    </div>
+                <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
+                    <img src="img/children_ind.png" id="img_notes" class="img-responsive" alt="Responsive image">
                 </div>
             </div>
         </div>
     </div>
+
+
+    <div class="container" id="notes_white">
+        <div class="row">
+            <div class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
+                <img src="img/coache_ind.png" id="img_notes" class="img-responsive" alt="Responsive image">
+            </div>
+            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-8">
+                <p id="bold-name">ПРОФЕССИОНАЛЫ СВОЕГО ДЕЛА!</p>
+                <p id="regular-name">В нашем центре работают только квалифицированные специалисты, прошедшие длинный путь в спорте и имеющие большой тренерский и педагогический опыт. Они дадут консультации по правильным тренировкам, помогут подобрать наиболее подходящую программу занятий.</p>
+                <p id="more-name"><a href="coaches.html">Подробнее...</a></p>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Видеотрансляция -->
     <div class="onlain-tr">
         <div class="container">
@@ -196,11 +197,11 @@
     <div id="slideout">
         <img src="img/partners.png" alt="Партнеры" />
         <div id="slideout_inner">
-            <p class="logo_position"><a href="http://top-drive.org/"><img src="img/topdrive-logo-skal.png"></a></p>
-            <p class="logo_position"><a href="http://top-drive.org/bassejn-svobodnoe-plavanie.html"><img src="img/topdrive-logo-bas.png"></a></p>
-            <p class="logo_position"><a href="http://yarvzlet.ru/"><img src="img/vzlet.png"></a></p>
-            <p class="logo_position"><a href="http://www.parkzabava.ru/"><img src="img/zabava.png"></a></p>
-            <p class="logo_position"><a href="http://capitansclub.ru/"><img src="img/capitan-club.png"></a></p>
+            <p class="logo_position"><a href="http://top-drive.org/" target="_blank"><img src="img/topdrive-logo-skal.png"></a></p>
+            <p class="logo_position"><a href="http://top-drive.org/bassejn-svobodnoe-plavanie.html" target="_blank"><img src="img/topdrive-logo-bas.png"></a></p>
+            <p class="logo_position"><a href="http://yarvzlet.ru/" target="_blank"><img src="img/vzlet.png"></a></p>
+            <p class="logo_position"><a href="http://www.parkzabava.ru/" target="_blank"><img src="img/zabava.png"></a></p>
+            <p class="logo_position"><a href="http://capitansclub.ru/" target="_blank"><img src="img/capitan-club.png"></a></p>
         </div>
     </div>
     <!-- Конец блока Партнеры -->
@@ -217,13 +218,13 @@
 
                 <div class="col-lg-8 col-xs-8">
                     <p id="company_f">
-                        &copy; ООО “Топ Драйв” 2016 / Тел.:+7 (4852) 33-72-00 <span id="company">&Iota; Разработка:<a href="#"> “NameCompany”</a></span>
+                        &copy; ООО “Топ Драйв” 2016 / Тел.:+7 (4852) 33-72-00 <span id="company">&Iota; Разработка:<a href="http://erpico.ru/" target="_blank"> Erpico</a></span>
                     </p>
                 </div>
                 <div class="col-lg-4 col-xs-4 vac">
                     <p>
-                                        <span id="vacancy"><a href="#">Вакансии</a>&nbsp;&nbsp;
-                                        <a href="#">Сотрудничество</a></span>
+                                        <span id="vacancy"><a href="jobs_partners.html">Вакансии</a>&nbsp;&nbsp;
+                                        <a href="jobs_partners.html#parthers">Сотрудничество</a></span>
                     </p>
                 </div>
 
