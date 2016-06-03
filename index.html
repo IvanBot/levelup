@@ -181,8 +181,8 @@
                          <div class="col-lg-2 col-sm-1"></div>
                          <div class="col-lg-8 col-sm-10">
                             <div class="embed-responsive embed-responsive-16by9">
-                                <iframe src="http://vk.com/video_ext.php?oid=-112757700&id=456239021&hash=d3b73b8c37b161ff&hd=2" width="853" height="480"  frameborder="0">
-                                </iframe>
+	        	                <img id="camera_hidden" hidden src="image.php"/>
+    		                    <img id="camera_online" src="image.php"/>
                             </div>
                          </div>
                          <div class="col-lg-8 col-sm-1"></div>                       
@@ -263,10 +263,20 @@
         });
     </script>
     
-    
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.js"></script>
-    
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.js"></script>
+<script>
+    function new_photo(){
+        var camera_hidden = document.getElementById("camera_hidden");
+        camera_hidden.src = "<?=$image?>?"+Math.random();
+        camera_hidden.onload = function(){
+            document.getElementById("camera_online").src = camera_hidden.src;
+            setTimeout(new_photo,100);
+        };
+        //camera_hidden.onerror = setTimeout(new_photo,3000);
+    };
+    setTimeout(new_photo,1);
+</script>
     
     
 </body>
