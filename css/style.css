@@ -199,6 +199,8 @@ a:visited{
 }
 
 
+
+
 /*Меню фиксированное*/
 .navbar.affix {
   position: fixed;
@@ -237,7 +239,9 @@ a:visited{
 .item-menu {
         font-size: 18px;
         margin: 30px 0 0 0;
+        
 }
+
 
 
 /* Карусель фотографий */
