@@ -25,8 +25,10 @@
    <div class="wrapper">
      
      <a href="#" class="scrollup">Наверх</a>
-      <!-- Линия для связи -->
-      <div class="communication hidden-xs hidden-sm">
+     
+      
+        <!-- Линия для связи -->
+    <!--  <div class="communication hidden-xs hidden-sm">
          <div class="container">
           <div class="row">
              
@@ -44,11 +46,11 @@
               </div>
           </div>
          </div>
-       </div>
+       </div> -->
        
-       <!-- Основное меню -->
+        <!-- Основное меню -->
        
-        <div class="navbar navbar-default" data-spy="affix" data-offset-top="52" role="navigation">
+        <div class="navbar navbar-default" role="navigation">
            <div class="container">
               <div class="navbar-header">
                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu">
@@ -57,8 +59,11 @@
                      <span class="icon-bar"></span>
                      <span class="icon-bar"></span>
                  </button>
-                 <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="110" width="453" class="img-responsive" alt="Responsive image"></a>
-                  
+                 <a class="navbar-brand" href="index.html"><img src="img/logo.png" height="110" width="453" class="hidden-xs hidden-sm hidden-md" class="img-responsive" alt="Responsive image"></a>
+                 <a class="navbar-brand" href="index.html"><img src="img/logo_2.png" height="61" width="250" class="visible-xs hidden-sm hidden-md" class="img-responsive" alt="Responsive image"></a>
+                 <a class="navbar-brand" href="index.html"><img src="img/logo_3.png" height="61" width="40" class="visible-sm visible-md hidden-xs item-img" class="img-responsive" alt="Responsive image"></a>
+                   
+                       
               </div>
               <div class="navbar-collapse collapse" id="responsive-menu">
                  <ul id="menu-main-menu" class="nav navbar-nav navbar-right">
@@ -76,28 +81,16 @@
  
          <!-- Заголовок и контент -->  
         
-         <div class="content_price">  
+        
+        <div class="content_price">  
            <div class="container">
             <div class="row">
                <div class="name_price">Спортивная школа</div>
+               <span class="cherta_ind hidden-xs"></span>
             </div>
            </div>
         </div>
         
-        <div class="container">
-             <div class="row">
-                 <div class="col-lg-3 col-xs-2">
-                     
-                </div>
-                 <div class="col-lg-6 col-xs-8">
-                     <hr id="cherta">
-                </div>
-                 <div class="col-lg-3 col-xs-2">
-                     
-                 </div>
-             </div>
-         </div>
-       
         
         
         <!-- Контент -->
@@ -105,84 +98,75 @@
         
         <!-- Таблица -->  
         <div class="container">
-            <div class="row">
-              <div class="cont_price">
+           <div class="row schedule">
+                <h>Расписание занятий</h><br>
+           </div>
+        </div>
+        <br>
+        
+        <div class="container">
+            <div class="row masonry" data-columns>
+              
                
-                <table class="table_posit">
-                   <caption id="tab-h">Расписание занятий</caption>
-                   <thead class="tab-block-b">
-                       <tr>
-                       <th id="tab_b"><h4 id="tab-b-n">Понедельник</h4></th>
-                       <th id="tab_b"><h4 id="tab-b-n">Вторник</h4></th>
-                       <th id="tab_b"><h4 id="tab-b-n">Среда</h4></th>
-                       <th id="tab_b"><h4 id="tab-b-n">Четверг</h4></th>
-                       <th id="tab_b"><h4 id="tab-b-n">Пятница</h4></th>
-                       <th id="tab_b"><h4 id="tab-b-n">Суббота</h4></th>
-                       </tr>
-                   </thead> 
-                   <tbody class="tab-block">
-                       <tr>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">8:00-9:30<br>Батутный фристайл<br>Родина А.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">8:00-9:30<br>Батутный фристайл<br>Родина А.</td>
-                       <td id="tab_n"></td>
-                       </tr>
-                       
-                       <tr>
-                       <td id="tab_n">9:45-11:15<br>Фриран 1-я гр.<br>Москалев А.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">9:45-11:15<br>Взрослая 1-я гр.<br>Власов М.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">9:45-11:15<br>Взрослая 1-я гр.<br>Власов М.</td>
-                       </tr>
-                       
-                       <tr>
-                       <td id="tab_n">11:30-13:00<br>Фриран 2-я гр.<br>Москалев А.</td>
-                       <td id="tab_n">11:30-13:00<br>Детская 1-я гр.<br>Астахова М.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">11:30-13:00<br>Детская 1-я гр.<br>Астахова М.</td>
-                       <td id="tab_n">11:30-13:00<br>Взрослая 2-я гр.<br>Власов М.</td>
-                       </tr>
-                       
-                       <tr>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">13:30-15:00<br>Детская 2-я гр.<br>Власенко О.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">13:30-15:00<br>Фриран 1-я гр.<br>Москалев А.</td>
-                       <td id="tab_n">13:30-15:00<br>Детская 2-я гр.<br>Власенко О.</td>
-                       <td id="tab_n"></td>
-                       </tr>
-                       
-                       <tr>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">15:15-16:45<br>Батутный фристайл<br>Согомонов Д.</td>
-                       <td id="tab_n">15:15-16:45<br>Фриран 2-я гр.<br>Москалев А.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">15:15-16:45<br>Батутный фристайл<br>Согомонов Д.</td>
-                       </tr>
-                       
-                       <tr>
-                       <td id="tab_n">17:00-18:30<br>Батутный фристайл<br>Согомонов Д.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n">17:00-18:30<br>Взрослая 2-я гр.<br>Власов М.</td>
-                       <td id="tab_n"></td>
-                       <td id="tab_n"></td>
-                       </tr>
-                       
-                       <tr>
-                       <td colspan="6"><hr id="cherta_tab"></td>
-                       </tr>
-                       
-                    </tbody>
-                </table>
+                <div class="item">
+                  <div class="schedule_th">
+                        <h4 id="sche_item_b">Понедельник</h4>
+                        <p id="sche_item">9:45-11:15<br>Фриран 1-я гр. Москалев А.</p>
+                        <p id="sche_item">11:30-13:00<br>Фриран 2-я гр. Москалев А.</p>
+                        <p id="sche_item">17:00-18:30<br>Батутный фристайл Согомонов Д.</p>
+                   </div>
+                </div>
                 
-               
+                <div class="item">
+                   <div class="schedule_th">
+                        <h4 id="sche_item_b">Вторник</h4>
+                        <p id="sche_item">11:30-13:00<br>Детская 1-я гр. Астахова М.</p>
+                        <p id="sche_item">13:30-15:00<br>Детская 2-я гр. Власенко О.</p>
+                        <p id="sche_item">15:15-16:45<br>Батутный фристайл Согомонов Д.</p>
+                   </div> 
+                </div>
+                
+                <div class="item">
+                   <div class="schedule_th"> 
+                        <h4 id="sche_item_b">Среда</h4>
+                        <p id="sche_item">8:00-9:30<br>Батутный фристайл Родина А.</p>
+                        <p id="sche_item">9:45-11:15<br>Взрослая 1-я гр. Власов М.</p>
+                        <p id="sche_item">15:15-16:45<br>Батутный фристайл Согомонов Д.</p>
+                   </div>
+                </div>
+                
+                <div class="item">
+                   <div class="schedule_th">
+                        <h4 id="sche_item_b">Четверг</h4>
+                        <p id="sche_item">13:30-15:00<br>Фриран 1-я гр. Москалев А.</p>
+                        <p id="sche_item">15:15-16:45<br>Фриран 2-я гр. Москалев А.</p>
+                        <p id="sche_item">17:00-18:30<br>Взрослая 2-я гр. Власов М.</p>
+                   </div> 
+                </div>
+                
+                <div class="item">
+                   <div class="schedule_th">
+                        <h4 id="sche_item_b">Пятница</h4>
+                        <p id="sche_item">8:00-9:30<br>Батутный фристайл Родина А.</p>
+                        <p id="sche_item">11:30-13:00<br>Детская 1-я гр. Астахова М.</p>
+                        <p id="sche_item">13:30-15:00<br>Детская 2-я гр. Власенко О.</p>
+                   </div> 
+                </div>
+                
+                <div class="item">
+                   <div class="schedule_th">
+                        <h4 id="sche_item_b">Суббота</h4>
+                        <p id="sche_item">9:45-11:15<br>Взрослая 1-я гр. Власов М.</p>
+                        <p id="sche_item">11:30-13:00<br>Взрослая 2-я гр. Власов М.</p>
+                        <p id="sche_item">15:15-16:45<br>Батутный фристайл Согомонов Д.</p>
+                   </div> 
+                </div>
+                 
+              </div>
+         </div>
+        
+         <br>
+         <br>
             <div class="container">
                <div class="row" id="tab_text_down">
                 <span>ВНИМАНИЕ: Занятия проводятся в спортивной или удобной форме одежды, без ремней, пряжек. Идеально подходят длинные, закрывающие колени шорты и футболка. На ногах нескользящие носки или прыжковые с силиконовой подошвой. 
@@ -195,11 +179,9 @@
                 </span>
                </div>  
             </div>       
-                   
-                </div>
-               </div>
-            </div>
-          
+          <br>         
+                
+               
         <!-- Конец таблицы -->   
                 
         
@@ -224,34 +206,57 @@
             
             
             <!-- Подвал -->
-            <footer>
-              <div class="foot-pic">
-                  <div class="col-lg-2 col-xs-2">
-                  <img src="img/footer_1.png" height="150" width="325" class="img-responsive" alt="Responsive image">
-                  </div>
-                  <div class="col-lg-8 col-xs-8 foot-text">
-                       
-
-                            
-                               <div class="col-lg-8 col-xs-8">
-                                   <p id="company_f">
-                                        &copy; ООО “Топ Драйв” 2016 / Тел.:+7 (4852) 33-72-00 <span id="company">&Iota; Разработка:<a href="http://erpico.ru/" target="_blank"> Erpico</a></span>
-                                   </p>
-                               </div>
-                               <div class="col-lg-4 col-xs-4 vac">
-                                   <p>
-                                        <span id="vacancy"><a href="jobs_partners.html">Вакансии</a>&nbsp;&nbsp;
-                                        <a href="jobs_partners.html#parthers">Сотрудничество</a></span>
-                                   </p>
-                               </div>
-                           
-                           
-                   </div>
-                <div class="col-lg-2 col-xs-2">
-                <img src="img/footer_2.png" height="150" width="325" class="img-responsive" alt="Responsive image">
-                </div>
-              </div>
-           </footer>
+   <footer>
+        
+              <div class="container">
+                 <div class="row foot_content">
+                    
+                     <div class="col-lg-4 col-sm-6 f_cont">
+                       <h class="footer_bold">Мы в социальных сетях</h><br><br>
+                         <span class="vac">
+                                <ul class="social-network social-circle">
+                                    <li><a href="https://vk.com/levelup76" target="_blank" class="ico icoVK" title="VK"><i class="fa fa-vk"></i></a></li>
+                                    <li><a href="#" target="_blank" class="ico icoInstagram" title="Instagram"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="#" target="_blank" class="ico icoTripadvisor" title="Tripadvisor"><i class="fa fa-tripadvisor"></i></a></li>
+                                    <li><a href="#" target="_blank" class="ico icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+                                </ul>
+                         </span>                        
+                     </div>
+                     
+                     <div class="col-lg-4 col-sm-6 f_cont">
+                        <h class="footer_bold">Режим работы центра</h><br><br> 
+                        <span class="vac">Будни с 14:00 до 22:00, <br>суббота, воскресенье 10:00-22:00</span>
+                     </div>
+                     
+                     <div class="col-lg-4 col-sm-6 f_cont">
+                         <h class="footer_bold">Наши контакты</h><br><br>
+                         <span class="vac">г. Ярославль, ул. Свободы, д. 46/3 
+                            <br>(территория Казарм)
+                            <br>тел. +7 (4852) 33-72-00
+                            <br>e-mail: levelup76@yandex.ru</span>
+                     </div> 
+                          
+                 </div>
+                 <br>
+                 <div class="row foot_content">
+                     <div class="col-lg-8 col-sm-6 f_cont">
+                        <p id="company_f">
+                            &copy; ООО “Топ Драйв” 2016 / Тел.:+7 (4852) 33-72-00 <span id="company">&Iota; Разработка:<a href="http://erpico.ru/" target="_blank"> Erpico</a></span>
+                        </p>
+                     </div>
+                     <div class="col-lg-4 col-sm-6 f_cont vac">
+                        <p>
+                            <span id="vacancy"><a href="jobs_partners.html">Вакансии</a>&nbsp;&nbsp;
+                            <a href="jobs_partners.html#parthers">Сотрудничество</a></span>
+                        </p>
+                     </div>
+                 </div>
+                      
+                                
+             </div>
+        
+              
+    </footer>
              
             
  </div>
@@ -284,7 +289,7 @@
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.js"></script>
-    
+    <script src="js/salvattore.min.js"></script>
     
 </body>
 </html>

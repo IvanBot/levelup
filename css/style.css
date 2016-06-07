@@ -8,6 +8,9 @@ html{
 }        
 
 body{
+     -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
      font: 14px/32px 'Calibri', Arial;
      width: 100%;
      height: 100%;
@@ -24,8 +27,8 @@ body{
         height:50px;
         opacity: 0.7;
         position:fixed;
-        bottom:50px;
-        right:100px;
+        bottom:30px;
+        right:30px;
         display:none;
         text-indent:-9999px;
         background: url('icon_top.png') no-repeat;
@@ -164,9 +167,7 @@ a:visited{
 /* Меню */
 /*Скрытое меню*/
 
-.navbar-toggle{
-    padding: 37px 10px 0 0;
-}
+
 
 
 .navbar-default .navbar-toggle {
@@ -201,14 +202,7 @@ a:visited{
 
 
 
-/*Меню фиксированное*/
-.navbar.affix {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index:1000;
-  
-}
+
 
 /*Основное меню*/
 
@@ -216,6 +210,10 @@ a:visited{
 
 .navbar{
        margin-bottom: 0;
+     position: fixed;
+  top: 0;
+  width: 100%;
+  z-index:1000;
        
 }
 
@@ -228,7 +226,7 @@ a:visited{
 
 .navbar-brand{
         float:left;
-        height: 110px;
+        height: 100%;
         padding: 0 0;
 }
 
@@ -238,16 +236,19 @@ a:visited{
 
 .item-menu {
         font-size: 18px;
-        margin: 30px 0 0 0;
+        margin: 30px 0;
         
 }
-
+.item-img {
+        margin: 25px 15px;
+        
+}
 
 
 /* Карусель фотографий */
 
 #carousel{
-    
+    margin: 110px 0 0 0;
      -webkit-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
         -moz-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
           -o-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
@@ -258,6 +259,12 @@ a:visited{
 
 /* Заголовок и контент */
 
+.hello{
+    width: 100%;
+    margin-bottom: 250px;
+}
+
+
 .content{
      top:100%;
      left: 0;
@@ -265,7 +272,7 @@ a:visited{
      vertical-align: middle;
      margin: 20px 0 0 0;
      text-align: center;
-     height: 150px;
+     
      padding: 20px 0;
 }
 
@@ -301,36 +308,42 @@ a:visited{
      color: #0f846d;
      font-size: 22px;
      font-weight: bold;
-     padding: 0 0 11px 0;
+     
 }
 
 .UP{
      color: #e3197f;
 }
 
-#cherta_ind{
+.cherta_ind{
+        display: inline-block;
+        max-width: 650px;
+        width: 100%;
         height: 2px;
         background-color: #2b2a29;
         border-top: none;
-        margin: 10px 0 0 0;
-        margin-bottom: 40px;
+        margin: auto;
+        margin-bottom: 10px;
 }
 
 .content_price{
-     position: absolute;
+     
      left: 0;
      width: 100%;
-     height: 150px;
-     padding: 45px 0;
-     
+     padding: 45px 0 0 0;
+     margin-top: 110px;
+     text-align: center;
 }
 
 
 #cherta{
+        
+        max-width: 650px;
+        width: 100%;
         height: 2px;
         background-color: #2b2a29;
         border-top: none;
-        margin: 100px 0 0 0;
+        margin: 20px 0 0 0;
 }
 
 
@@ -342,17 +355,66 @@ a:visited{
      line-height:normal;
 }
 
+/* Расписание */
+
+.schedule{
+      color: #2b2a29;
+      font-weight: bold;
+      font-size: 24px;
+      text-align: center;
+      padding: 20px 5px;
+      margin-top: 0;
+}
+
+#sche_item{
+      height:100%;
+      min-height: 30px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: center;
+      margin: 3px 0;
+      padding: 3px 0 0 0;
+      
+}
+
+#sche_item_b{
+      font-size: 18px;
+      line-height: normal;
+      color: #2b2a29;
+      font-weight: bold;
+      text-align: center;
+}
+
+.schedule_th{
+    display: block;
+    padding: 4px;
+    margin-bottom: 20px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;
+}
+
+
+
+/* Конец расписания */
+
 /* Таблица */
+    
 .cont_price{
       top:100%;
       width: 100%;
-      padding: 60px 0 0 0;
+      
 }
 
 .table_posit{
       top:100%;
       width: 100%;
-      padding: 5px 45px;
+      padding: 5px 0;
       
       border-spacing: 0 5px;
       border-collapse:separate;
@@ -545,7 +607,10 @@ caption {
 /* Карта */
 
 .map{
-    margin: 50px 0 0 0;
+      max-width: 1170px;
+      width: 100%;
+      height: 100%;      
+      margin: 50px 0 0 0;
 }
 
 .contact_list{
@@ -581,16 +646,45 @@ caption {
 
 /* Тренеры */
 
+.thumbnail{
+        border: none;
+}
+
+
+@media screen and (max-width: 767px){
+    .masonry[data-columns]::before {
+        content: '1 .col-xs-12'
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width:991px){
+    .masonry[data-columns]::before {
+        content: '2 .col-xs-6'
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width:1199px){
+    .masonry[data-columns]::before {
+        content: '3 .col-xs-4'
+    }
+}
+
+@media screen and (min-width: 1200px){
+    .masonry[data-columns]::before {
+        content: '3 .col-xs-4'
+    }
+}
+
+
+
+
 .img_position{
-         left: 0;
-         width: 100%;
-         height: 150px;
-         padding: 45px 0;
+         
          text-align: center;
 }
 
 #img_coach{
-        margin: 35px 0 0 0;
+        
         border-radius: 50%;
         -webkit-box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
         -moz-box-shadow: 4px 5px 10px rgba(0,0,0, 0.5);
@@ -625,8 +719,17 @@ caption {
 
 /* Дети */
 
-.children_block{
-    margin: 70px 0 0 0;
+#children_block{
+    
+    -webkit-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+    -moz-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+    -o-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+    box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+    
+}
+
+.children_content{
+        padding: 15px 0 0 0;
 }
 
 .chil_text{
@@ -649,8 +752,8 @@ caption {
       line-height: normal;
       color: #2b2a29;
       text-align: justify;
-      padding: 0 35px 35px 35px;
-      margin: 3px 0;
+      padding: 0 5px 35px 5px;
+      
 }
 
 
@@ -691,18 +794,21 @@ caption {
 
 /* Заметки */
 
-#notes_white{
+.notes_white{
      height: 100%;
+     margin: 20px 0;
 }
 
 .notes_grey{
      height: 100%;
+     padding: 20px 0;
      background: #f0f0f0;
 }
 
 
 #img_notes{
-    margin: 70px 15px;
+    padding: 5px 0 15px 0;
+    
 }
 
 #bold-h{
@@ -731,7 +837,6 @@ caption {
       font-size: 22px;
       font-weight: bold;
       text-align: center !important;
-      margin-top: 90px;
       padding: 20px 15px;
 }
 
@@ -840,13 +945,22 @@ caption {
 
 footer{
         background-color: #1c1c1c;
-        height: 150px;
+        height: 100%;
+        padding: 50px 0 0 0;
         
 }
 
-.foot-text{
-        padding: 50px 0;
-        
+.foot_content{
+        padding: 0 10px;
+}
+
+.f_cont{
+       padding: 15px 0;
+}
+
+.footer_bold{
+        color: #fff;
+        font-size: 25px;
         
 }
 
@@ -861,19 +975,20 @@ footer{
 
 .vac{
         color: #fff;
-        text-align: right !important;
         text-decoration: none;
-        font-size: 16px;
+        font-size: 18px;
+       
 }
 
 #vacancy a{
         color: #fff;
-        
         text-decoration: none;
         font-size: 16px;
         
 }
 
+        
+}
 #company_f {
         font-size: 16px;
         
@@ -881,4 +996,87 @@ footer{
 
 #company{
         color: #6e6e6e;
+}
+
+
+
+/*=========================
+  Icons
+ ================= */
+
+/* footer social icons */
+ul.social-network {
+	list-style: none;
+	display: inline;
+	margin-left:0 !important;
+	padding: 0;
+}
+ul.social-network li {
+	display: inline;
+	margin: 0 5px;
+}
+
+
+/* footer social icons */
+.social-network a.icoVK:hover {
+	background-color: #55779b;
+}
+.social-network a.icoFacebook:hover {
+	background-color:#3B5998;
+}
+.social-network a.icoInstagram:hover {
+	background-color:#9b6752;
+}
+.social-network a.icoTripadvisor:hover {
+	background-color:#589442;
+}
+
+.social-network a.icoVK:hover i, .social-network a.icoFacebook:hover i, .social-network a.icoInstagram:hover i, .social-network a.icoTripadvisor:hover i {
+	color:#fff;
+}
+a.socialIcon:hover, .socialHoverClass {
+	color:#44BCDD;
+}
+
+.social-circle li a {
+	display:inline-block;
+	position:relative;
+	margin:0 auto 0 auto;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
+	border-radius:50%;
+	text-align:center;
+	width: 50px;
+	height: 50px;
+	font-size:20px;
+}
+.social-circle li i {
+	margin:0;
+	line-height:50px;
+	text-align: center;
+}
+
+.social-circle li a:hover i, .triggeredHover {
+	-moz-transform: rotate(360deg);
+	-webkit-transform: rotate(360deg);
+	-ms--transform: rotate(360deg);
+	transform: rotate(360deg);
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	transition: all 0.2s;
+}
+.social-circle i {
+	color: #2b2a29;
+	-webkit-transition: all 0.8s;
+	-moz-transition: all 0.8s;
+	-o-transition: all 0.8s;
+	-ms-transition: all 0.8s;
+	transition: all 0.8s;
+}
+
+.ico {
+    
+    background-color: #fff;   
 }
