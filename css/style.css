@@ -75,93 +75,6 @@ a:visited{
      padding: 8px 0;
 }
 
-/* Социальные иконки */
-
-
-.social_icon_list{margin: 0px;}
-.social_icon_list.list-inline>li{padding: 0px;}
-
-.social-icon{
-    margin: 0 2px 0 0;
-    width: 30px;
-    height: 40px;
-    font-size: 18px;
-    line-height: 40px !important;
-    color: #2b2a29;
-    text-shadow: none;
-    border-top-left-radius:     none;
-    border-top-right-radius:    none;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius:  5px;
-    overflow: hidden;
-    display: inline-block;
-    text-align: center;
-    border: none;
-    
-}
-.social-icon:hover {
-    border-color: transparent;
-    text-decoration: none;
-}
-
-.social-icon:visited {
-    border-color: transparent;
-    text-decoration: none;
-}
-
-.social-icon i {
-    margin: 2px 0 0 0;
-    display: block;
-    font-size: 18px;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-    line-height: 40px;
-    position: relative;
-}
-.social-icon i:last-child {
-    color: #FFF !important;
-}
-.social-icon:hover i:first-child {
-    margin-top: -40px;
-}
-
-.si-vk,
-.si-instagram,
-.si-tripadvisor,
-.si-facebook{
-    padding: 3px 0 0 0;
-    
-}
-
-
-
-.si-border {
-    width: 30px;
-    height: 40px;
-}
-
-
-/**Цвета социальных кнопок при наведении**/
-
-.si-colored-vk,
-.si-vk:hover {
-    padding: 3px 0 0 0;
-    background-color: #55779b !important;}
-
-.si-colored-instagram,
-.si-instagram:hover {
-    background-color: #9b6752 !important;}
-
-.si-colored-tripadvisor,
-.si-tripadvisor:hover {
-    background-color: #589442 !important;}
-
-.si-colored-facebook,
-.si-facebook:hover {
-    background-color: #00539f !important;}
-
 
 
 /* Меню */
@@ -255,6 +168,36 @@ a:visited{
              box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
 }
 
+/* Режим работы */
+.rezim_raboty{
+        position: absolute;
+        overflow: visible;
+        height: auto;
+        width: auto;
+        
+        margin: 150px 150px;
+        padding: 0 0;
+        text-align: left;
+        z-index: 900;
+}
+
+.car_b{
+        color: #fff;
+        font-size: 28px;
+        font-weight: bold;
+        background: #000;
+        
+        padding: 10px 10px;
+}
+
+.car_r{
+        font-size: 25px;
+        color: #fff;
+        font-weight: bold;
+        background: #000;
+        opacity: 0.7;
+        padding: 10px 10px;
+}
 
 
 /* Заголовок и контент */
@@ -889,55 +832,6 @@ caption {
 
 
 
-/* Партнеры */
-
-#slideout {
-            z-index: 1000;
-            position: fixed;
-			top: 200px;
-			left: 0;
-			width: 35px;
-			padding: 12px 0;
-			text-align: center;
-			background: #f1a83b;
-              -webkit-transition-duration: 0.3s;
-              -moz-transition-duration: 0.3s;
-              -o-transition-duration: 0.3s;
-              transition-duration: 0.3s;
-            border-radius: 0 5px 5px 0;
-}
-#slideout_inner {
-            z-index: 1000;
-            position: fixed;
-			top: 200px;
-			left: -170px;
-			background: #f0f0f0;
-			width: 170px;
-			text-align: center;
-			height: 560px;
-            padding: 15px 0;
-            border: 1px #fff solid;            
-              -webkit-transition-duration: 0.3s;
-              -moz-transition-duration: 0.3s;
-              -o-transition-duration: 0.3s;
-              transition-duration: 0.3s;
-            border-radius: 0 0 5px 0;
-}
-#slideout:hover {
-  left: 170px;
-    
-}
-#slideout:hover #slideout_inner {
-  left: 0;
-  
-}
-
-.logo_position{
-            padding: 10px 0;
-}
-
-
- 
 
 
 
@@ -977,6 +871,7 @@ footer{
         color: #fff;
         text-decoration: none;
         font-size: 18px;
+            text-align: right;
        
 }
 
@@ -1080,3 +975,22 @@ a.socialIcon:hover, .socialHoverClass {
     
     background-color: #fff;   
 }
+
+
+/* Партнеры */
+
+.partners{
+        
+        
+        height: 100%;
+        text-align: center;
+        padding: 10px 0;
+        vertical-align: bottom;
+}
+
+.part_img{
+        padding: 10px 0;
+        
+}
+
+
