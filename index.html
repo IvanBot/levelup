@@ -177,8 +177,8 @@
                          <div class="col-lg-2 col-sm-1"></div>
                          <div class="col-lg-8 col-sm-10">
                             <div class="embed-responsive embed-responsive-16by9">
-	        	                <img id="camera_hidden" hidden src="image.php"/>
-    		                    <img id="camera_online" src="image.php"/>
+	        	                <img id="camera_hidden" hidden src="/image.php"/>
+    		                    <img id="camera_online" src="/image.php"/>
                             </div>
                          </div>
                          <div class="col-lg-8 col-sm-1"></div>                       
@@ -339,7 +339,7 @@
 <script>
     function new_photo(){
         var camera_hidden = document.getElementById("camera_hidden");
-        camera_hidden.src = "<?=$image?>?"+Math.random();
+        camera_hidden.src = "/image.php?"+Math.random();
         camera_hidden.onload = function(){
             document.getElementById("camera_online").src = camera_hidden.src;
             setTimeout(new_photo,100);

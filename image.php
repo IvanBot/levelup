@@ -2,9 +2,9 @@
 //function image(){
 $url = "http://192.168.40.201/cgi-bin/images_cgi?channel=0&user=admin&pwd=admin&".rand();
 //$filename = sys_get_temp_dir()."\\file.jpg";
-$filename = "z:\\tmp\\file.jpg";
-$file2name = "z:\\tmp\\file2.jpg";
-$file3name = "z:\\tmp\\file3.lock";
+$filename = "/tmp/file.jpg";
+$file2name = "/tmp/file2.jpg";
+$file3name = "/tmp/file3.lock";
 
 function getfromcamera() {
     global $filename,$file2name,$file3name,$url;
