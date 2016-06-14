@@ -58,13 +58,9 @@
         </div>
         <!-- Конец основного меню -->
       
-    <!-- Режим работы -->  
- <!-- <div class="rezim_raboty">
-    <span class="car_b">Режим работы центра</span><br>
-    <span class="car_r">Будни с 14:00 до 22:00,</span> 
-    <span class="car_r">суббота, воскресенье 10:00-22:00</span>
-  </div> -->
-          
+   <!-- Режим работы -->  
+                
+ 
  
     <!-- Конец режима работы -->  
       
@@ -72,17 +68,19 @@
        <!-- Карусель фотографий -->
        <div id="carousel" class="carousel slide" data-ride="carousel">
           <!-- Индикаторы -->
-          <ol class="carousel-indicators">
-            <li data-target="#carousel" data-slide-to="0" class="active"></li>
-            <li data-target="#carousel" data-slide-to="1"></li>
-            <li data-target="#carousel" data-slide-to="2"></li>
-            <li data-target="#carousel" data-slide-to="3"></li>
-            <li data-target="#carousel" data-slide-to="4"></li>
-          </ol>
+          
 
           <!-- Слайды и подписи -->
           <div class="carousel-inner">
-           
+            <div class="carousel-caption">
+                <h1 class="car_b hidden-xs">Режим работы центра</h1>
+                <h3 class="car_r hidden-xs">будни с 14:00 до 22:00, сб и вс 10:00-22:00</h3>
+                <h3 class="car_r hidden-xs">тел.: +7 (4852) 33-72-00</h3>
+                
+                <h7 class="car_b visible-xs">Режим работы центра</h7>
+                <h8 class="car_r visible-xs">будни с 14:00 до 22:00, сб и вс 10:00-22:00</h8>
+                <h8 class="car_r visible-xs">тел.: +7 (4852) 33-72-00</h8>
+            </div>
            
            
             <div class="active item"> <img src="img/001.jpg" class="img-responsive" alt="Responsive image"> </div>
@@ -99,6 +97,9 @@
           <a class="right carousel-control" href="#carousel" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right"></span>
           </a>
+          
+           
+          
         </div>
        <!-- Конец Карусели фотографий -->
         
@@ -233,44 +234,44 @@
                                          
        <div class="container">         
                  
-                <div class="row partners" >
+                <div class="row partners" data-columns>
                   
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://top-drive.org/" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/topdrive-logo-skal.png';" 
                             onmouseout="this.src='img/topdrive-logo-skal_activ.png';" 
                             alt="" src="img/topdrive-logo-skal_activ.png" width="148" height="69">
                         </a>
                     </div>
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://top-drive.org/bassejn-svobodnoe-plavanie.html" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/topdrive-logo-bas.png';" 
                             onmouseout="this.src='img/topdrive-logo-bas_activ.png';" 
                             alt="" src="img/topdrive-logo-bas_activ.png" width="148" height="67">
                         </a>
                     </div>
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://yarvzlet.ru/" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/vzlet.png';" 
                             onmouseout="this.src='img/vzlet_activ.png';" 
                             alt="" src="img/vzlet_activ.png" width="148" height="120">
                         </a>
                     </div>
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://www.izgib.ru/" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/izgib.png';" 
                             onmouseout="this.src='img/izgib_activ.png';" 
                             alt="" src="img/izgib_activ.png" width="135" height="53">
                         </a>
                     </div>
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://www.parkzabava.ru/" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/zabava.png';" 
                             onmouseout="this.src='img/zabava_activ.png';" 
                             alt="" src="img/zabava_activ.png" width="148" height="51">
                         </a>
                     </div>
-                    <div class="col-lg-2 col-sm-6 part_img">
+                    <div class="part_img">
                         <a href="http://capitansclub.ru/" target="_blank">
                             <img style="border: 0px;" onmouseover="this.src='img/capitan-club.png';" 
                             onmouseout="this.src='img/capitan-club_activ.png';" 
@@ -279,7 +280,7 @@
                     </div>
                 </div>
                  
-       </div>               
+       </div>                 
        
                  
                  
@@ -334,6 +335,7 @@
     
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.js"></script>
+<script src="js/salvattore.min.js"></script>
 <script>
     function new_photo(){
         var camera_hidden = document.getElementById("camera_hidden");
