@@ -168,51 +168,161 @@ a:visited{
              box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
 }
 
+#carousel_2{
+    margin: 65px 0 0 0;
+     -webkit-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+        -moz-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+          -o-box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+             box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
+}
 
 
 /* Режим работы */
-.rezim_raboty{
-       position: absolute;
-        height: 100%;
-        width: 100%;
-        padding: 290px 0;
+
+@media (max-width: 767px) {
+    .rezim_rabory {
+        z-index: 800;
+        position: absolute;
         text-align: right;
-        z-index: 900;
-        line-height: 50px;
-        text-overflow: auto;
-}
-
-.carousel-caption{
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 0 0 15px 0;
-    
-    background: rgba(0,0,0,0.4);
-    text-align: center;
-    
-}
-
-.car_b{ 
-        height: 100%;
-        width: 100%;
+        display: block;
+        height: auto;
+        width: auto;
         color: #fff;
+
         font-weight: bold;
-        line-height: 15px;
-        padding: 0 0 2px 0;
+        padding: 3px 3px;
         
+        letter-spacing: 2px;
+        line-height: 25px;
+        top: 13%;
+        right: 12%;
+    }
+    
+        .rez_b{
+        font-size: 18px;
+		padding: 0 5px;
+			color: #ffc000;
+        background: rgba(0,0,0,0.6);
+        
+    }
+
+        .rez_r{
+        font-size: 18px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        
+    }
 }
 
-.car_r{ 
-        height: 100%;
-        width: 100%;
+    
+@media (min-width: 768px) and (max-width:991px){
+    .rezim_rabory {
+        z-index: 800;
+        position: absolute;
+        text-align: right;
+        display: block;
+        height: auto;
+        width: auto;
         color: #fff;
+
         font-weight: bold;
-        line-height: 5px;
-        padding: 5px 0;
-             
+        padding: 3px 3px;
+        
+        letter-spacing: 2px;
+        line-height: 40px;
+        top: 17%;
+        right: 5%;
+    }
+    
+        .rez_b{
+        font-size: 32px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        color: #ffc000;
+    }
+
+        .rez_r{
+        font-size: 32px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        
+    }
 }
+    
+@media (min-width: 992px) and (max-width:1199px){
+    .rezim_rabory {
+        z-index: 800;
+        position: absolute;
+        text-align: right;
+        display: block;
+        height: auto;
+        width: auto;
+        color: #fff;
+
+        font-weight: bold;
+        padding: 3px 3px;
+        
+        letter-spacing: 2px;
+        line-height: 40px;
+        top: 25%;
+        right: 5%;
+    }
+    
+        .rez_b{
+        font-size: 42px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        color: #ffc000;        
+
+    }
+
+        .rez_r{
+        font-size: 42px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        
+    }
+}   
+    
+@media (min-width: 1200px){
+    .rezim_rabory {
+        z-index: 800;
+        position: absolute;
+        text-align: right;
+        display: block;
+        height: auto;
+        width: auto;
+        color: #fff;
+
+        font-weight: bold;
+        padding: 3px 3px;
+        
+        letter-spacing: 2px;
+        line-height: 60px;
+        top: 30%;
+        right: 15%;
+		
+    }
+    
+        .rez_b{
+        font-size: 52px;
+		padding: 0 10px;
+		color: #ffc000;
+        background: rgba(0,0,0,0.6);
+        
+    }
+
+        .rez_r{
+        font-size: 52px;
+		padding: 0 10px;
+        background: rgba(0,0,0,0.6);
+        
+    }
+
+}   
+    
+
+
 
 
 /* Заголовок и контент */
@@ -284,14 +394,37 @@ a:visited{
         margin-bottom: 10px;
 }
 
-.content_price{
-     
+
+@media (max-width: 767px) {
+	.content_price{
+     left: 0;
+     width: 100%;
+     padding: 45px 0 0 0;
+     margin-top: 40px;
+     text-align: center;
+	}
+}
+@media (min-width: 768px) and (max-width:1199px){
+		.content_price{
      left: 0;
      width: 100%;
      padding: 45px 0 0 0;
      margin-top: 110px;
      text-align: center;
+	}
 }
+
+@media (min-width: 1200px){
+	.content_price{
+     left: 0;
+     width: 100%;
+     padding: 45px 0 0 0;
+     margin-top: 110px;
+     text-align: center;
+	}
+}
+
+
 
 
 #cherta{
