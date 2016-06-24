@@ -27,7 +27,7 @@ body{
         height:50px;
         opacity: 0.7;
         position:fixed;
-        bottom:30px;
+        bottom:10px;
         right:30px;
         display:none;
         text-indent:-9999px;
@@ -176,10 +176,74 @@ a:visited{
              box-shadow: 0px 10px 10px rgba(0,0,0, 0.7);
 }
 
+/* Календарь */
+
+#calendar2 {
+  width: 100%;
+  font: monospace;
+  line-height: 1.2em;
+  font-size: 18px;
+  text-align: center;
+}
+#calendar2 thead tr:last-child {
+  font-size: small;
+  color: rgb(85, 85, 85);
+}
+#calendar2 thead tr:nth-child(1) td:nth-child(2) {
+  color: rgb(50, 50, 50);
+}
+#calendar2 thead tr:nth-child(1) td:nth-child(1):hover, #calendar2 thead tr:nth-child(1) td:nth-child(3):hover {
+  cursor: pointer;
+}
+#calendar2 tbody td {
+  color: rgb(44, 86, 122);
+}
+#calendar2 tbody td:nth-child(n+6), #calendar2 .holiday {
+  color: rgb(231, 140, 92);
+}
+#calendar2 tbody td.today {
+  background: rgb(220, 0, 0);
+  color: #fff;
+}
 
 /* Режим работы */
 
-@media (max-width: 767px) {
+@media (max-width: 349px){
+		.rezim_rabory {
+        z-index: 800;
+        position: absolute;
+        text-align: right;
+        display: block;
+        height: auto;
+        width: auto;
+        color: #fff;
+
+        font-weight: bold;
+        padding: 3px 3px;
+        
+        letter-spacing: 2px;
+        line-height: 25px;
+        top: 20%;
+        right: 12%;
+    }
+    
+        .rez_b{
+        font-size: 18px;
+		padding: 0 5px;
+			color: #ffc000;
+        background: rgba(0,0,0,0.6);
+        
+    }
+
+        .rez_r{
+        font-size: 18px;
+		padding: 0 5px;
+        background: rgba(0,0,0,0.6);
+        
+    }
+}
+
+@media (min-width: 350px) and (max-width:767px){
     .rezim_rabory {
         z-index: 800;
         position: absolute;
@@ -695,6 +759,56 @@ caption {
 
 /* Конец таблицы */
 
+/* Запись тенировки */
+
+#write_n{
+      height:100%;
+      min-height: 30px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: right;
+      background: #f0f0f0;
+      margin: 3px 0;
+      padding: 3px 10px 3px 2px;
+      
+}
+
+
+
+#write_n_n{
+      height: 35px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: left;
+      background: #f0f0f0;
+      padding: 3px 5px 3px 15px;
+      margin: 3px 0;
+      
+}
+
+#write_n_b{
+      height: 35px;
+      font-size: 17px;
+      line-height: normal;
+      color: #2b2a29;
+      text-align: left;
+      background: #f0f0f0;
+      padding: 3px 2px;
+      margin: 3px 0;
+      
+}
+
+.badge {
+    font-size: 17px;
+    font-weight: 500;
+    color: #000;
+    background-color: #f1a93b;
+}
+
+/* Конец блока запись тенировки */
+
 /* Карта */
 
 .map{
@@ -726,8 +840,6 @@ caption {
 .map_text_social{
     letter-spacing: 5px;
     font-size: 28px;
-    
-    
     color: #2b2a29;
     
 }
@@ -832,8 +944,36 @@ caption {
      text-align: justify;
 }
 
+.text{
+	
+		margin: 20px 0;
+}
 
+.write_text{
+     
+     padding: 0 15px;
+     color: #2b2a29;
+     font-size: 17px;
+     text-indent: 20px;
+     text-align: center;
+}
 /* Конец блока Дети */
+
+/* Окно записи на тренировку */
+
+.modal-title{
+		color: #000;
+		font-size: 22px;
+		font-weight: bold;
+}
+
+.modal-body{
+     color: #2b2a29;
+     font-size: 17px;
+     
+}
+
+/*Конец окна записи на тренировку*/
 
 /* Контент */
 
@@ -1164,3 +1304,58 @@ a.socialIcon:hover, .socialHoverClass {
         content: '6 .col-xs-2'
     }
 }
+
+/* Кнопка Запись на тренировку */
+#uptocall-mini {
+    position:fixed;
+    bottom:85px;
+    right:20px;
+    cursor:pointer;
+    z-index:999;}
+ 
+#uptocall-mini .uptocall-mini-phone {
+    -moz-border-radius:50% !important;
+    -webkit-border-radius:50% !important;
+    border-radius:50% !important;
+    -moz-background-clip:padding;
+    -webkit-background-clip:padding-box;
+    background-clip:padding-box;
+    background-color:rgba(255,192,0, .9);
+    width:70px;
+    height:70px;
+    -webkit-animation: uptocallmini 1.5s 0s ease-out infinite;
+    -moz-animation: uptocallmini 1.5s 0s ease-out infinite;
+    animation: uptocallmini 1.5s 0s ease-out infinite;}
+ 
+#uptocall-mini .uptocall-mini-phone:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top:0;
+    left:0;
+    background-image:url('mini.png');
+    background-repeat:no-repeat;
+    background-position:center center;
+    -webkit-animation: uptocallphone 1.5s linear infinite;
+    -moz-animation: uptocallphone 1.5s linear infinite;
+    animation: uptocallphone 1.5s linear infinite;}
+ 
+
+@-webkit-keyframes uptocallmini {
+    0% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 0px rgba(0,0,0,0), 0 0 0px 0px rgba(23,167,167, 0);}
+    10% {box-shadow: 0 0 8px 6px #ffc000, 0 0 12px 10px rgba(0,0,0,0), 0 0 12px 14px #ffc000;}
+    100% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 40px rgba(0,0,0,0), 0 0 0px 40px rgba(23,167,167, 0);}
+}
+@-moz-keyframes uptocallmini {
+    0% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 0px rgba(0,0,0,0), 0 0 0px 0px rgba(23,167,167, 0);}
+    10% {box-shadow: 0 0 8px 6px #ffc000, 0 0 12px 10px rgba(0,0,0,0), 0 0 12px 14px #ffc000;}
+    100% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 40px rgba(0,0,0,0), 0 0 0px 40px rgba(23,167,167, 0);}
+}
+@keyframes uptocallmini {
+    0% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 0px rgba(0,0,0,0), 0 0 0px 0px rgba(23,167,167, 0);}
+    10% {box-shadow: 0 0 8px 6px #ffc000, 0 0 12px 10px rgba(0,0,0,0), 0 0 12px 14px #ffc000;}
+    100% {box-shadow: 0 0 8px 6px rgba(23,167,167, 0), 0 0 0px 40px rgba(0,0,0,0), 0 0 0px 40px rgba(23,167,167, 0);}
+}
+
+/* Конец Кнопка Запись на тренировку */
