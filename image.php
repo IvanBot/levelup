@@ -1,6 +1,6 @@
 <?php
 //function image(){
-$url = "http://192.168.40.201/cgi-bin/images_cgi?channel=0&user=admin&pwd=admin&".rand();
+$url = "http://192.168.40.9/cgi-bin/images_cgi?channel=0&user=admin&pwd=admin&".rand();
 //$filename = sys_get_temp_dir()."\\file.jpg";
 $filename = "/tmp/file.jpg";
 $file2name = "/tmp/file2.jpg";
