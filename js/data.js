@@ -10,14 +10,11 @@ $(function () {
         $("html, body").animate({scrollTop: 0}, 600);
         return false;
     });
-    console.log($('.btn-secondary'));
-    $('button.btn.btn-secondary').click(function () {
-        console.log(11);
-    });
     $('#record').click(function () {
         call()
     });
     function call() {
+
         var msg = $('#formx').serialize();
         $.ajax({
             type: 'GET',
@@ -25,7 +22,11 @@ $(function () {
             data: msg,
             success: function (data) {
                 $('.close').click();
-                console.log("Данные записаны");
+                //console.log("Данные записаны");
+                var name = $('#inputName').val();
+                $('.selected-tr #write_n_f').append('<div class="yourname">' + name + '</div>')
+                $('tr').removeClass('selected-tr');
+                //$(".selected-tr #write_n_f").html('<span>'+$('#inputName').val()+'</span>');
             },
             error: function (xhr, str) {
                 console.log('Возникла ошибка: ' + xhr.responseCode);
@@ -51,10 +52,12 @@ $(function () {
             '11': 'ноября',
             '12': 'декабря'
         };
+        var now = new Date();
         if (opendate == undefined) {
-            var opendate = new Date();
+            var opendate = now;
             opendate = opendate.getFullYear() + '-' + ((opendate.getMonth() + 1) < 9 ? '0' + (opendate.getMonth() + 1) : (opendate.getMonth() + 1)) + '-' + (opendate.getDate() < 9 ? '0' + opendate.getDate() : opendate.getDate());
         }
+
         var res = $.ajax({
             type: "GET",
             url: "/controllers/db_querys.php",
@@ -65,13 +68,14 @@ $(function () {
                 //color = data;
             },
             error: function () {
-                console.log('Ajax problem >> data.js');
+                console.log('Ajax problem >> data.js ' + opendate);
             }
         }).responseJSON;
 
         var htmlresult = [];
 
         for (var date in res) {
+
             htmlresult[date] = document.createElement('table');
             htmlresult[date].className = "table_posit";
             cap = document.createElement('caption');
@@ -83,8 +87,9 @@ $(function () {
             tbody = document.createElement('tbody');
             tbody.id = 'tab-block';
             for (var line in res[date]) {
+                var d = res[date][line]['activitydate'];
+                recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), res[date][line]['activitytime'] - 3);
                 tr = document.createElement('tr');
-
                 td = document.createElement('td');
                 td.id = 'write_n_n';
                 td.setAttribute('data-time', res[date][line]['activitytime']);
@@ -95,17 +100,41 @@ $(function () {
                 td.innerHTML = res[date][line]['activityname'] != undefined ? res[date][line]['activityname'] : '';
                 tr.appendChild(td);
                 td = document.createElement('td');
+                td.id = 'write_n_f';
+                //span = document.createElement('span');//<span class="badge">8/12</span>
+                /*if (res[date][line]['count'] != undefined && res[date][line]['count'] > 0 && recorddate >= now) {
+                    span.className = "badge";
+                    span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
+                }*/
+                if (res[date][line]['username']!=undefined && res[date][line]['username']!=false) {//<div class="yourname">test</div>
+                    //console.log(res[date][line]['username']);
+                    for (var i in res[date][line]['username']) {
+                        div = document.createElement('div');
+                        div.className = "username";
+                        div.innerHTML = res[date][line]['username'][i];
+                        td.appendChild(div);
+                    }
+                }
+
+
+                //td.appendChild(span);
+                tr.appendChild(td);
+                td = document.createElement('td');
                 td.id = 'write_n';
-                button = document.createElement('button');
-                button.setAttribute('type', "button");
-                button.setAttribute('data-toggle', "modal");
-                button.setAttribute('data-id', res[date][line]['activity_id']);
-                button.setAttribute('data-date', res[date][line]['activitydate']);
-                button.setAttribute('data-time', res[date][line]['activitytime']);
-                button.setAttribute('data-target', ".fade");
-                button.className = 'btn btn-secondary';
-                button.innerHTML = 'Запись';
-                td.appendChild(button);
+
+                if (recorddate >= now) {
+                    button = document.createElement('button');
+                    button.setAttribute('type', "button");
+                    button.setAttribute('data-toggle', "modal");
+                    button.setAttribute('data-id', res[date][line]['id']);
+                    button.setAttribute('data-actid', res[date][line]['activityid']);
+                    button.setAttribute('data-date', res[date][line]['activitydate']);
+                    button.setAttribute('data-time', res[date][line]['activitytime']);
+                    button.setAttribute('data-target', ".fade");
+                    button.className = 'btn btn-secondary';
+                    button.innerHTML = 'Запись';
+                    td.appendChild(button);
+                }
                 tr.appendChild(td);
                 tbody.appendChild(tr);
             }
@@ -134,7 +163,7 @@ $(function () {
                 var date = dateProperties.year + '-' + (dateProperties.month < 9 ? '0' + dateProperties.month : dateProperties.month) + '-' + (dateProperties.day.length == 1 ? '0' + dateProperties.day : dateProperties.day);
                 if (htmlresult[date] == undefined) {
                     var a, b = activityList(date);
-                    htmlresult=$.extend(htmlresult,b);
+                    htmlresult = $.extend(htmlresult, b);
                 }
                 $('#datatable_record').html(htmlresult[date]);
                 if ($contentEl.length > 0) {
@@ -179,16 +208,12 @@ $(function () {
     }
 
     function hideEvents() {
-
         var $events = $('#custom-content-reveal');
         if ($events.length > 0) {
-
             $events.css('top', '100%');
             Modernizr.csstransitions ? $events.on(transEndEventName, function () {
                 $(this).remove();
             }) : $events.remove();
-
         }
     }
 });
-
