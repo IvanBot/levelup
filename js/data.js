@@ -1,4 +1,5 @@
 $(function () {
+
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
             $('.scrollup').fadeIn();
@@ -103,10 +104,10 @@ $(function () {
                 td.id = 'write_n_f';
                 //span = document.createElement('span');//<span class="badge">8/12</span>
                 /*if (res[date][line]['count'] != undefined && res[date][line]['count'] > 0 && recorddate >= now) {
-                    span.className = "badge";
-                    span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
-                }*/
-                if (res[date][line]['username']!=undefined && res[date][line]['username']!=false) {//<div class="yourname">test</div>
+                 span.className = "badge";
+                 span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
+                 }*/
+                if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
                     //console.log(res[date][line]['username']);
                     for (var i in res[date][line]['username']) {
                         div = document.createElement('div');
@@ -217,3 +218,7 @@ $(function () {
         }
     }
 });
+$.mask.definitions['*']="[A-Za-zА-Яа-я]";
+$("#inputPhone").mask("8-999-999-99-99?99999",{placeholder:" "});
+$("#inputName").mask('*?*************************************************',{placeholder:""});
+$("#inputSurname").mask('*?*************************************************',{placeholder:""});
