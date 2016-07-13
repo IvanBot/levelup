@@ -807,7 +807,7 @@ caption {
     padding: 3px;
     text-align: center;
     margin: 3px;
-    float: left;
+    float: right;
 }
 .yourname {
     background: azure;
@@ -815,7 +815,7 @@ caption {
     padding: 3px;
     text-align: center;
     margin: 3px;
-    float: left;
+    float: right;
 }
 
 .badge {
