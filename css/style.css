@@ -777,17 +777,17 @@ caption {
 
 
 
-#write_n_n{
-      height: 35px;
-      font-size: 17px;
-      line-height: normal;
-      color: #2b2a29;
-      text-align: left;
-      background: #f0f0f0;
-      padding: 3px 5px 3px 15px;
-      margin: 3px 0;
-      width: 60px;
-      
+#write_n_n {
+    height: 35px;
+    font-size: 17px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #f0f0f0;
+    padding: 3px 5px 3px 15px;
+    margin: 3px 0;
+    width: 60px;
+
 }
 
 #write_n_b,#write_n_f {
@@ -801,9 +801,17 @@ caption {
     margin: 3px 0;
 
 }
-.yourname {
+.username {
     background: #e0e0e0;
-    border-radius: 5px;
+    border-radius: 3px;
+    padding: 3px;
+    text-align: center;
+    margin: 3px;
+    float: left;
+}
+.yourname {
+    background: azure;
+    border-radius: 3px;
     padding: 3px;
     text-align: center;
     margin: 3px;
