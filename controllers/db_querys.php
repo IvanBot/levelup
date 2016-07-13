@@ -6,6 +6,8 @@ if ($_GET['getSchedule'] > 0 and $_GET['date'] > 0) //?getSchedule=1&date=2016-0
 if ($_GET['setUser'] > 0)//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
     $user_id = scheduler::setUser($_GET);
 if ($_GET['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcomment=First!
+    if($_GET['schedule_id']==0 and $_GET['schedule_date'] and $_GET['schedule_time'])
+        $_GET['schedule_id'] = scheduler::setSchedule(array('activity_id'=>0,'activitytime'=>$_GET['schedule_time'],'activitydate'=>$_GET['schedule_date'],'activityduration'=>1)); // добавим в график занятие
     if ($user_id) $_GET['user_id'] = $user_id;
     $rec_id = scheduler::setRecord($_GET);
 }
@@ -20,7 +22,6 @@ if ($_GET['setSchedule'] > 0) {//?setSchedule=1&activity_id=1&trainer_id=3&activ
     if ($act_id) $_GET['activity_id'] = $act_id;
     scheduler::setSchedule($_GET);
 }
-
 class scheduler
 {
     public static function setUser($data, $id = 0)
