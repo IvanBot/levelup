@@ -1,15 +1,38 @@
 <?php
 require_once('router.php');
+/*
+ *
+ *
+ * ?setUser=1&setRecord=1&phone=123-123-123&username=Vasyaand&
+create table users (
+    id int unsigned AUTO_INCREMENT PRIMARY KEY,
+phone bigint unsigned NOT NULL,
+username TINYTEXT,
+surname TINYTEXT,
+ip TINYTEXT,
+email TINYTEXT,
+userpassword TINYTEXT,
+permission TINYINT,
+usercomment TEXT);
 
+create table
+record_activity (
+    id int unsigned AUTO_INCREMENT PRIMARY KEY,
+user_id int unsigned,
+schedule_id int unsigned,
+recordcomment TEXT);
+
+*/
 if ($_GET['getSchedule'] > 0 and $_GET['date'] > 0) //?getSchedule=1&date=2016-07-07
     print_r(json_encode(scheduler::getSchedule($_GET['date'])));
 if ($_GET['setUser'] > 0)//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
     $user_id = scheduler::setUser($_GET);
 if ($_GET['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcomment=First!
-    if($_GET['schedule_id']==0 and $_GET['schedule_date'] and $_GET['schedule_time'])
-        $_GET['schedule_id'] = scheduler::setSchedule(array('activity_id'=>0,'activitytime'=>$_GET['schedule_time'],'activitydate'=>$_GET['schedule_date'],'activityduration'=>1)); // добавим в график занятие
+    if ($_GET['schedule_id'] == 0 and $_GET['schedule_date'] and $_GET['schedule_time'])
+        $_GET['schedule_id'] = scheduler::setSchedule(array('activity_id' => 0, 'activitytime' => $_GET['schedule_time'], 'activitydate' => $_GET['schedule_date'], 'activityduration' => 1)); // добавим в график занятие
     if ($user_id) $_GET['user_id'] = $user_id;
     $rec_id = scheduler::setRecord($_GET);
+    print_r($rec_id);
 }
 if ($_GET['setTrainer'] > 0) {//?setTrainer=1&phone=206607-0788&trainername=Bagira&trainersurname=Kitty&experience=2010-06-01&email=bad@kitty.u&photo=../photo.img&trainercomment=kis-kis
     $tr_id = scheduler::setTrainer($_GET);
@@ -22,6 +45,13 @@ if ($_GET['setSchedule'] > 0) {//?setSchedule=1&activity_id=1&trainer_id=3&activ
     if ($act_id) $_GET['activity_id'] = $act_id;
     scheduler::setSchedule($_GET);
 }
+
+/*
+echo '<pre>';
+print_r($res);
+echo '</pre>';
+*/
+
 class scheduler
 {
     public static function setUser($data, $id = 0)
@@ -88,7 +118,7 @@ class scheduler
     {
         $field = [];
         $value = [];
-        if (empty($data['activity_id']) or empty($data['activitytime']) or empty($data['activitydate'])) die(); // решить!!!
+        if ((empty($data['activity_id']) and $data['activity_id'] != 0) or empty($data['activitytime']) or empty($data['activitydate'])) die(); // решить!!!
         if (empty($data['activityduration'])) $data['activityduration'] = 1;
         foreach (array_keys($data) as $key) {
             if (!in_array($key, ['activity_id', 'trainer_id', 'activitytime', 'activityduration', 'activitydate', 'maxcount', 'mincount'])) {
@@ -117,6 +147,7 @@ class scheduler
             }
         }
         $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
+        //echo $query;
         mysql_query($query) or die();
         return mysql_insert_id();
     }
@@ -125,33 +156,49 @@ class scheduler
     {
         $date = self::sqlInjection($date);
         $query = "
-        select sa.id,activity_id,sa.trainer_id,activitytime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,count(ra.schedule_id) as count
-        from schedule_activity as sa
-        join activity as a on sa.activity_id = a.id
+        select  sa.id,activity_id,sa.trainer_id,activitytime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,username  from
+        schedule_activity as sa
+        left outer join activity as a on sa.activity_id = a.id
         left outer join record_activity as ra on sa.id = ra.schedule_id
+        left outer join users as u on ra.user_id = u.id
         where activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-31'
-        group by sa.id
         order by activitydate,activitytime;";
+
         $res = mysql_query($query) or die();
         $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
         $control[] = [];
+        $id = 0;
         if ($res) {
+            //echo '<pre>';
             while ($row = mysql_fetch_assoc($res)) {
-                $row_data = [
-                    'activity_id' => $row['activity_id'],
-                    'activitytime' => $row['activitytime'],
-                    'activityduration' => $row['activityduration'],
-                    'activitydate' => $row['activitydate'],
-                    'activityname' => $row['activityname'],
-                    'maxcount' => $row['maxcount'],
-                    'mincount' => $row['mincount'],
-                    'count' => $row['count']
-                ];
-                $data[$row['activitydate']][$row['activitytime']] = $row_data;
-                $control[] = $row['activitydate'];
+                if(strlen($row['username'])==0)$row['username'];
+                if ($id != $row['id']) {
+                    $id = $row['id'];
+                    //print_r($row);//id username
+                    if (!empty($row_data))
+                        $data[$row_data['activitydate']][$row_data['activitytime']] = $row_data;
+                    $row_data = [
+                        'id' => $row['id'],
+                        'activity_id' => $row['activity_id'],
+                        'activitytime' => $row['activitytime'],
+                        'activityduration' => $row['activityduration'],
+                        'activitydate' => $row['activitydate'],
+                        'activityname' => $row['activityname'],
+                        'maxcount' => $row['maxcount'],
+                        'mincount' => $row['mincount'],
+                        'count' => $row['count'],
+                        'username' => [$row['username']]
+                    ];
+                    $control[] = $row['activitydate'];
+                } else {
+                    $row_data['username'][] = $row['username'];
+                }
             }
+            $data[$row_data['activitydate']][$row_data['activitytime']] = $row_data;
         }
+
         for ($number; $number > 0; $number--) {
+            //echo count($data[substr($date,0,7).'-'.$number]);
             $worktime = 21;
             $d = $number > 9 ? $number : '0' . $number;
             while (count($data[substr($date, 0, 7) . '-' . $d]) < 12) {
@@ -165,6 +212,9 @@ class scheduler
             }
         }
 
+       /* echo '<pre>';
+        print_r($data);
+        echo '</pre>';*/
         return $data;
 
 
@@ -200,5 +250,3 @@ class scheduler
             return intval($data, 'integer');
     }
 } ?>
-
-
