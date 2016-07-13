@@ -1,28 +1,6 @@
 <?php
 require_once('router.php');
-/*
- *
- *
- * ?setUser=1&setRecord=1&phone=123-123-123&username=Vasyaand&
-create table users (
-    id int unsigned AUTO_INCREMENT PRIMARY KEY,
-phone bigint unsigned NOT NULL,
-username TINYTEXT,
-surname TINYTEXT,
-ip TINYTEXT,
-email TINYTEXT,
-userpassword TINYTEXT,
-permission TINYINT,
-usercomment TEXT);
 
-create table
-record_activity (
-    id int unsigned AUTO_INCREMENT PRIMARY KEY,
-user_id int unsigned,
-schedule_id int unsigned,
-recordcomment TEXT);
-
-*/
 if ($_GET['getSchedule'] > 0 and $_GET['date'] > 0) //?getSchedule=1&date=2016-07-07
     print_r(json_encode(scheduler::getSchedule($_GET['date'])));
 if ($_GET['setUser'] > 0)//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
@@ -46,11 +24,7 @@ if ($_GET['setSchedule'] > 0) {//?setSchedule=1&activity_id=1&trainer_id=3&activ
     scheduler::setSchedule($_GET);
 }
 
-/*
-echo '<pre>';
-print_r($res);
-echo '</pre>';
-*/
+
 
 class scheduler
 {
@@ -250,3 +224,5 @@ class scheduler
             return intval($data, 'integer');
     }
 } ?>
+
+
