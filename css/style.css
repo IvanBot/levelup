@@ -1114,7 +1114,10 @@ caption {
      padding: 0 0 10px 0;
 }
 
-.embed-responsive-16by9{
+.img_cam{
+	max-width: 750px;
+	 width: auto;
+	height: auto;
      margin: 15px 0;
 }
 
