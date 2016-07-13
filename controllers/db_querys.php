@@ -168,7 +168,7 @@ class scheduler
                     $row_data['username'][] = $row['username'];
                 }
             }
-            $data[$row_data['activitydate']][$row_data['activitytime']] = $row_data;
+            if($row_data)$data[$row_data['activitydate']][$row_data['activitytime']] = $row_data;
         }
 
         for ($number; $number > 0; $number--) {
