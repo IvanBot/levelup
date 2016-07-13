@@ -1114,10 +1114,8 @@ caption {
      padding: 0 0 10px 0;
 }
 
-.img_cam{
-	max-width: 750px;
-	 width: auto;
-	height: auto;
+.class="img-responsive" alt="Responsive image"{
+	
      margin: 15px 0;
 }
 
