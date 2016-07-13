@@ -99,7 +99,6 @@ class scheduler
             }
         }
         $query = "insert into schedule_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
-        echo $query;
         mysql_query($query) or die();
         return mysql_insert_id();
     }
@@ -118,7 +117,6 @@ class scheduler
             }
         }
         $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
-        //echo $query;
         mysql_query($query) or die();
         return mysql_insert_id();
     }
@@ -138,9 +136,7 @@ class scheduler
         $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
         $control[] = [];
         if ($res) {
-            //echo '<pre>';
             while ($row = mysql_fetch_assoc($res)) {
-                //print_r($row);
                 $row_data = [
                     'activity_id' => $row['activity_id'],
                     'activitytime' => $row['activitytime'],
@@ -156,7 +152,6 @@ class scheduler
             }
         }
         for ($number; $number > 0; $number--) {
-            //echo count($data[substr($date,0,7).'-'.$number]);
             $worktime = 21;
             $d = $number > 9 ? $number : '0' . $number;
             while (count($data[substr($date, 0, 7) . '-' . $d]) < 12) {
