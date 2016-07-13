@@ -772,7 +772,7 @@ caption {
       background: #f0f0f0;
       margin: 3px 0;
       padding: 3px 10px 3px 2px;
-      
+      width: 60px;
 }
 
 
@@ -786,6 +786,7 @@ caption {
       background: #f0f0f0;
       padding: 3px 5px 3px 15px;
       margin: 3px 0;
+      width: 60px;
       
 }
 
@@ -805,6 +806,8 @@ caption {
     border-radius: 5px;
     padding: 3px;
     text-align: center;
+    margin: 3px;
+    float: left;
 }
 
 .badge {
@@ -1120,8 +1123,10 @@ caption {
      padding: 0 0 10px 0;
 }
 
-.class="img-responsive" alt="Responsive image"{
-	
+.img_cam{
+	max-width: 750px;
+	 width: auto;
+	height: auto;
      margin: 15px 0;
 }
 
