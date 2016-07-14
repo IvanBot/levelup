@@ -23,7 +23,6 @@ $(function () {
             data: msg,
             success: function (data) {
                 $('.close').click();
-                //console.log("Данные записаны");
                 var name = $('#inputName').val();
                 $('.selected-tr #write_n_f').append('<div class="yourname">' + name + '</div>')
                 $('tr').removeClass('selected-tr');
@@ -128,8 +127,7 @@ $(function () {
                  span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
                  }*/
                 if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
-                    console.log(res[date][line]['username']);
-                    //console.log(res[date][line]['username']);
+
                     for (var i in res[date][line]['username']) {
                         div = document.createElement('div');
                         div.className = "username";
@@ -146,7 +144,6 @@ $(function () {
 
                 if (recorddate >= now) {
 
-                    console.log(res[date][line]);
                     button = document.createElement('button');
                     button.setAttribute('type', "button");
                     button.setAttribute('data-toggle', "modal");
@@ -158,6 +155,8 @@ $(function () {
                     button.className = 'btn btn-secondary';
                     button.innerHTML = 'Запись';
                     td.appendChild(button);
+                }else{
+                    td.innerHTML = '<div class="finished">Запись окончена</div>';
                 }
                 tr.appendChild(td);
                 tbody.appendChild(tr);
@@ -203,12 +202,11 @@ $(function () {
         $year = $('#custom-year').html(cal.getYear());
     $('#custom-next').on('click', function () {
         cal.gotoNextMonth(updateMonthYear);
-
     });
     $('#custom-prev').on('click', function () {
         cal.gotoPreviousMonth(updateMonthYear);
-        cal.gotoNextMonth(cal.gotoPreviousMonth(updateMonthYear));
     });
+
 
     function updateMonthYear() {
         $month.html(cal.getMonthName());
