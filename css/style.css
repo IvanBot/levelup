@@ -772,10 +772,14 @@ caption {
       background: #f0f0f0;
       margin: 3px 0;
       padding: 3px 10px 3px 2px;
-      width: 60px;
+      width: 150px;
 }
 
-
+.finished {
+    background: #f1a83b;
+    padding: 5px;
+    border-radius: 3px;
+}
 
 #write_n_n {
     height: 35px;

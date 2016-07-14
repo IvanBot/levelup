@@ -1231,6 +1231,7 @@ if (typeof jQuery === 'undefined') {
     var a = this.getAttribute('data-id');
     var b = this.getAttribute('data-date');
     var c = this.getAttribute('data-time');
+    this.parentNode.parentNode.setAttribute('class','selected-tr')
     $('#schedule_id').val(a);
     $('#schedule_date').val(b);
     $('#schedule_time').val(c);
