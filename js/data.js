@@ -35,10 +35,26 @@ $(function () {
         });
 
     }
-
+/*
+    function cicle(){//getScheduleCicle
+        var res = $.ajax({
+            type: "GET",
+            url: "/controllers/db_querys.php",
+            data: "getScheduleCicle=1",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+            },
+            error: function () {
+                console.log('Ajax problem >> data.js << ');
+            }
+        }).responseJSON;
+        return res;
+    }
+*/
     var codropsEvents, htmlresult = activityList();
-
     function activityList(opendate) {
+       // var cicle = cicle();
         var months = {
             '01': 'января',
             '02': 'февраля',
@@ -56,9 +72,8 @@ $(function () {
         var now = new Date();
         if (opendate == undefined) {
             var opendate = now;
-            opendate = opendate.getFullYear() + '-' + ((opendate.getMonth() + 1) < 9 ? '0' + (opendate.getMonth() + 1) : (opendate.getMonth() + 1)) + '-' + (opendate.getDate() < 9 ? '0' + opendate.getDate() : opendate.getDate());
+            opendate = opendate.getFullYear() + '-' + ((opendate.getMonth() + 1) <= 9 ? '0' + (opendate.getMonth() + 1) : (opendate.getMonth() + 1)) + '-' + (opendate.getDate() < 9 ? '0' + opendate.getDate() : opendate.getDate());
         }
-
         var res = $.ajax({
             type: "GET",
             url: "/controllers/db_querys.php",
@@ -69,11 +84,15 @@ $(function () {
                 //color = data;
             },
             error: function () {
-                console.log('Ajax problem >> data.js ' + opendate);
+                console.log('Ajax problem >> data.js ');
             }
         }).responseJSON;
 
         var htmlresult = [];
+
+
+
+
 
         for (var date in res) {
 
@@ -88,13 +107,14 @@ $(function () {
             tbody = document.createElement('tbody');
             tbody.id = 'tab-block';
             for (var line in res[date]) {
-                var d = res[date][line]['activitydate'];
-                recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), res[date][line]['activitytime'] - 3);
+                var d = res[date][line]['activitydate']==undefined?date:res[date][line]['activitydate'];
+                //console.log(res[date][line]['activitydate']);
+                recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) - 3);
                 tr = document.createElement('tr');
                 td = document.createElement('td');
                 td.id = 'write_n_n';
-                td.setAttribute('data-time', res[date][line]['activitytime']);
-                td.innerHTML = res[date][line]['activitytime'] + ':00';
+                td.setAttribute('data-time', res[date][line]['starttime']);
+                td.innerHTML = res[date][line]['starttime'];
                 tr.appendChild(td);
                 td = document.createElement('td');
                 td.id = 'write_n_b';
@@ -108,6 +128,7 @@ $(function () {
                  span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
                  }*/
                 if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
+                    console.log(res[date][line]['username']);
                     //console.log(res[date][line]['username']);
                     for (var i in res[date][line]['username']) {
                         div = document.createElement('div');
@@ -124,13 +145,15 @@ $(function () {
                 td.id = 'write_n';
 
                 if (recorddate >= now) {
+
+                    console.log(res[date][line]);
                     button = document.createElement('button');
                     button.setAttribute('type', "button");
                     button.setAttribute('data-toggle', "modal");
                     button.setAttribute('data-id', res[date][line]['id']);
                     button.setAttribute('data-actid', res[date][line]['activityid']);
                     button.setAttribute('data-date', res[date][line]['activitydate']);
-                    button.setAttribute('data-time', res[date][line]['activitytime']);
+                    button.setAttribute('data-time', res[date][line]['starttime']);
                     button.setAttribute('data-target', ".fade");
                     button.className = 'btn btn-secondary';
                     button.innerHTML = 'Запись';
@@ -161,7 +184,7 @@ $(function () {
 
                 $('.fc-row div').removeClass('selectday');
                 $el.addClass('selectday');
-                var date = dateProperties.year + '-' + (dateProperties.month < 9 ? '0' + dateProperties.month : dateProperties.month) + '-' + (dateProperties.day.length == 1 ? '0' + dateProperties.day : dateProperties.day);
+                var date = dateProperties.year + '-' + (dateProperties.month <= 9 ? '0' + dateProperties.month : dateProperties.month) + '-' + (dateProperties.day.length == 1 ? '0' + dateProperties.day : dateProperties.day);
                 if (htmlresult[date] == undefined) {
                     var a, b = activityList(date);
                     htmlresult = $.extend(htmlresult, b);
@@ -218,7 +241,8 @@ $(function () {
         }
     }
 });
-$.mask.definitions['*']="[A-Za-zА-Яа-я]";
+$.mask.definitions['*']="[A-Za-zА-Яа-я -]";
 $("#inputPhone").mask("8-999-999-99-99?99999",{placeholder:" "});
 $("#inputName").mask('*?*************************************************',{placeholder:""});
 $("#inputSurname").mask('*?*************************************************',{placeholder:""});
+//$("#phone").mask("8-999-999-9999");
