@@ -9,6 +9,13 @@ while ($s = fgets($fcfg)) {
 };
 fclose($fcfg);
 
+/**/
+/*
+$config['db_host'] = "192.168.137.10:3306";
+$config['db_user'] = "root";
+$config['db_password'] = "dtpltghjqltv";
+$config['db_schema'] = "levelup76";
+*/
 
 $db = mysql_connect($config['db_host'],$config['db_user'],$config['db_password']);
 if (!$db) die(mysql_error());
