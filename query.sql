@@ -1,4 +1,5 @@
 create table levelup76;
+use levelup76;
 create table users (
  id int unsigned AUTO_INCREMENT PRIMARY KEY,
  phone bigint unsigned NOT NULL,
@@ -35,7 +36,7 @@ active TINYINT,
 trainercomment TEXT);
  
  
-use levelup76;
+
 create table
 record_activity (
 id int unsigned AUTO_INCREMENT PRIMARY KEY,
