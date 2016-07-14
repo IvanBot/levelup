@@ -109,3 +109,10 @@
 .fc-calendar .fc-row:last-child {
 	border-bottom: none;
 }
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    /* IE10+ specific styles go here */
+    #calendar .fc-calendar .fc-body{
+        width: 102%;
+    }
+}
+
