@@ -17,7 +17,7 @@ function getfromcamera() {
 
 if (file_exists($filename)) {
     $file_time = date(strtotime("now")) - filemtime($filename);
-    if ($file_time>1) {
+    if ($file_time>0) {
         if (!file_exists($file3name)) {
             getfromcamera();
         }
