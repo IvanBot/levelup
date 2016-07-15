@@ -772,15 +772,21 @@ caption {
       background: #f0f0f0;
       margin: 3px 0;
       padding: 3px 10px 3px 2px;
-      width: 150px;
+      width: 160px;
 }
 
 .finished {
     background: #f1a83b;
     padding: 5px;
     border-radius: 3px;
+    text-align: center;
 }
-
+.finished.now{
+    background: #029779;
+}
+.finished.old{
+    background: #FFF4C3;
+}
 #write_n_n {
     height: 35px;
     font-size: 17px;
