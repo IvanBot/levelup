@@ -811,7 +811,9 @@ input.error {
     width: 60px;
 
 }
-
+#write_n_b{
+font-weight: bold;
+}
 #write_n_b,#write_n_f {
     height: 35px;
     font-size: 17px;
