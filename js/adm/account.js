@@ -108,7 +108,7 @@ else {
 						if (this.getMenuItem(id).id == 4) {
 							webix.storage.cookie.clear();
 							setTimeout(function () {
-								location.href = "index.php";
+								location.href = "index.html";
 							}, 10);
 						};
 					}
