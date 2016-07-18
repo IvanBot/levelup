@@ -1,4 +1,4 @@
-﻿function show_progress_bar(delay){}
+function show_progress_bar(delay){}
 /* Functions - start */
 
 function checkAutorization() {
@@ -15,7 +15,7 @@ function switchFlag() {
 };
 var token_flag = 0;
 switchFlag();
-
+console.log(7);
 if(webix.storage.cookie.get("token")) var menu = {
 	view: "sidebar",
 	data:[
@@ -35,6 +35,23 @@ if(webix.storage.cookie.get("token")) var menu = {
 		{id:"clients", value:"Клиенты"},
 		{id:"trener", value:"Тренеры"},
 		{id:"activity", value:"Занятия"}*/
+	],
+	on:{
+		onAfterSelect:function(id){
+			//var mid = this.getItem(id).id;
+			$$("main").showBatch(id);
+			$$("header").setValue(this.getItem(id).value);
+		}
+	}
+};
+else var menu = {
+	view: "sidebar",
+	data:[
+		{
+			id:"schedule", value:"Расписание по-умолчанию",select:true,
+			data:[{id:"day1", value:"ПН"}
+			]
+		}
 	],
 	on:{
 		onAfterSelect:function(id){
