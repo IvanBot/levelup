@@ -15,12 +15,11 @@ function switchFlag() {
 };
 var token_flag = 0;
 switchFlag();
-console.log(7);
 if(webix.storage.cookie.get("token")) var menu = {
 	view: "sidebar",
 	data:[
 		{
-			id:"schedule", value:"Расписание по-умолчанию",select:true,
+			id:"schedule", value:"Расписание по-умолчанию",icon:'calendar',
 			data:[
 				{id:"day1", value:"ПН"},
 				{id:"day2", value:"ВТ"},
@@ -30,11 +29,11 @@ if(webix.storage.cookie.get("token")) var menu = {
 				{id:"day6", value:"СБ"},
 				{id:"day7", value:"ВС"}
 			]
-		}/*,
-		{id:"add_activity", value:"Дополнительные занятия"},
-		{id:"clients", value:"Клиенты"},
-		{id:"trener", value:"Тренеры"},
-		{id:"activity", value:"Занятия"}*/
+		},
+		{id:"add_schedule", value:"Дополнительные занятия",icon:'calendar-o'},
+		/*{id:"clients", value:"Клиенты",icon:'group'},
+		{id:"trener", value:"Тренеры",icon:'child'},
+		{id:"activity", value:"Занятия",icon:'bicycle'}*/
 	],
 	on:{
 		onAfterSelect:function(id){
@@ -86,8 +85,9 @@ var views = {
 				{rows:[{animate: false,cells:[days_default[4]]}], batch:"day4"},
 				{rows:[{animate: false,cells:[days_default[5]]}], batch:"day5"},
 				{rows:[{animate: false,cells:[days_default[6]]}], batch:"day6"},
-				{rows:[{animate: false,cells:[days_default[7]]}], batch:"day7"}
-			]
+				{rows:[{animate: false,cells:[days_default[7]]}], batch:"day7"},
+				{rows:[{animate: false,cells:[days_custom]}], batch:"add_schedule"},
+			],
 		}
 	]
 };
@@ -126,11 +126,12 @@ var ui = {
 webix.ready(function(){
 	webix.ui.fullScreen();
 	webix.ui(ui);
-	$$("$sidebar1").select("day1");
-	$$("$sidebar1").callEvent("onAfterSelect", ["day1"]);
+	$$("$sidebar1").select("add_schedule");
+	$$("$sidebar1").callEvent("onAfterSelect", ["add_schedule"]);
 	setInterval(function(){
 		if(token_flag==0) {
 			login();
 		};
 	},10);
+
 });
