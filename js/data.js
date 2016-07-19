@@ -14,46 +14,66 @@ $(function () {
     $('#record').click(function () {
         call()
     });
+
     function call() {
-
-        var msg = $('#formx').serialize();
-        $.ajax({
-            type: 'GET',
-            url: '/controllers/db_querys.php',
-            data: msg,
-            success: function (data) {
-                $('.close').click();
-                var name = $('#inputName').val();
-                $('.selected-tr #write_n_f').append('<div class="yourname">' + name + '</div>')
-                $('tr').removeClass('selected-tr');
-                //$(".selected-tr #write_n_f").html('<span>'+$('#inputName').val()+'</span>');
-            },
-            error: function (xhr, str) {
-                console.log('Возникла ошибка: ' + xhr.responseCode);
+        var a = [$('#inputName').val(), $('#inputSurname').val(),$('#inputPhone').val()];
+        if ((!a[0] && !a[1]) || !a[2]) {
+            if (!a[0] && !a[1]) {
+                $('.error.error_username').removeClass('hidden');
+                $('#inputName').addClass('error');
             }
-        });
+            if (!a[2]) {
+                $('.error.error_userphone').removeClass('hidden');
+                $('#inputPhone').addClass('error');
+            }
+        }
+        else {
+            var msg = $('#formx').serialize();
+            $.ajax({
+                type: 'GET',
+                url: '/controllers/db_querys.php',
+                data: msg,
+                success: function (data) {
+                    $('.close').click();
+                    var name = a[0]+' '+a[1];
+                    $('.selected-tr #write_n_f').append('<div class="yourname">' + name.trim() + '</div>');
+                    $('tr').removeClass('selected-tr');
+                    //$(".selected-tr #write_n_f").html('<span>'+$('#inputName').val()+'</span>');
+                    $('#formx')[0].reset();
+                    $('.error.error_username').addClass('hidden');
+                    $('.error.error_userphone').addClass('hidden');
+                    $('#inputPhone').removeClass('error');
+                    $('#inputName').removeClass('error');
+                },
+                error: function (xhr, str) {
+                    console.log('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+        }
 
     }
-/*
-    function cicle(){//getScheduleCicle
-        var res = $.ajax({
-            type: "GET",
-            url: "/controllers/db_querys.php",
-            data: "getScheduleCicle=1",
-            dataType: "json",
-            async: false,
-            success: function (data) {
-            },
-            error: function () {
-                console.log('Ajax problem >> data.js << ');
-            }
-        }).responseJSON;
-        return res;
-    }
-*/
+
+    /*
+     function cicle(){//getScheduleCicle
+     var res = $.ajax({
+     type: "GET",
+     url: "/controllers/db_querys.php",
+     data: "getScheduleCicle=1",
+     dataType: "json",
+     async: false,
+     success: function (data) {
+     },
+     error: function () {
+     console.log('Ajax problem >> data.js << ');
+     }
+     }).responseJSON;
+     return res;
+     }
+     */
     var codropsEvents, htmlresult = activityList();
+
     function activityList(opendate) {
-       // var cicle = cicle();
+        // var cicle = cicle();
         var months = {
             '01': 'января',
             '02': 'февраля',
@@ -88,10 +108,7 @@ $(function () {
         }).responseJSON;
 
         var htmlresult = [];
-
-
-
-
+        var ctr = 0;
 
         for (var date in res) {
 
@@ -106,14 +123,14 @@ $(function () {
             tbody = document.createElement('tbody');
             tbody.id = 'tab-block';
             for (var line in res[date]) {
-                var d = res[date][line]['activitydate']==undefined?date:res[date][line]['activitydate'];
-                //console.log(res[date][line]['activitydate']);
+                var d = res[date][line]['activitydate'] == undefined ? date : res[date][line]['activitydate'];
                 recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) - 3);
+                realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2));
                 tr = document.createElement('tr');
                 td = document.createElement('td');
                 td.id = 'write_n_n';
                 td.setAttribute('data-time', res[date][line]['starttime']);
-                td.innerHTML = res[date][line]['starttime'];
+                td.innerHTML = res[date][line]['starttime'] + (res[date][line]['endtime'] ? ' - ' + res[date][line]['endtime'] : '');
                 tr.appendChild(td);
                 td = document.createElement('td');
                 td.id = 'write_n_b';
@@ -155,8 +172,15 @@ $(function () {
                     button.className = 'btn btn-secondary';
                     button.innerHTML = 'Запись';
                     td.appendChild(button);
-                }else{
-                    td.innerHTML = '<div class="finished">Запись окончена</div>';
+                } else {
+                    if (ctr == 0 && now - realdate < 3600000) {
+                        ctr = 1;
+                        td.innerHTML = '<div class="finished now">Идет занятие</div>';
+                    } else if (realdate - now < -3600000) {
+                        td.innerHTML = '<div class="finished old">Занятие окончено</div>';
+                    } else {
+                        td.innerHTML = '<div class="finished">Запись окончена</div>';
+                    }
                 }
                 tr.appendChild(td);
                 tbody.appendChild(tr);
@@ -182,6 +206,7 @@ $(function () {
             onDayClick: function ($el, $contentEl, dateProperties) {
 
                 $('.fc-row div').removeClass('selectday');
+
                 $el.addClass('selectday');
                 var date = dateProperties.year + '-' + (dateProperties.month <= 9 ? '0' + dateProperties.month : dateProperties.month) + '-' + (dateProperties.day.length == 1 ? '0' + dateProperties.day : dateProperties.day);
                 if (htmlresult[date] == undefined) {
@@ -200,11 +225,32 @@ $(function () {
         }),
         $month = $('#custom-month').html(cal.getMonthName()),
         $year = $('#custom-year').html(cal.getYear());
+
     $('#custom-next').on('click', function () {
+        var a = $('.selectday');
+        if (a[0]) {
+            var day = a[0].innerText.replace(/\D+/g, "");
+        }
         cal.gotoNextMonth(updateMonthYear);
+        var n = $('.fc-date');
+        if (day > 0 && n[day - 1]) {
+            var s = n[day - 1].parentNode;
+        } else {
+            var s = n[n.length - 1].parentNode;
+        }
+        s.click();
     });
     $('#custom-prev').on('click', function () {
+        var a = $('.selectday');
+        if (a[0]) {
+            var day = a[0].innerText.replace(/\D+/g, "");
+        }
         cal.gotoPreviousMonth(updateMonthYear);
+        var n = $('.fc-date');
+        if (day > 0) {
+            var s = n[day - 1].parentNode;
+            s.click();
+        }
     });
 
 
@@ -239,8 +285,8 @@ $(function () {
         }
     }
 });
-$.mask.definitions['*']="[A-Za-zА-Яа-я -]";
-$("#inputPhone").mask("8-999-999-99-99?99999",{placeholder:" "});
-$("#inputName").mask('*?*************************************************',{placeholder:""});
-$("#inputSurname").mask('*?*************************************************',{placeholder:""});
+$.mask.definitions['*'] = "[A-Za-zА-Яа-я -]";
+$("#inputPhone").mask("8-999-999-99-99?99999", {placeholder: " "});
+$("#inputName").mask('*?*************************************************', {placeholder: ""});
+$("#inputSurname").mask('*?*************************************************', {placeholder: ""});
 //$("#phone").mask("8-999-999-9999");
