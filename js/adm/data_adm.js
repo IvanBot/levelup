@@ -21,14 +21,14 @@ function new_custom_day() {
                             {id: "name", view: "text", labelPosition: "left"},
 
 
-                            {template: "Тренер", type: "section"},
+                            /*{template: "Тренер", type: "section"},
                             {
                                 id: "trainer", view: "richselect", labelPosition: "left",
                                 options: [
                                     {id: 1, value: "Бобруйченко"},
                                     {id: 2, value: "Мохнатов"}
                                 ]
-                            },
+                            },*/
                             {template: "Комментарий", type: "section"},
                             {
                                 id: "comment",
@@ -177,14 +177,14 @@ function edit_custom_day() {
                         rows: [
                             {template: "Название тренировки", type: "section"},
                             {id: "name", view: "text", labelPosition: "left", value: edit_default_day_var.activityname},
-                            {template: "Тренер", type: "section"},
+                            /*{template: "Тренер", type: "section"},
                             {
                                 id: "trainer",
                                 view: "richselect",
                                 labelPosition: "left",
                                 value: edit_default_day_var.trainer_id,
                                 options: [{id: 1, value: "Бобруйченко"}, {id: 2, value: "Мохнатов"}]
-                            },
+                            },*/
                             {template: "Комментарий", type: "section"},
                             {id: "comment", view: "text", labelPosition: "left"},
                             {height: 25}
