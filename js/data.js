@@ -122,6 +122,12 @@ $(function () {
             htmlresult[date].appendChild(cap);
             tbody = document.createElement('tbody');
             tbody.id = 'tab-block';
+            if(res['total_count'])delete res['total_count'];
+            for(var line in res[date]){
+                var arr = res[date][line];
+                delete res[date][line];
+                res[date][+line] = arr;
+            }
             for (var line in res[date]) {
                 var d = res[date][line]['activitydate'] == undefined ? date : res[date][line]['activitydate'];
                 recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) - 3);
