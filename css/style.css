@@ -815,6 +815,7 @@ input.error {
     font-weight: 500;
     color: #000;
     background-color: #f1a93b;
+    float: right;
 }
 
 /* Конец блока запись тенировки */
