@@ -815,6 +815,8 @@ input.error {
     font-weight: 500;
     color: #000;
     background-color: #f1a93b;
+    float: right;
+    margin: 5px 2px;
 }
 
 /* Конец блока запись тенировки */
@@ -1380,4 +1382,9 @@ a.socialIcon:hover, .socialHoverClass {
     height: 8px;
     margin: -32px 0 0 -8px;
     border-radius: 4px;
+}
+
+button.close.record {
+    line-height: 0.5;
+    font-size: 15px;
 }
