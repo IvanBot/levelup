@@ -55,7 +55,7 @@ class scheduler
             $del = 'update users set deleted = 1 where id = ';
             $res = mysql_query('select * from users where deleted IS NULL and phone='.$data['phone']);
             if ($res) {
-                echo '<pre>';
+
                 $i = preg_replace("/[^0-9]/", '', $res);
                 while ($row = mysql_fetch_assoc($res)) {
                     if($i>1)
@@ -323,10 +323,8 @@ class scheduler
 
             $n = 1;
             $wd = date('w', mktime(0, 0, 0, $n, substr($date, 5, 2), substr($date, 0, 4))) + 1;
-            echo $date;
-            echo '<br>';
 
-            echo $wd;
+7
             for ($wd; $wd <= 7; $wd++) {
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
                 if (isset($cicle[$wd])) {
