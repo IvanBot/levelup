@@ -213,12 +213,13 @@
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
-<form id="formx">
+                <form id="formx">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">Записаться на тренировку</h4>
                     </div>
                     <div class="modal-body">
+                        <p class="error error_username hidden">Представьтесь, пожалуйста.</p>
 
                         <div class="form-group">
                             <label for="inputName">Имя</label>
@@ -235,17 +236,42 @@
                             <input name="surname" type="name" class="form-control" id="inputSurname"
                                    placeholder="Фамилия">
                         </div>
-
+                        <p class="error error_userphone hidden">Пожалуйста, введите номер телефона.</p>
                         <div class="form-group">
                             <label for="inputPhone">Телефон</label>
-                            <input name="phone" type="phone" class="form-control" id="inputPhone"
-                                   placeholder="Телефон">
+                            <input name="phone" type="phone" class="form-control" id="inputPhone" placeholder="Телефон*">
                         </div>
 
                     </div>
                     <div class="modal-footer">
 
-                        <input type="button" id="record" class="btn btn-secondary" value="Записаться"></input>
+                        <input type="button" id="record" class="btn btn-secondary" value="Записаться">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <div class="modal recdel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="formd">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Удалить запись на тренировку</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="error error_userphone del hidden">Для удаления записи введите номер телефона.</p>
+                        <p class="error error_userphone undel hidden">Введен неверный номер телефона.</p>
+                        <div class="form-group">
+                            <label for="inputDelPhone">Телефон</label>
+                            <input name="phone" type="phone" class="form-control" id="inputDelPhone" placeholder="Телефон*">
+                            <input type="hidden" name="record_id" type="name" id="inputRecord" class="form-control" value="0">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <input type="button" id="recorddel" class="btn btn-secondary" value="Удалить">
                     </div>
                 </form>
             </div><!-- /.modal-content -->

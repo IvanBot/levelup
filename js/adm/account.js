@@ -1,4 +1,4 @@
-﻿function login() {
+function login() {
 	token_flag = 1;
 	if(webix.storage.cookie.get("token")) webix.storage.cookie.clear();
 	var form_profile = {
@@ -13,7 +13,7 @@
 						var login = $$("profile_login").getValue();
 						var passw = $$("profile_password").getValue();
 
-						if(login=="admin" && passw=="admin") {
+						if(login=="admin" && passw=="[jvzxjrDfcmrf") {
 							webix.storage.cookie.put("token", "1");
 							webix.storage.cookie.put("username", "Админ");
 							$$("profile_login").getTopParentView().hide();

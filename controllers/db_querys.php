@@ -1,7 +1,6 @@
 <?php
 require_once('router.php');
 
-
 if ($_GET['delUsers'] > 0) //?delUsers=1&user_id=1
     print_r(json_encode(scheduler::delUsers($_GET['user_id'])));
 if ($_GET['getUsers'] > 0) //?getUsers=1
@@ -12,15 +11,24 @@ if ($_GET['getScheduleCicle'] > 0) //?getScheduleCicle=1
     print_r(json_encode(scheduler::getScheduleCicle($_GET)));
 if ($_GET['getSchedule'] > 0) //?getSchedule=1&date=2016-07-07
     print_r(json_encode(scheduler::getSchedule($_GET)));
-if ($_GET['setUser'] > 0)//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
+
+if (($_GET['setUser'] > 0 or ($_GET['setUser'] > 0 and $_GET['user_id'])) && !$_GET['user_sess']) {//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
     $user_id = scheduler::setUser($_GET);
+} else {
+    $user_id = $_GET['user_id'];
+}
+if ($_GET['delRecordByPhone'] > 0) {//?delRecord=1&record_id=1
+    print_r(json_encode(scheduler::delRecordByPhone($_GET)));
+}
 if ($_GET['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcomment=First!&activity_id=1&activitydate=2016-07-16&starttime=10:15
+    $rec_id = '';
     if ($_GET['schedule_time']) $_GET['starttime'] = $_GET['schedule_time'];
     if ($_GET['schedule_date']) $_GET['activitydate'] = $_GET['schedule_date'];
     if ($_GET['schedule_id'] == 0 and $_GET['schedule_date'] and $_GET['schedule_time'])
         $_GET['schedule_id'] = scheduler::setSchedule(array('activity_id' => 0, 'starttime' => $_GET['schedule_time'], 'activitydate' => $_GET['schedule_date'], 'activityduration' => 1)); // добавим в график занятие
-    if ($user_id) $_GET['user_id'] = $user_id;
-    $rec_id = scheduler::setRecord($_GET);
+    if ($user_id) {$_GET['user_id'] = $user_id;
+    $rec_id = scheduler::setRecord($_GET);}
+    print_r($user_id.'-'.$rec_id);
 }
 if ($_GET['setTrainer'] > 0) {//?setTrainer=1&phone=206607-0788&trainername=Bagira&trainersurname=Kitty&experience=2010-06-01&email=bad@kitty.u&photo=../photo.img&trainercomment=kis-kis
     $tr_id = scheduler::setTrainer($_GET);
@@ -39,6 +47,7 @@ class scheduler
 {
     public static function setUser($data)
     {
+
         $field = [];
         $value = [];
         if ($data['phone']) $data['phone'] = self::phoneCheck($data['phone']);
@@ -46,7 +55,7 @@ class scheduler
             $del = 'update users set deleted = 1 where id = ';
             $res = mysql_query('select * from users where deleted IS NULL and phone='.$data['phone']);
             if ($res) {
-                echo '<pre>';
+
                 $i = preg_replace("/[^0-9]/", '', $res);
                 while ($row = mysql_fetch_assoc($res)) {
                     if($i>1)
@@ -58,7 +67,7 @@ class scheduler
             }
         }*/
         if (empty($data['phone']) or empty($data['username'])) return 0; // решить!!!
-        if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
+        //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
         foreach (array_keys($data) as $key) {
             if (!in_array($key, ['phone', 'username', 'surname', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
@@ -149,6 +158,7 @@ class scheduler
 
     public static function setRecord($data)
     {
+
         $field = [];
         $value = [];
         if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
@@ -163,11 +173,13 @@ class scheduler
                 $value[] = !in_array($key, ['user_id', 'schedule_id', 'activity_id']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
             }
         }
+
         if ($value) {
             $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
             mysql_query($query) or die();
             return mysql_insert_id();
         }
+        return 0;
     }
 
     public static function getAdmUsersRecords($d)
@@ -254,8 +266,16 @@ class scheduler
     {
         $query = "update users set deleted = 1 where id =" . $id . ";";
         mysql_query($query) or die();
-        $query =  " update record_activity set deleted = 1 where user_id =" . $id . ";";
+        $query = " update record_activity set deleted = 1 where user_id =" . $id . ";";
         mysql_query($query) or die();
+        return 1;
+    }
+
+    public static function delRecordByPhone($data)
+    {   $row = mysql_fetch_assoc(mysql_query("select * from record_activity where deleted IS NULL AND id =" . $data['record_id'] . " AND user_id=".$data['user_id'].";"));
+        if(!$row) return 0;
+        $query = "update record_activity set deleted = 1 where id =" . $data['record_id'] . " AND user_id=".$data['user_id'].";";
+        $res = mysql_query($query) or die();
         return 1;
     }
 
@@ -264,14 +284,15 @@ class scheduler
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
         else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-        select  *  from record_activity as ra left outer join users as u on ra.user_id = u.id
+        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,u.username,u.surname,u.phone  from record_activity as ra left outer join users as u on ra.user_id = u.id
         where ra.deleted IS NULL AND " . $between . "
         order by activitydate,starttime;";
+        //print_r($query);
         $res = mysql_query($query) or die();
         if ($res) {
             while ($row = mysql_fetch_assoc($res)) {
                 $row_data = [
-                    'id' => $row['id'],
+                    'record_id' => $row['id'],
                     'activity_id' => $row['activity_id'],
                     'schedule_id' => $row['schedule_id'],
                     'starttime' => $row['starttime'],
@@ -294,14 +315,16 @@ class scheduler
         $data = [];
         if (!$adm) {
             $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
+
             $date = self::sqlInjection($date);
             $users = self::getUsersRecords($date);
 
             $cicle = self::getScheduleCicle([]);
 
             $n = 1;
-            $wd = date('N', mktime(0, 0, 0, $n, substr($date, 5, 2), substr($date, 0, 4))) + 1;
+            $wd = date('w', mktime(0, 0, 0, $n, substr($date, 5, 2), substr($date, 0, 4))) + 1;
 
+7
             for ($wd; $wd <= 7; $wd++) {
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
                 if (isset($cicle[$wd])) {
@@ -311,7 +334,7 @@ class scheduler
                         if ($users[$date][$time]) {
                             $u = [];
                             foreach ($users[$date][$time] as $val)//добавить проверку привязки по ид
-                                $u[] = $val['username'] . ' ' . $val['surname'];
+                                $u[] = [$val['username'] . ' ' . $val['surname'], $val['record_id']];
                             $data[$date][$time]['username'] = $u;
                         }
                     }
@@ -354,7 +377,7 @@ class scheduler
                 $u = [];
                 if ($users[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)]) {
                     foreach ($users[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)] as $val)
-                        $u[] = $val['username'] . ' ' . $val['surname'];
+                        $u[] = [$val['username'] . ' ' . $val['surname'], $val['record_id']];
                     $data[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)]['username'] = $u;
                 }
                 $row_data = [
@@ -437,14 +460,19 @@ class scheduler
         if ($d['start'] > -1 and $d['count'] > 0) $limit = " LIMIT " . $d['start'] . "," . $d['count'];
         else $limit = "";
 
-        $query = "
-        select  sa.id, sa.activity_id,sa.trainer_id, sa.starttime, sa.endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,cycleday  from
+        $query =   "
+        select  sa.id, sa.activity_id,sa.trainer_id, sa.starttime, sa.endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,sa.cycleday,ra.user_id
+        from
         schedule_activity as sa
+        left join record_activity as ra on sa.id = ra.schedule_id
         left outer join activity as a on sa.activity_id = a.id
-        left outer join record_activity as ra on sa.id = ra.schedule_id
-        where sa.deleted IS NULL AND sa.cycleday > 0 " . $day . "
-        group by sa.id
+        where
+        sa.deleted IS NULL
+        AND sa.cycleday > 0 " . $day . "
+        AND (ra.id IS NULL or (ra.id IS not null and ra.deleted IS NULL /*and ra.activitydate>=CURDATE()*/))
+
         order by cycleday,sa.starttime " . $limit . ";";
+
         $res = mysql_query($query) or die();
         $data = [];
         $row_data = [];
@@ -473,7 +501,8 @@ class scheduler
                     'mincount' => $row['mincount'],
                     'activitycomment' => $row['activitycomment'],
                     'cycleday' => $row['cycleday'],
-                    'cycledayname' => $weekday[$row['cycleday']]
+                    'cycledayname' => $weekday[$row['cycleday']],
+                    'haverec' => ($row['user_id']>0?1:0)
                 ];
 
                 $i++;

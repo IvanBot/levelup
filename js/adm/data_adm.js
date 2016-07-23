@@ -9,16 +9,19 @@ function yesterday(x) {
 webix.i18n.timeFormat = "%H:%i";
 
 
-function call_recording_refresh() {
-    $$("call_recording").enable();
-
-    var demand = "controllers/router.php?call_recording=1";
-    $$("call_recording").clearAll();
-    $$("call_recording").showProgress({
-        type: "icon",
-        hide: true
-    });
-    $$("call_recording").load(demand);
+function call_custom_refresh() {
+    $$("days_custom_datatable").enable();
+    $$("days_custom_datatable").clearAll();
+    $$("days_custom_datatable").showProgress({type: "icon", hide: true});
+    $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
+};
+function call_default_refresh() {
+    var day = $$("$sidebar1").wg[0];
+    day = day.substr(day.length - 1);
+    $$("activity_datatable"+day).enable();
+    $$("activity_datatable"+day).clearAll();
+    $$("activity_datatable"+day).showProgress({type: "icon", hide: true});
+    $$("activity_datatable"+day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+day);
 };
 
 
@@ -183,6 +186,7 @@ function edit_custom_day() {
         webix.message({type: "error", text: "Выберите запись!"});
         return;
     }
+
     var edit_custom_day = {
         view: "form",
         borderless: true,
@@ -323,8 +327,10 @@ function edit_custom_day() {
         modal: true,
         head: "Редактировать тренировку на этот день",
         body: webix.copy(edit_custom_day)
-    });
 
+    });
+    //$$("starttime").disable();
+    //$$("activitydate").disable();
     function showEdit_custom_day(winId, node) {
         $$(winId).getBody().clear();
         $$(winId).show(node);
@@ -646,7 +652,7 @@ function edit_default_day() {
         head: "Редактировать тренировку на этот день",
         body: webix.copy(edit_default_day)
     });
-
+    //$$("starttime").disable();
     function showEdit_default_day(winId, node) {
         $$(winId).getBody().clear();
         $$(winId).show(node);
@@ -871,6 +877,14 @@ var call_recording_filter = {
             label: "Удалить",
             click: delete_it
         },
+        {
+            view: "button",
+            type: "iconButton",
+            icon: "refresh",
+            width: 38,
+            label: "",
+            click: call_default_refresh
+        },
         {},
 
     ]
@@ -894,6 +908,14 @@ var call_custom_filter = {
             width: 115,
             label: "Удалить",
             click: delete_it
+        },
+        {
+            view: "button",
+            type: "iconButton",
+            icon: "refresh",
+            width: 38,
+            label: "",
+            click: call_custom_refresh
         },
         {},
     ]
@@ -1000,7 +1022,7 @@ for (var i = 1; i < 8; i++) {
                                 id: "activityname",
                                 header: [{text: "Название тренировки"}],
                                 width: 200,
-                                sort: "server"
+                                //sort: "text"
                             },
                             {
                                 id: "maxcount",
@@ -1050,7 +1072,6 @@ var days_custom = {
                             header: "",
                             width: 50,
                             css: {"text-align": "right"},
-                            sort: "server",
                             template: deact
                         },
                         {
@@ -1077,7 +1098,7 @@ var days_custom = {
                             id: "activityname",
                             header: [{text: "Название тренировки"}],
                             width: 200,
-                            sort: "server"
+                            //sort: "text"
                         },
                         {
                             id: "maxcount",
@@ -1145,8 +1166,7 @@ var record_users = {
                             id: "username",
                             header: [{text: "Имя"}],
                             width: 200,
-                            template: "#username# #surname#",
-                            sort: "server"
+                            template: "#username# #surname#"
                         },
                         {
                             id: "phone",
@@ -1205,8 +1225,7 @@ var users = {
                             id: "username",
                             header: [{text: "Имя"}],
                             width: 200,
-                            template: "#username# #surname#",
-                            sort: "server"
+                            template: "#username# #surname#"
                         },
                         {
                             id: "phone",

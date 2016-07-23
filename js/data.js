@@ -14,9 +14,34 @@ $(function () {
     $('#record').click(function () {
         call()
     });
+    $('#recorddel').click(function () {
+        recorddel()
+    });
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
 
+    function URLToArray(url) {
+        var request = {};
+        var pairs = url.split('&');
+        for (var i = 0; i < pairs.length; i++) {
+            if (!pairs[i])
+                continue;
+            var pair = pairs[i].split('=');
+            request[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+        }
+        return request;
+    }
+
+
+    if (sessvars.recordphone == undefined) sessvars.recordphone = [];
+    if (sessvars.recordarr == undefined)sessvars.recordarr = [];
+    if (sessvars.my_records == undefined)sessvars.my_records = [];
     function call() {
-        var a = [$('#inputName').val(), $('#inputSurname').val(),$('#inputPhone').val()];
+        var a = [$('#inputName').val(), $('#inputSurname').val(), $('#inputPhone').val()];
         if ((!a[0] && !a[1]) || !a[2]) {
             if (!a[0] && !a[1]) {
                 $('.error.error_username').removeClass('hidden');
@@ -29,21 +54,84 @@ $(function () {
         }
         else {
             var msg = $('#formx').serialize();
+            var url = URLToArray(msg);
+            url['phone'] = url['phone'].replace(/-/g, '');
+
+            if (sessvars.recordarr[url['phone']] > 0) msg = msg + '&user_sess=1&user_id=' + sessvars.recordarr[url['phone']];
+
+
             $.ajax({
                 type: 'GET',
                 url: '/controllers/db_querys.php',
                 data: msg,
                 success: function (data) {
+                    data = data.split('-');
                     $('.close').click();
-                    var name = a[0]+' '+a[1];
-                    $('.selected-tr #write_n_f').append('<div class="yourname">' + name.trim() + '</div>');
+                    var name = a[0] + ' ' + a[1];
+                    url['phone'] = url['phone'].replace(/-/g, '');
+                    if (url['phone'])sessvars.recordarr[url['phone']] = data[0];
+                    if (data[0] > 0)sessvars.recordphone[data[0]] = url['phone'];
+                    if (data[1] > 0)sessvars.my_records[data[1]] = data[1];
+                    $('.selected-tr #write_n_f').append('<div class="yourname" id="record_' + data[1] + '">' + name.trim() + '<button data-record ="' + data[1] + '" title="Удалить мою запись" type="button" class="close record" data-target=".recdel" data-toggle="modal">×</button></div>');//
+                    var badge = $('.selected-tr #write_n_f .badge')[0].innerText;
+                    if(badge){badge=badge.split(': ');
+                        badge[1]--;
+                        badge=badge[0]+': '+badge[1];
+                        $('.selected-tr #write_n_f .badge')[0].innerText = badge;
+                    }
                     $('tr').removeClass('selected-tr');
-                    //$(".selected-tr #write_n_f").html('<span>'+$('#inputName').val()+'</span>');
                     $('#formx')[0].reset();
                     $('.error.error_username').addClass('hidden');
                     $('.error.error_userphone').addClass('hidden');
                     $('#inputPhone').removeClass('error');
                     $('#inputName').removeClass('error');
+                },
+                error: function (xhr, str) {
+                    console.log('Возникла ошибка: ' + xhr.responseCode);
+                }
+            });
+        }
+    }
+
+    function recorddel() {
+        var phone = $('#inputDelPhone').val();
+        var rec = $('#inputRecord').val();
+        phone = phone.replace(/-/g, '');
+        if (!phone) {
+            $('.error.error_userphone.del').removeClass('hidden');
+            $('#inputDelPhone').addClass('error');
+        }
+        else if (!sessvars.recordarr[phone]) {
+
+            $('.error.error_userphone.undel').removeClass('hidden');
+            $('#inputDelPhone').addClass('error');
+        } else {
+
+            var msg = $('#formd').serialize().replace(/-/g, '');
+            msg = msg + '&delRecordByPhone=1&user_id=' + sessvars.recordarr[phone];
+
+
+            //
+            $.ajax({
+                type: 'GET',
+                url: '/controllers/db_querys.php',
+                data: msg,
+                success: function (data) {
+
+                    var url = URLToArray(msg);
+                    $('.close').click();
+
+                    $('#record_' + url['record_id']).remove();
+                    var badge = $('.selected-tr .badge')[0].innerText;
+                    if(badge){badge=badge.split(': ');
+                        badge[1]++;
+                        badge=badge[0]+': '+badge[1];
+
+                        $('.selected-tr .badge')[0].innerText = badge;
+                    }
+                    $('#formd')[0].reset();
+                    $('.error.error_userphone del').addClass('hidden');
+                    $('#inputDelPhone').removeClass('error');
                 },
                 error: function (xhr, str) {
                     console.log('Возникла ошибка: ' + xhr.responseCode);
@@ -73,7 +161,7 @@ $(function () {
     var codropsEvents, htmlresult = activityList();
 
     function activityList(opendate) {
-        // var cicle = cicle();
+
         var months = {
             '01': 'января',
             '02': 'февраля',
@@ -108,7 +196,6 @@ $(function () {
         }).responseJSON;
 
         var htmlresult = [];
-        var ctr = 0;
 
         for (var date in res) {
 
@@ -122,8 +209,8 @@ $(function () {
             htmlresult[date].appendChild(cap);
             tbody = document.createElement('tbody');
             tbody.id = 'tab-block';
-            if(res['total_count'])delete res['total_count'];
-            for(var line in res[date]){
+            if (res['total_count'])delete res['total_count'];
+            for (var line in res[date]) {
                 var arr = res[date][line];
                 delete res[date][line];
                 res[date][+line] = arr;
@@ -131,7 +218,9 @@ $(function () {
             for (var line in res[date]) {
                 var d = res[date][line]['activitydate'] == undefined ? date : res[date][line]['activitydate'];
                 recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) - 3);
-                realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2));
+                realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2),+res[date][line]['starttime'].substr(3, 2));
+                if(res[date][line]['endttime'])var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['endttime'].substr(0, 2),+res[date][line]['endttime'].substr(3, 2));
+                else var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2)+1,+res[date][line]['starttime'].substr(3, 2));
                 tr = document.createElement('tr');
                 td = document.createElement('td');
                 td.id = 'write_n_n';
@@ -144,29 +233,33 @@ $(function () {
                 tr.appendChild(td);
                 td = document.createElement('td');
                 td.id = 'write_n_f';
-                //span = document.createElement('span');//<span class="badge">8/12</span>
-                /*if (res[date][line]['count'] != undefined && res[date][line]['count'] > 0 && recorddate >= now) {
-                 span.className = "badge";
-                 span.innerHTML = 'Уже записались: ' + res[date][line]['count'] + ' чел.';
-                 }*/
-                if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
 
+                if (res[date][line]['maxcount'] != undefined && res[date][line]['maxcount'] > 0 && recorddate >= now) {
+                    span = document.createElement('span');//<span class="badge">8/12</span>
+                    var usercount = 0;
+                    if (res[date][line]['username'])usercount = res[date][line]['username'].length;
+                    span.className = "badge";
+
+                    //span.id = 'badge_' + res[date][line]['id'];
+                    span.innerHTML = 'Свободно: ' + ((res[date][line]['maxcount'] - usercount)>0?(res[date][line]['maxcount'] - usercount):0);
+                    td.appendChild(span);
+                }
+                if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
                     for (var i in res[date][line]['username']) {
                         div = document.createElement('div');
-                        div.className = "username";
-                        div.innerHTML = res[date][line]['username'][i];
+                        div.id = 'record_' + res[date][line]['username'][i][1];
+                        div.className = (sessvars.my_records[res[date][line]['username'][i][1]] > 0 ? "yourname" : "username");
+                        div.innerHTML = res[date][line]['username'][i][0] + (sessvars.my_records[res[date][line]['username'][i][1]] > 0 ? '<button data-record ="' + res[date][line]['username'][i][1] + '" title="Удалить запись" type="button" class="close record" data-target=".recdel" data-toggle="modal">×</button>' : '');
                         td.appendChild(div);
                     }
                 }
 
 
-                //td.appendChild(span);
                 tr.appendChild(td);
                 td = document.createElement('td');
                 td.id = 'write_n';
 
-                if (recorddate >= now) {
-
+                if (recorddate >= now && ((res[date][line]['maxcount'] - usercount) > 0 || res[date][line]['maxcount'] == undefined)) {
                     button = document.createElement('button');
                     button.setAttribute('type', "button");
                     button.setAttribute('data-toggle', "modal");
@@ -179,10 +272,9 @@ $(function () {
                     button.innerHTML = 'Запись';
                     td.appendChild(button);
                 } else {
-                    if (ctr == 0 && now - realdate < 3600000) {
-                        ctr = 1;
+                    if ( now > realdate && now < realenddate) {
                         td.innerHTML = '<div class="finished now">Идет занятие</div>';
-                    } else if (realdate - now < -3600000) {
+                    } else if (now > realenddate) {
                         td.innerHTML = '<div class="finished old">Занятие окончено</div>';
                     } else {
                         td.innerHTML = '<div class="finished">Запись окончена</div>';
@@ -292,7 +384,8 @@ $(function () {
     }
 });
 $.mask.definitions['*'] = "[A-Za-zА-Яа-я -]";
-$("#inputPhone").mask("8-999-999-99-99?99999", {placeholder: " "});
+$("#inputPhone").mask("8-999-999-99-99", {placeholder: " "});
+$("#inputDelPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputName").mask('*?*************************************************', {placeholder: ""});
 $("#inputSurname").mask('*?*************************************************', {placeholder: ""});
 //$("#phone").mask("8-999-999-9999");
