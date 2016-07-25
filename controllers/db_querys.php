@@ -322,7 +322,7 @@ class scheduler
             $cicle = self::getScheduleCicle([]);
 
             $n = 1;
-            $wd = date('w', mktime(0, 0, 0, $n, substr($date, 5, 2), substr($date, 0, 4))) + 1;
+            $wd = date('w', mktime(0, 0, 0,  (int)substr($date, 5, 2), $n, (int)substr($date, 0, 4)));
 
             for ($wd; $wd <= 7; $wd++) {
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
