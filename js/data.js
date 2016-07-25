@@ -225,7 +225,7 @@ $(function () {
                 td = document.createElement('td');
                 td.id = 'write_n_n';
                 td.setAttribute('data-time', res[date][line]['starttime']);
-                td.innerHTML = res[date][line]['starttime'] + (res[date][line]['endtime'] ? ' - ' + res[date][line]['endtime'] : '');
+                td.innerHTML = res[date][line]['starttime'];
                 tr.appendChild(td);
                 td = document.createElement('td');
                 td.id = 'write_n_b';
