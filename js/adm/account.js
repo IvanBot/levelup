@@ -13,7 +13,7 @@ function login() {
 						var login = $$("profile_login").getValue();
 						var passw = $$("profile_password").getValue();
 
-						if(login=="admin" && passw=="[jvzxjrDfcmrf") {
+						if(login=="admin" && passw=="721982") {
 							webix.storage.cookie.put("token", "1");
 							webix.storage.cookie.put("username", "Админ");
 							$$("profile_login").getTopParentView().hide();
