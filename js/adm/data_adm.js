@@ -7,8 +7,8 @@ function yesterday(x) {
 };
 
 webix.i18n.timeFormat = "%H:%i";
-
-
+webix.i18n.dateFormat = "%Y-%m-%d";
+webix.i18n.setLocale();
 function call_custom_refresh() {
     $$("days_custom_datatable").enable();
     $$("days_custom_datatable").clearAll();
@@ -1076,9 +1076,15 @@ var days_custom = {
                         },
                         {
                             id: "activitydate",
-                            header: "Дата",
+                            header:[{text: "Дата"}, {content: 'dateFilter'}],
                             width: 100,
                             css: {"text-align": "left"},
+                            format:webix.i18n.dateFormatStr
+
+                            /*	{ id:"date",	header:[
+                             "Released",
+                             { content:"dateFilter" }
+                             ] , width:160,	format:webix.i18n.dateFormatStr,  sort:"int"},*/
                         },
                         {
                             id: "starttime",
