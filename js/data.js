@@ -217,7 +217,7 @@ $(function () {
             }
             for (var line in res[date]) {
                 var d = res[date][line]['activitydate'] == undefined ? date : res[date][line]['activitydate'];
-                recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) - 3);
+                recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2));
                 realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2),+res[date][line]['starttime'].substr(3, 2));
                 if(res[date][line]['endttime'])var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['endttime'].substr(0, 2),+res[date][line]['endttime'].substr(3, 2));
                 else var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2)+1,+res[date][line]['starttime'].substr(3, 2));
