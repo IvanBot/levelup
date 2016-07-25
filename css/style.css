@@ -133,7 +133,7 @@ a:visited {
 
 .navbar-right {
     margin-right: -50px;
-	float: none !important;
+	
 }
 
 .item-menu {
@@ -306,6 +306,13 @@ a:visited {
         background: rgba(0, 0, 0, 0.6);
 
     }
+	
+	.item-menu {
+    font-size: 16px;
+    margin: 30px 0;
+    padding: 0 0;
+
+}
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
