@@ -1036,7 +1036,7 @@ if (typeof jQuery === 'undefined') {
       .removeClass('in')
       .off('click.dismiss.bs.modal')
       .off('mouseup.dismiss.bs.modal')
-
+    $('tr').removeClass('selected-tr');
     this.$dialog.off('mousedown.dismiss.bs.modal')
 
     $.support.transition && this.$element.hasClass('fade') ?
@@ -1226,17 +1226,19 @@ if (typeof jQuery === 'undefined') {
 
   // MODAL DATA-API
   // ==============
-
   $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
     var a = this.getAttribute('data-id');
     var b = this.getAttribute('data-date');
     var c = this.getAttribute('data-time');
+    var d = this.getAttribute('data-record');
     this.parentNode.parentNode.setAttribute('class','selected-tr')
     $('#schedule_id').val(a);
     $('#schedule_date').val(b);
     $('#schedule_time').val(c);
+    $('#inputRecord').val(d);
+   // $('#schedule_time').val(c);
     //setAttribute
-    var $this   = $(this)
+    var $this   = $(this);
     var href    = $this.attr('href')
     var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
     var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
