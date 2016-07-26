@@ -10,18 +10,38 @@ webix.i18n.timeFormat = "%H:%i";
 webix.i18n.dateFormat = "%Y-%m-%d";
 webix.i18n.setLocale();
 function call_custom_refresh() {
+//    $$("from").data.value = '';
+
+    $(".webix_cal_icon_clear").click();
+    if($$("deleted").data.value != undefined)$$("deleted").setValue('0')
     $$("days_custom_datatable").enable();
     $$("days_custom_datatable").clearAll();
     $$("days_custom_datatable").showProgress({type: "icon", hide: true});
     $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
 };
 function call_default_refresh() {
+    if($$("deleted").data.value != undefined)$$("deleted").setValue('0')
     var day = $$("$sidebar1").wg[0];
     day = day.substr(day.length - 1);
-    $$("activity_datatable"+day).enable();
-    $$("activity_datatable"+day).clearAll();
-    $$("activity_datatable"+day).showProgress({type: "icon", hide: true});
-    $$("activity_datatable"+day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+day);
+    $$("activity_datatable" + day).enable();
+    $$("activity_datatable" + day).clearAll();
+    $$("activity_datatable" + day).showProgress({type: "icon", hide: true});
+    $$("activity_datatable" + day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + day);
+};
+function call_custom_fil() {
+    if ($$("to").data.value < $$("from").data.value)webix.message({
+        type: "error",
+        text: "Дата окончания меньше даты начала"
+    });
+    var from = $$("from").data.value != undefined ? $$("from").data.text : '';
+    var to = $$("to").data.value != undefined ? $$("to").data.text : '';
+    var del = $$("deleted").data.value != undefined ? $$("deleted").data.value : '';
+    if (!($$("to").data.value < $$("from").data.value)) {
+        $$("days_custom_datatable").enable();
+        $$("days_custom_datatable").clearAll();
+        $$("days_custom_datatable").showProgress({type: "icon", hide: true});
+        $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1&from=" + from + "&to=" + to + "&del=" + del);
+    }
 };
 
 
@@ -133,12 +153,15 @@ function new_custom_day() {
                                 type: "error",
                                 text: "Выберите день проведения тренировки"
                             });
+                            var from = $$("from").data.value != undefined ? $$("from").data.text : '';
+                            var to = $$("to").data.value != undefined ? $$("to").data.text : '';
+                            var del = $$("deleted").data.value != undefined ? $$("deleted").data.value : '';
                             if (d['activityname'] && d['starttime'] && d['activitydate']) {
                                 webix.ajax().get("/controllers/db_querys.php", d);
                                 $$("win_order").getTopParentView().hide();
                                 $$("days_custom_datatable").clearAll();
                                 $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-                                $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
+                                $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1&from=" + from + "&to=" + to + "&del=" + del);
                             }
                         }
                     },
@@ -152,8 +175,6 @@ function new_custom_day() {
             }
         ],
         rules: {
-            "profile_login": webix.rules.isNotEmpty,
-            "profile_password": webix.rules.isNotEmpty
         },
         elementsConfig: {
             labelPosition: "top",
@@ -206,7 +227,12 @@ function edit_custom_day() {
                                 options: [{id: 1, value: "Бобруйченко"}, {id: 2, value: "Мохнатов"}]
                             },
                             {template: "Комментарий", type: "section"},
-                            {id: "comment", view: "text", labelPosition: "left",value: edit_custom_day_var.activitycomment},
+                            {
+                                id: "comment",
+                                view: "text",
+                                labelPosition: "left",
+                                value: edit_custom_day_var.activitycomment
+                            },
                             {height: 25}
                         ]
                     },
@@ -457,9 +483,9 @@ function new_default_day() {
                             if (d['activityname'] && d['starttime']) {
                                 webix.ajax().get("/controllers/db_querys.php", d);
                                 $$("win_order").getTopParentView().hide();
-                                $$("activity_datatable"+d['cycleday']).clearAll();
-                                $$("activity_datatable"+d['cycleday']).showProgress({type: "icon", hide: true});
-                                $$("activity_datatable"+d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+d['cycleday']);
+                                $$("activity_datatable" + d['cycleday']).clearAll();
+                                $$("activity_datatable" + d['cycleday']).showProgress({type: "icon", hide: true});
+                                $$("activity_datatable" + d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + d['cycleday']);
                             }
                         }
                     },
@@ -618,13 +644,13 @@ function edit_default_day() {
                             if (d['activityname'] && d['starttime']) {
                                 webix.ajax().get("/controllers/db_querys.php", d);
                                 $$("win_edit_default_day").getTopParentView().hide();
-                                $$("activity_datatable"+d['cycleday']).clearAll();
-                                $$("activity_datatable"+d['cycleday']).showProgress({type: "icon", hide: true});
-                                $$("activity_datatable"+d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+d['cycleday']);
-                                if(day !=d['cycleday']){
-                                    $$("activity_datatable"+day).clearAll();
-                                    $$("activity_datatable"+day).showProgress({type: "icon", hide: true});
-                                    $$("activity_datatable"+day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+day);
+                                $$("activity_datatable" + d['cycleday']).clearAll();
+                                $$("activity_datatable" + d['cycleday']).showProgress({type: "icon", hide: true});
+                                $$("activity_datatable" + d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + d['cycleday']);
+                                if (day != d['cycleday']) {
+                                    $$("activity_datatable" + day).clearAll();
+                                    $$("activity_datatable" + day).showProgress({type: "icon", hide: true});
+                                    $$("activity_datatable" + day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + day);
                                 }
                             }
                         }
@@ -687,11 +713,11 @@ function delete_it() {
                             if (d['schedule_id'] > 0) {
                                 webix.ajax().get("/controllers/db_querys.php", d);
                                 $$("win_delete_day").getTopParentView().hide();
-                                if(c){
-                                    $$("activity_datatable"+c).clearAll();
-                                    $$("activity_datatable"+c).showProgress({type: "icon", hide: true});
-                                    $$("activity_datatable"+c).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday="+c);
-                                }else{
+                                if (c) {
+                                    $$("activity_datatable" + c).clearAll();
+                                    $$("activity_datatable" + c).showProgress({type: "icon", hide: true});
+                                    $$("activity_datatable" + c).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + c);
+                                } else {
                                     $$("days_custom_datatable").clearAll();
                                     $$("days_custom_datatable").showProgress({type: "icon", hide: true});
                                     $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
@@ -751,7 +777,7 @@ function delete_record() {
                         click: function () {
                             var d = {};
                             d['record_id'] = delete_user_var.record_id;
-                            d['setRecord'] = 1;
+                            d['delRecord'] = 1;
                             if (d['record_id'] > 0) {
                                 webix.ajax().get("/controllers/db_querys.php", d);
                                 $$("win_delete_user").getTopParentView().hide();
@@ -916,8 +942,41 @@ var call_custom_filter = {
             width: 38,
             label: "",
             click: call_custom_refresh
+        }, {},
+        {
+            id: 'from',
+            view: "datepicker",
+            format: '%Y-%m-%d',
+            timepicker: false,
+            width: 120,
+            placeholder: 'Начало',
+            value:''
         },
-        {},
+        {
+            id: 'to',
+            view: "datepicker",
+            format: '%Y-%m-%d',
+            timepicker: false,
+            width: 120,
+            placeholder: 'Окончание',
+        },
+        {
+            id: 'deleted',
+            width: 110,
+            view: "checkbox",
+            label: "Удаленные",
+            checkValue: 1,
+            labelWidth: 88,
+            format: '%H:%i',
+        },
+        {
+            view: "button",
+            type: "iconButton",
+            icon: "filter",
+            width: 38,
+            label: "",
+            click: call_custom_fil
+        }
     ]
 };
 var record_filter = {
@@ -1076,10 +1135,9 @@ var days_custom = {
                         },
                         {
                             id: "activitydate",
-                            header:[{text: "Дата"}, {content: 'dateFilter'}],
+                            header: [{text: "Дата"}],
                             width: 100,
-                            css: {"text-align": "left"},
-                            format:webix.i18n.dateFormatStr
+                            css: {"text-align": "left"}
 
                             /*	{ id:"date",	header:[
                              "Released",
@@ -1239,12 +1297,12 @@ var users = {
                             width: 120,
                             editor: "int"
                         }/*,
-                        {
-                            id: "usercomment",
-                            header: [{text: "Комментарий к пользователю"}],
-                            tooltip: true,
-                            width: 400,
-                        }*/
+                         {
+                         id: "usercomment",
+                         header: [{text: "Комментарий к пользователю"}],
+                         tooltip: true,
+                         width: 400,
+                         }*/
                     ],
                     url: "/controllers/db_querys.php?getUsers=1&adm=1",
                     ready: function () {
