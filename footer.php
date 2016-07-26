@@ -1,4 +1,4 @@
-</div>
+
 <!-- Подвал -->
 <footer>
 
@@ -115,8 +115,8 @@
             </div>
             <div class="col-lg-4 col-sm-6 f_cont vac">
                 <p>
-                            <span id="vacancy"><a href="/jobs_partners.html">Вакансии</a>&nbsp;&nbsp;
-                            <a href="/jobs_partners.html#parthers">Сотрудничество</a></span>
+                            <span id="vacancy"><a href="/vacancy/">Вакансии</a>&nbsp;&nbsp;
+                            <a href="/vacancy/#parthers">Сотрудничество</a></span>
                 </p>
             </div>
         </div>
@@ -180,6 +180,7 @@
 <noscript>
     <div><img src="https://mc.yandex.ru/watch/37193835" style="position:absolute; left:-9999px;" alt=""/></div>
 </noscript> <!-- /Yandex.Metrika counter -->
+<? /*
 <script type="text/javascript">
     !function (e, t, a) {
         var r = e.createElement("script");
@@ -187,6 +188,6 @@
         var c = e.getElementsByTagName("script")[0];
         c.parentNode.insertBefore(r, c)
     }(document, "9d7dca13a6593661", "");
-</script>
+</script>*/ ?>
 </body>
 </html>
