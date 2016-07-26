@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS `levelup76`.`record_activity` (
   `starttime` TIME NULL DEFAULT NULL,
   `recordcomment` TEXT NULL DEFAULT NULL,
   `name` TEXT NULL DEFAULT NULL,
+  `phone` BIGINT(20) UNSIGNED NOT NULL,
   `deleted` TINYINT,
   PRIMARY KEY (`id`),
   INDEX `fk_record_activity_users_idx` (`user_id` ASC),
