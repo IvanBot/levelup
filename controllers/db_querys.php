@@ -172,7 +172,7 @@ class scheduler
 
         if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
         if (empty($data['user_id']) or empty($data['schedule_id'])) return 0; // решить!!!
-
+        if($data['phone'])$data['phone'] = str_replace('-', '', $data['phone']);
         foreach (array_keys($data) as $key) {
 
             if (!in_array($key, ['phone', 'name', 'user_id', 'schedule_id', 'activity_id', 'activitydate', 'starttime', 'recordcomment']) or strlen($data[$key]) == 0) {
@@ -182,9 +182,9 @@ class scheduler
                 $value[] = !in_array($key, ['phone', 'user_id', 'schedule_id', 'activity_id']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
             }
         }
-
         if ($value) {
             $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
+
             mysql_query($query) or die();
             return mysql_insert_id();
         }
@@ -301,6 +301,7 @@ class scheduler
         order by ra.activitydate,ra.starttime;";
         //print_r($query);
         $res = mysql_query($query) or die();
+
         if ($res) {
             while ($row = mysql_fetch_assoc($res)) {
                 $row_data = [
@@ -347,7 +348,7 @@ class scheduler
                         if ($users[$date][$time]) {
                             $u = [];
                             foreach ($users[$date][$time] as $val)//добавить проверку привязки по ид
-                                $u[] = [$val['username'] . ' ' . $val['surname'], $val['record_id']];
+                                $u[] = [$val['name'] , $val['record_id']];
                             $data[$date][$time]['username'] = $u;
                         }
                     }
