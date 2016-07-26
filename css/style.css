@@ -99,13 +99,11 @@ a:visited {
 }
 
 .navbar-default .navbar-nav > li > a:hover {
-    font-weight: bold;
     color: #f1a83b;
 }
 
 .navbar-default .navbar-nav > li > a:focus {
     color: #f1a83b;
-    font-weight: bold;
     background-color: transparent;
 }
 
