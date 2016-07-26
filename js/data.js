@@ -68,6 +68,11 @@ $(function () {
                     data = data.split('-');
                     var name = a[0] + ' ' + a[1];
                     url['phone'] = url['phone'].replace(/-/g, '');
+                    var date = new Date(0);
+                    if (url['myData']) {
+                        document.cookie = "username=; surname=; phone=; myData=; expires=" + date.toUTCString();
+                        document.cookie = "username="+url['username']+"; surname="+url['surname']+"; phone="+url['phone']+"; phone="+url['phone']+"; myData="+url['myData'];
+                    }
                     if (data[0] > 0)sessvars.recordphone[data[0]] = url['phone'];
                     if (data[1] > 0)sessvars.my_records[data[1]] = data[0];
 
@@ -78,7 +83,7 @@ $(function () {
                         badge[1]--;
                         if (badge[1] == 0) {
                             $('.selected-tr .btn.btn-secondary').remove();
-                            $('.selected-tr #write_n')[0].innerHTML = "<div class='finished' data-date='"+url['schedule_date']+"' data-time='"+url['schedule_time']+"' data-id='"+url['schedule_id']+"'>Запись окончена</div>";
+                            $('.selected-tr #write_n')[0].innerHTML = "<div class='finished' data-date='" + url['schedule_date'] + "' data-time='" + url['schedule_time'] + "' data-id='" + url['schedule_id'] + "'>Запись окончена</div>";
                         }
                         badge = badge[0] + ': ' + badge[1];
                         $('.selected-tr #write_n_f .badge')[0].innerText = badge;
@@ -121,23 +126,23 @@ $(function () {
                 success: function (data) {
 
                     var url = URLToArray(msg);
-
-
                     var badge = $('.selected-tr .badge')[0].innerText;
                     if (badge) {
                         badge = badge.split(': ');
                         badge[1]++;
                         if (badge[1] == 1 && $('.selected-tr .finished')) {
                             var a = [];
-                            a['data-id'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-id');
-                            a['data-date'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-date');
-                            a['data-time'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-time');
+                            var tr = $('#record_' + url['record_id']).parent().parent();
+                            a['data-id'] = tr.find("#write_n .finished")[0].getAttribute('data-id');
+                            a['data-date'] = tr.find("#write_n .finished")[0].getAttribute('data-date');
+                            a['data-time'] = tr.find("#write_n .finished")[0].getAttribute('data-time');
 
-                            $('#record_' + url['record_id']).parent().parent().find("#write_n")[0].innerHTML = '<button type="button" data-toggle="modal" data-id="'+a['data-id']+'" data-date="'+a['data-date']+'" data-time="'+a['data-time']+'" data-target=".fade" class="btn btn-secondary">Запись</button>';
+                            $('#record_' + url['record_id']).parent().parent().find("#write_n")[0].innerHTML = '<button type="button" data-toggle="modal" data-id="' + a['data-id'] + '" data-date="' + a['data-date'] + '" data-time="' + a['data-time'] + '" data-target=".fade" class="btn btn-secondary">Запись</button>';
                             $('.selected-tr .finished').remove()
                         }
                         badge = badge[0] + ': ' + badge[1];
-                        $('.selected-tr .badge')[0].innerText = badge;
+                        $('#record_' + url['record_id']).parent().find('.badge')[0].innerText = badge
+
 
                     }
                     // console.log($('.selected-tr #write_n'));
@@ -254,7 +259,7 @@ $(function () {
                     span = document.createElement('span');//<span class="badge">8/12</span>
                     var usercount = 0;
                     if (res[date][line]['username'])usercount = res[date][line]['username'].length;
-                   span.className = "badge";
+                    span.className = "badge";
 
                     //span.id = 'badge_' + res[date][line]['id'];
                     span.innerHTML = 'Свободно: ' + ((res[date][line]['maxcount'] - usercount) > 0 ? (res[date][line]['maxcount'] - usercount) : 0);
@@ -293,7 +298,7 @@ $(function () {
                     } else if (now > realenddate) {
                         td.innerHTML = '<div class="finished old">Занятие окончено</div>';
                     } else {
-                        td.innerHTML = '<div class="finished"  data-date="'+res[date][line]['activitydate']+'" data-time="'+res[date][line]['starttime']+'" data-actid="'+res[date][line]['activityid']+'" data-id="'+res[date][line]['id']+'" >Запись окончена</div>';
+                        td.innerHTML = '<div class="finished"  data-date="' + res[date][line]['activitydate'] + '" data-time="' + res[date][line]['starttime'] + '" data-actid="' + res[date][line]['activityid'] + '" data-id="' + res[date][line]['id'] + '" >Запись окончена</div>';
                     }
                 }
                 tr.appendChild(td);
@@ -404,4 +409,3 @@ $("#inputPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputDelPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputName").mask('*?*************************************************', {placeholder: ""});
 $("#inputSurname").mask('*?*************************************************', {placeholder: ""});
-//$("#phone").mask("8-999-999-9999");
