@@ -30,7 +30,8 @@ if ($_GET['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcommen
     $rec_id = scheduler::setRecord($_GET);}
     print_r($user_id.'-'.$rec_id);
 }
-if ($_GET['setTrainer'] > 0) {//?setTrainer=1&phone=206607-0788&trainername=Bagira&trainersurname=Kitty&experience=2010-06-01&email=bad@kitty.u&photo=../photo.img&trainercomment=kis-kis
+if ($_GET['delRecord'] > 0){scheduler::delRecord($_GET);}
+    if ($_GET['setTrainer'] > 0) {//?setTrainer=1&phone=206607-0788&trainername=Bagira&trainersurname=Kitty&experience=2010-06-01&email=bad@kitty.u&photo=../photo.img&trainercomment=kis-kis
     $tr_id = scheduler::setTrainer($_GET);
 }
 if ($_GET['setActivity'] > 0) {//?setActivity=1&activityname=go-go dance&activitycomment=dance-dance&mincount=2&maxcount=6&activityduration=2
@@ -133,15 +134,14 @@ class scheduler
     {
         $field = [];
         $value = [];
-        //if ($data['schedule_id'] > 0) mysql_query('update schedule_activity set deleted = 1 where id = ' . $data['schedule_id']);
+        if ($data['schedule_id'] > 0) mysql_query('update schedule_activity set deleted = 1 where id = ' . $data['schedule_id']);
         if ((empty($data['activity_id']) and $data['activity_id'] != 0) or empty($data['starttime']) or (empty($data['activitydate']) and $data['cycleday'] == 0)) die(); // решить!!!
-        $data['id'] = $data['schedule_id'];
         foreach (array_keys($data) as $key) {
-            if (!in_array($key, ['id', 'activity_id', 'trainer_id', 'starttime', 'endtime', 'cycleday', 'activityduration', 'activitydate', 'maxcount', 'mincount', 'deleted']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, [ 'activity_id', 'trainer_id', 'starttime', 'endtime', 'cycleday', 'activityduration', 'activitydate', 'maxcount', 'mincount', 'deleted']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
-                $value[] = !in_array($key, ['id', 'activity_id', 'trainer_id', 'maxcount', 'mincount', 'activityduration', 'cycleday']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
+                $value[] = !in_array($key, ['activity_id', 'trainer_id', 'maxcount', 'mincount', 'activityduration', 'cycleday']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
             }
         }
         if ($value) {
@@ -150,10 +150,17 @@ class scheduler
             maxcount = VALUES(maxcount),mincount = VALUES(mincount),activity_id = VALUES(activity_id),cycleday = VALUES(cycleday),
             trainer_id = VALUES(trainer_id)
 
-            ";// ON DUPLICATE KEY UPDATE field = VALUES(field);
+            ";
+            // ON DUPLICATE KEY UPDATE field = VALUES(field);
             mysql_query($query) or die();
             return mysql_insert_id();
         }
+    }
+
+    public static function delRecord($data)
+    {
+        if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
+        return 1;
     }
 
     public static function setRecord($data)
@@ -161,6 +168,7 @@ class scheduler
 
         $field = [];
         $value = [];
+
         if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
         if (empty($data['user_id']) or empty($data['schedule_id'])) return 0; // решить!!!
 
@@ -253,7 +261,8 @@ class scheduler
                 $data['data'][] = $row_data;
                 $i++;
             }
-            if (!$d['start'] or $d['start'] == 0) $data['total_count'] = mysql_fetch_row(mysql_query("
+            //if (!$d['start'] or $d['start'] == 0)
+                $data['total_count'] = mysql_fetch_row(mysql_query("
                 select count(*)  from users
                 where deleted IS NULL;"))[0];
             if ($data['total_count'] == 0) return [];
@@ -323,7 +332,6 @@ class scheduler
 
             $n = 1;
             $wd = date('w', mktime(0, 0, 0,  (int)substr($date, 5, 2), $n, (int)substr($date, 0, 4)));
-
             for ($wd; $wd <= 7; $wd++) {
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
                 if (isset($cicle[$wd])) {
@@ -347,17 +355,23 @@ class scheduler
             $between = "sa.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . $number . "'";
         } else {
             $users = self::getUsersRecords('');
-            $between = 'sa.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
+            if(!$d['from']) $d['from'] = "1970-01-01";
+            if($d['to'] < $d['from'] or !$d['to']) $d['to'] = "2050-01-01";
+            if($d['from']) $between = 'sa.activitydate BETWEEN "' . $d['from'] . '" AND "'.$d['to'].'"';
+            else $between = 'sa.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
         }
+        if($d['del']) $del = 'sa.deleted = 1';
+        else $del = 'sa.deleted IS NULL';
         $query = "
         select  sa.id,sa.activity_id,sa.trainer_id,sa.starttime,endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,username  from
         schedule_activity as sa
         left outer join activity as a on sa.activity_id = a.id
         left outer join record_activity as ra on sa.id = ra.schedule_id
         left outer join users as u on ra.user_id = u.id
-        where sa.deleted IS NULL AND " . $between . " AND (cycleday = 0 OR cycleday IS NULL)
+        where ".$del." AND " . $between . " AND (cycleday = 0 OR cycleday IS NULL)
         order by sa.starttime;";
 
+       // print_r($query);
         $res = mysql_query($query) or die();
         if ($res) {
             $i = 1;
@@ -412,7 +426,7 @@ class scheduler
                 $data['total_count'] = mysql_fetch_row(mysql_query("
                 select  count(*)  from
                 schedule_activity as sa
-                where " . $between . " AND sa.deleted IS NULL AND (cycleday = 0 OR cycleday IS NULL);"))[0];
+                where " . $between . " AND ".$del." AND (cycleday = 0 OR cycleday IS NULL);"))[0];
                 if ($data['total_count'] == false) $data = [];
             }
         }
@@ -469,7 +483,7 @@ class scheduler
         sa.deleted IS NULL
         AND sa.cycleday > 0 " . $day . "
         AND (ra.id IS NULL or (ra.id IS not null and ra.deleted IS NULL /*and ra.activitydate>=CURDATE()*/))
-
+        group by sa.id
         order by cycleday,sa.starttime " . $limit . ";";
 
         $res = mysql_query($query) or die();
@@ -478,6 +492,7 @@ class scheduler
         if ($res) {
             $i = 1;
             while ($row = mysql_fetch_assoc($res)) {
+                //echo '<pre>'; print_r($row);
                 $row['starttime'] = substr($row['starttime'], 0, -3);
                 $row['endtime'] = substr($row['endtime'], 0, -3);
                 if (($d['cycleday'] > -1 or $d['start'] > -1) and $row_data) {
@@ -518,7 +533,7 @@ class scheduler
                 select  count(*) from
                 schedule_activity as sa
 
-                where sa.deleted IS NULL AND sa.cycleday > 0 " . $day))[0];
+                where sa.deleted IS NULL AND sa.cycleday > 0 " . $day))[0]." group by sa.id";
             if ($data['total_count'] == false) $data = [];
         }
 
