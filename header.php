@@ -42,13 +42,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><img src="/img/logo.png" height="110" width="453"
+                <a class="navbar-brand" href="/"><img src="/img/logo.png" height="110" width="453"
                                                                class="hidden-xs hidden-sm hidden-md"
                                                                class="img-responsive" alt="Responsive image"></a>
-                <a class="navbar-brand" href="index.html"><img src="/img/logo_2.png" height="61" width="250"
+                <a class="navbar-brand" href="/"><img src="/img/logo_2.png" height="61" width="250"
                                                                class="visible-xs hidden-sm hidden-md"
                                                                class="img-responsive" alt="Responsive image"></a>
-                <a class="navbar-brand" href="index.html"><img src="/img/logo_3.png" height="61" width="40"
+                <a class="navbar-brand" href="/"><img src="/img/logo_3.png" height="61" width="40"
                                                                class="visible-sm visible-md hidden-xs item-img"
                                                                class="img-responsive" alt="Responsive image"></a>
 
@@ -56,15 +56,14 @@
             </div>
             <div class="navbar-collapse collapse" id="responsive-menu">
                 <ul id="menu-main-menu" class="nav navbar-nav navbar-right">
-                    <li id="" class="item-menu"><a href="price.html">Цены</a></li>
-                    <li id="" class="item-menu"><a href="children_celebration.html">Детские праздники</a></li>
+                    <li id="" class="item-menu"><a href="/price/">Цены</a></li>
+                    <li id="" class="item-menu"><a href="/playday/">Детские праздники</a></li>
                     <li id="" class="item-menu"><a href="/schedule/">Запись на тренировку</a></li>
-                    <li id="" class="item-menu"><a href="coaches.html">Тренеры</a></li>
-                    <li id="" class="item-menu"><a href="maps.html">Схема проезда</a></li>
+                    <li id="" class="item-menu"><a href="/coaches/">Тренеры</a></li>
+                    <li id="" class="item-menu"><a href="/map/">Схема проезда</a></li>
                 </ul>
 
             </div>
         </div>
     </div>
         <!-- Конец основного меню -->
-    <div style="min-height: 400px">
