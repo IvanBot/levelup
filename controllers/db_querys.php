@@ -22,6 +22,7 @@ if ($_GET['delRecordByPhone'] > 0) {//?delRecord=1&record_id=1
 }
 if ($_GET['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcomment=First!&activity_id=1&activitydate=2016-07-16&starttime=10:15
     $rec_id = '';
+    if ($_GET['username']) $_GET['name'] = $_GET['username'].' '.$_GET['surname'];
     if ($_GET['schedule_time']) $_GET['starttime'] = $_GET['schedule_time'];
     if ($_GET['schedule_date']) $_GET['activitydate'] = $_GET['schedule_date'];
     if ($_GET['schedule_id'] == 0 and $_GET['schedule_date'] and $_GET['schedule_time'])
@@ -174,11 +175,11 @@ class scheduler
 
         foreach (array_keys($data) as $key) {
 
-            if (!in_array($key, ['user_id', 'schedule_id', 'activity_id', 'activitydate', 'starttime', 'recordcomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'name', 'user_id', 'schedule_id', 'activity_id', 'activitydate', 'starttime', 'recordcomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
-                $value[] = !in_array($key, ['user_id', 'schedule_id', 'activity_id']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
+                $value[] = !in_array($key, ['phone', 'user_id', 'schedule_id', 'activity_id']) ? "'" . self::sqlInjection($data[$key]) . "'" : self::sqlInjection($data[$key]);
             }
         }
 
@@ -293,9 +294,11 @@ class scheduler
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
         else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,u.username,u.surname,u.phone  from record_activity as ra left outer join users as u on ra.user_id = u.id
+        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,ra.name,ra.phone
+        from
+        record_activity as ra
         where ra.deleted IS NULL AND " . $between . "
-        order by activitydate,starttime;";
+        order by ra.activitydate,ra.starttime;";
         //print_r($query);
         $res = mysql_query($query) or die();
         if ($res) {
@@ -306,8 +309,7 @@ class scheduler
                     'schedule_id' => $row['schedule_id'],
                     'starttime' => $row['starttime'],
                     'activitydate' => $row['activitydate'],
-                    'username' => $row['username'],
-                    'surname' => $row['surname'],
+                    'name' => $row['name'],
                     'phone' => [$row['phone']]
 
                 ];
@@ -317,15 +319,18 @@ class scheduler
         return $data;
     }
 
+
     public static function getSchedule($d)
     {
         $adm = $d['adm'];
         $date = $d['date'];
         $data = [];
+
         if (!$adm) {
             $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
 
             $date = self::sqlInjection($date);
+
             $users = self::getUsersRecords($date);
 
             $cicle = self::getScheduleCicle([]);
@@ -336,6 +341,7 @@ class scheduler
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
                 if (isset($cicle[$wd])) {
                     $data[$date] = $cicle[$wd];
+
                     foreach (array_keys($cicle[$wd]) as $time) {
                         $data[$date][$time]['activitydate'] = $date;
                         if ($users[$date][$time]) {
@@ -351,6 +357,7 @@ class scheduler
                 if ($wd == 7 and $number > $n)
                     $wd = 0;
                 $n++;
+
             }
             $between = "sa.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . $number . "'";
         } else {
