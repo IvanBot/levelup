@@ -60,7 +60,6 @@ $(function () {
                 if (sessvars.recordphone[user_id] == url['phone'])
                     msg = msg + '&user_sess=1&user_id=' + user_id;
             }
-
             $.ajax({
                 type: 'GET',
                 url: '/controllers/db_querys.php',
@@ -255,7 +254,7 @@ $(function () {
                     span = document.createElement('span');//<span class="badge">8/12</span>
                     var usercount = 0;
                     if (res[date][line]['username'])usercount = res[date][line]['username'].length;
-                    span.className = "badge";
+                   span.className = "badge";
 
                     //span.id = 'badge_' + res[date][line]['id'];
                     span.innerHTML = 'Свободно: ' + ((res[date][line]['maxcount'] - usercount) > 0 ? (res[date][line]['maxcount'] - usercount) : 0);
