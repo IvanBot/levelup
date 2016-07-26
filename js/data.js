@@ -38,7 +38,7 @@ $(function () {
 
 
     if (sessvars.recordphone == undefined) sessvars.recordphone = [];
-    if (sessvars.recordarr == undefined)sessvars.recordarr = [];
+    // if (sessvars.recordarr == undefined)sessvars.recordarr = [];
     if (sessvars.my_records == undefined)sessvars.my_records = [];
     function call() {
         var a = [$('#inputName').val(), $('#inputSurname').val(), $('#inputPhone').val()];
@@ -56,9 +56,10 @@ $(function () {
             var msg = $('#formx').serialize();
             var url = URLToArray(msg);
             url['phone'] = url['phone'].replace(/-/g, '');
-
-            if (sessvars.recordarr[url['phone']] > 0) msg = msg + '&user_sess=1&user_id=' + sessvars.recordarr[url['phone']];
-
+            for (var user_id in sessvars.recordphone) {
+                if (sessvars.recordphone[user_id] == url['phone'])
+                    msg = msg + '&user_sess=1&user_id=' + user_id;
+            }
 
             $.ajax({
                 type: 'GET',
@@ -66,25 +67,29 @@ $(function () {
                 data: msg,
                 success: function (data) {
                     data = data.split('-');
-                    $('.close').click();
                     var name = a[0] + ' ' + a[1];
                     url['phone'] = url['phone'].replace(/-/g, '');
-                    if (url['phone'])sessvars.recordarr[url['phone']] = data[0];
                     if (data[0] > 0)sessvars.recordphone[data[0]] = url['phone'];
-                    if (data[1] > 0)sessvars.my_records[data[1]] = data[1];
+                    if (data[1] > 0)sessvars.my_records[data[1]] = data[0];
+
                     $('.selected-tr #write_n_f').append('<div class="yourname" id="record_' + data[1] + '">' + name.trim() + '<button data-record ="' + data[1] + '" title="Удалить мою запись" type="button" class="close record" data-target=".recdel" data-toggle="modal">×</button></div>');//
-                    var badge = $('.selected-tr #write_n_f .badge')[0].innerText;
-                    if(badge){badge=badge.split(': ');
+                    if ($('.selected-tr #write_n_f .badge')[0] != undefined) var badge = $('.selected-tr #write_n_f .badge')[0].innerText;
+                    if (badge) {
+                        badge = badge.split(': ');
                         badge[1]--;
-                        badge=badge[0]+': '+badge[1];
+                        if (badge[1] == 0) {
+                            $('.selected-tr .btn.btn-secondary').remove();
+                            $('.selected-tr #write_n')[0].innerHTML = "<div class='finished' data-date='"+url['schedule_date']+"' data-time='"+url['schedule_time']+"' data-id='"+url['schedule_id']+"'>Запись окончена</div>";
+                        }
+                        badge = badge[0] + ': ' + badge[1];
                         $('.selected-tr #write_n_f .badge')[0].innerText = badge;
                     }
-                    $('tr').removeClass('selected-tr');
                     $('#formx')[0].reset();
                     $('.error.error_username').addClass('hidden');
                     $('.error.error_userphone').addClass('hidden');
                     $('#inputPhone').removeClass('error');
                     $('#inputName').removeClass('error');
+                    $('.close').click();
                 },
                 error: function (xhr, str) {
                     console.log('Возникла ошибка: ' + xhr.responseCode);
@@ -101,14 +106,12 @@ $(function () {
             $('.error.error_userphone.del').removeClass('hidden');
             $('#inputDelPhone').addClass('error');
         }
-        else if (!sessvars.recordarr[phone]) {
-
+        else if (sessvars.recordphone[sessvars.my_records[rec]] != phone) {
             $('.error.error_userphone.undel').removeClass('hidden');
             $('#inputDelPhone').addClass('error');
         } else {
-
             var msg = $('#formd').serialize().replace(/-/g, '');
-            msg = msg + '&delRecordByPhone=1&user_id=' + sessvars.recordarr[phone];
+            msg = msg + '&delRecordByPhone=1&user_id=' + sessvars.my_records[rec];
 
 
             //
@@ -119,19 +122,33 @@ $(function () {
                 success: function (data) {
 
                     var url = URLToArray(msg);
-                    $('.close').click();
 
-                    $('#record_' + url['record_id']).remove();
+
                     var badge = $('.selected-tr .badge')[0].innerText;
-                    if(badge){badge=badge.split(': ');
+                    if (badge) {
+                        badge = badge.split(': ');
                         badge[1]++;
-                        badge=badge[0]+': '+badge[1];
+                        if (badge[1] == 1 && $('.selected-tr .finished')) {
+                            var a = [];
+                            a['data-id'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-id');
+                            a['data-date'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-date');
+                            a['data-time'] = $('#record_' + url['record_id']).parent().parent().find("#write_n .finished")[0].getAttribute('data-time');
 
+                            $('#record_' + url['record_id']).parent().parent().find("#write_n")[0].innerHTML = '<button type="button" data-toggle="modal" data-id="'+a['data-id']+'" data-date="'+a['data-date']+'" data-time="'+a['data-time']+'" data-target=".fade" class="btn btn-secondary">Запись</button>';
+                            $('.selected-tr .finished').remove()
+                        }
+                        badge = badge[0] + ': ' + badge[1];
                         $('.selected-tr .badge')[0].innerText = badge;
+
                     }
+                    // console.log($('.selected-tr #write_n'));
+                    //$('.selected-tr #write_n')[0].innerHTML = '<button type="button" data-toggle="modal" data-id="3" data-actid="undefined" data-date="2016-07-30" data-time="14:00" data-target=".fade" class="btn btn-secondary">Запись</button>';
+                    $('#record_' + url['record_id']).remove();
+
                     $('#formd')[0].reset();
                     $('.error.error_userphone del').addClass('hidden');
                     $('#inputDelPhone').removeClass('error');
+                    $('.close').click();
                 },
                 error: function (xhr, str) {
                     console.log('Возникла ошибка: ' + xhr.responseCode);
@@ -218,9 +235,9 @@ $(function () {
             for (var line in res[date]) {
                 var d = res[date][line]['activitydate'] == undefined ? date : res[date][line]['activitydate'];
                 recorddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2));
-                realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2),+res[date][line]['starttime'].substr(3, 2));
-                if(res[date][line]['endttime'])var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['endttime'].substr(0, 2),+res[date][line]['endttime'].substr(3, 2));
-                else var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2)+1,+res[date][line]['starttime'].substr(3, 2));
+                realdate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2), +res[date][line]['starttime'].substr(3, 2));
+                if (res[date][line]['endttime'])var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['endttime'].substr(0, 2), +res[date][line]['endttime'].substr(3, 2));
+                else var realenddate = new Date(d.substr(0, 4), d.substr(5, 2) - 1, d.substr(8, 2), +res[date][line]['starttime'].substr(0, 2) + 1, +res[date][line]['starttime'].substr(3, 2));
                 tr = document.createElement('tr');
                 td = document.createElement('td');
                 td.id = 'write_n_n';
@@ -241,7 +258,7 @@ $(function () {
                     span.className = "badge";
 
                     //span.id = 'badge_' + res[date][line]['id'];
-                    span.innerHTML = 'Свободно: ' + ((res[date][line]['maxcount'] - usercount)>0?(res[date][line]['maxcount'] - usercount):0);
+                    span.innerHTML = 'Свободно: ' + ((res[date][line]['maxcount'] - usercount) > 0 ? (res[date][line]['maxcount'] - usercount) : 0);
                     td.appendChild(span);
                 }
                 if (res[date][line]['username'] != undefined && res[date][line]['username'] != false) {//<div class="yourname">test</div>
@@ -272,12 +289,12 @@ $(function () {
                     button.innerHTML = 'Запись';
                     td.appendChild(button);
                 } else {
-                    if ( now > realdate && now < realenddate) {
+                    if (now > realdate && now < realenddate) {
                         td.innerHTML = '<div class="finished now">Идет занятие</div>';
                     } else if (now > realenddate) {
                         td.innerHTML = '<div class="finished old">Занятие окончено</div>';
                     } else {
-                        td.innerHTML = '<div class="finished">Запись окончена</div>';
+                        td.innerHTML = '<div class="finished"  data-date="'+res[date][line]['activitydate']+'" data-time="'+res[date][line]['starttime']+'" data-actid="'+res[date][line]['activityid']+'" data-id="'+res[date][line]['id']+'" >Запись окончена</div>';
                     }
                 }
                 tr.appendChild(td);
