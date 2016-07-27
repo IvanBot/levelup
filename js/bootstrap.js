@@ -1267,7 +1267,8 @@ if (typeof jQuery === 'undefined') {
             $('#inputPhone').val(userdata['phone'].substr(0, 1) + '-' + userdata['phone'].substr(1, 3) + '-' + userdata['phone'].substr(4, 3) + '-' + userdata['phone'].substr(7, 2) + '-' + userdata['phone'].substr(9, 2));
             $('#inputDelPhone').val(userdata['phone'].substr(0, 1) + '-' + userdata['phone'].substr(1, 3) + '-' + userdata['phone'].substr(4, 3) + '-' + userdata['phone'].substr(7, 2) + '-' + userdata['phone'].substr(9, 2));
         }
-        if (userdata['myData'])$('#saveMyData').val(userdata['myData']);
+
+        if (userdata['myData'])$('#saveMyData')[0].checked = true;
 
         // $('#schedule_time').val(c);
         //setAttribute
