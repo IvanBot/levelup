@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Батутный центр LevelUP</title>
-
+    <title>Батутный центр LevelUP Ярославль</title>
+    <meta name="keywords" content="батут,прыжок,зал,полёт,свобода,сальто,трюки,праздник,эмоции,спорт,активный,отдых,акробатика,фристайл,вейкборд,сноуборд,ньюскул,лыжи,горные,растяжка,гимнастика,фриран,паркур,трейсер,разминка,зарядка,клуб,спортзал,спортклуб,евротрамп,акроспорт,минитрамп,лонжа,сальто,мортале,кульбит,рондат,физкультура,здоровье,вейкпарк,лебёдка,трамплин,пляж,кайт,сёрф,сёрфинг,кайтинг,скалодром,альпинизм,кроссфит,винт,полвинта,корк,даблкорк,триплкорк,родео,бэкфлип,фронтфлип"/>    
+    <meta name="description" content="Батутный центр LevelUP в Ярославле - у  нас Вы можете попрыгать! Прыжки на батуте дарят удивительное чувство бодрости, прилива сил и энергии."/>
     <!-- Bootstrap -->
     <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">

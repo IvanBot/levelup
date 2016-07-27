@@ -161,4 +161,17 @@
     </div>
 
 
+<script>
+    function new_photo(){
+        var camera_hidden = document.getElementById("camera_hidden");
+        camera_hidden.src = "/image.php?"+Math.random();
+        camera_hidden.onload = function(){
+            document.getElementById("camera_online").src = camera_hidden.src;
+            setTimeout(new_photo,33);
+        };
+        //camera_hidden.onerror = setTimeout(new_photo,3000);
+    };
+    setTimeout(new_photo,1);
+</script>
+
 <?require_once($_SERVER['DOCUMENT_ROOT'] .'/footer.php') ?>
