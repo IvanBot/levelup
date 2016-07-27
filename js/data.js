@@ -61,7 +61,7 @@ $(function () {
                     msg = msg + '&user_sess=1&user_id=' + user_id;
             }
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: '/controllers/db_querys.php',
                 data: msg,
                 success: function (data) {
@@ -69,9 +69,19 @@ $(function () {
                     var name = a[0] + ' ' + a[1];
                     url['phone'] = url['phone'].replace(/-/g, '');
                     var date = new Date(0);
+                    console.log(url['myData']);
                     if (url['myData']) {
-                        document.cookie = "username=; surname=; phone=; myData=; expires=" + date.toUTCString();
-                        document.cookie = "username="+url['username']+"; surname="+url['surname']+"; phone="+url['phone']+"; phone="+url['phone']+"; myData="+url['myData'];
+
+                        document.cookie = "username="+url['username'];
+                        document.cookie = "surname="+url['surname'];
+                        document.cookie = "phone="+url['phone'];
+                        document.cookie = "myData="+url['myData'];
+                        console.log(document.cookie);
+                    }else{
+                        document.cookie = "username=";
+                        document.cookie = "surname=";
+                        document.cookie = "phone=";
+                        document.cookie = "myData=";
                     }
                     if (data[0] > 0)sessvars.recordphone[data[0]] = url['phone'];
                     if (data[1] > 0)sessvars.my_records[data[1]] = data[0];
@@ -120,7 +130,7 @@ $(function () {
 
             //
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 url: '/controllers/db_querys.php',
                 data: msg,
                 success: function (data) {
@@ -162,23 +172,7 @@ $(function () {
 
     }
 
-    /*
-     function cicle(){//getScheduleCicle
-     var res = $.ajax({
-     type: "GET",
-     url: "/controllers/db_querys.php",
-     data: "getScheduleCicle=1",
-     dataType: "json",
-     async: false,
-     success: function (data) {
-     },
-     error: function () {
-     console.log('Ajax problem >> data.js << ');
-     }
-     }).responseJSON;
-     return res;
-     }
-     */
+
     var codropsEvents, htmlresult = activityList();
 
     function activityList(opendate) {
@@ -203,7 +197,7 @@ $(function () {
             opendate = opendate.getFullYear() + '-' + ((opendate.getMonth() + 1) <= 9 ? '0' + (opendate.getMonth() + 1) : (opendate.getMonth() + 1)) + '-' + (opendate.getDate() < 9 ? '0' + opendate.getDate() : opendate.getDate());
         }
         var res = $.ajax({
-            type: "GET",
+            type: "POST",
             url: "/controllers/db_querys.php",
             data: "getSchedule=1&date=" + opendate,
             dataType: "json",
@@ -409,3 +403,4 @@ $("#inputPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputDelPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputName").mask('*?*************************************************', {placeholder: ""});
 $("#inputSurname").mask('*?*************************************************', {placeholder: ""});
+//$("#phone").mask("8-999-999-9999");
