@@ -1,4 +1,12 @@
 <?require_once($_SERVER['DOCUMENT_ROOT'] .'/header.php') ?>
+   <div class="content_price">  
+           <div class="container">
+            <div class="row">
+               <div class="name_price">Тренерский состав Level<span class="UP">UP</span>!</div>
+               <span class="cherta_ind hidden-xs"></span>
+            </div>
+           </div>
+        </div>     
     <br>
     <!-- Тренеры -->
     <div class="img_position">
