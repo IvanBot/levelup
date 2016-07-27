@@ -21,7 +21,6 @@ if ($_POST['delRecordByPhone'] > 0) {//?delRecord=1&record_id=1
 }
 if ($_POST['setRecord'] > 0) {//?setRecord=1&user_id=1&schedule_id=1&recordcomment=First!&activity_id=1&activitydate=2016-07-16&starttime=10:15
     $rec_id = '';
-    echo '<pre>';print_r($_POST);
     if ($_POST['username'] || $_POST['surname']) $_POST['name'] = $_POST['username'].' '.$_POST['surname'];
     if ($_POST['schedule_time']) $_POST['starttime'] = $_POST['schedule_time'];
     if ($_POST['schedule_date']) $_POST['activitydate'] = $_POST['schedule_date'];
