@@ -1,0 +1,6 @@
+Host: levelup76.ru
+User-agent: *
+Disallow: /admin/
+Disallow: /js/
+Disallow: /controllers/
+Disallow: /fonts/
