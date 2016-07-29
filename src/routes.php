@@ -1,8 +1,8 @@
 <?php
 // Routes
 
-$app->post('/getSchedule', function ($request, $response, $args) {
-  $response = json_encode(scheduler::getSchedule($_POST));
+$app->get('/getSchedule[/{date}[/]]', function ($request, $response, $args) {
+  $response = json_encode(scheduler::getSchedule($args));
   return $response;
 });
 

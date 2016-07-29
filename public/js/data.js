@@ -197,9 +197,8 @@ $(function () {
             opendate = opendate.getFullYear() + '-' + ((opendate.getMonth() + 1) <= 9 ? '0' + (opendate.getMonth() + 1) : (opendate.getMonth() + 1)) + '-' + (opendate.getDate() < 9 ? '0' + opendate.getDate() : opendate.getDate());
         }
         var res = $.ajax({
-            type: "POST",
-            url: "/getSchedule",
-            data: "date=" + opendate,
+            type: "GET",
+            url: "/getSchedule/"+opendate,
             dataType: "json",
             async: false,
             success: function (data) {
