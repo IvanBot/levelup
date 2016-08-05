@@ -33,7 +33,13 @@ if (webix.storage.cookie.get("token")) var menu = {
             ]
         },
         {id: "days_custom", value: "Дополнительные занятия", icon: 'calendar-o'},
-        {id: "clients", value: "Клиенты", icon: 'group',data: [{id: "record_users", value: "Запись на занятия"},{id: "users", value: "Контакты клиентов"}]},
+        {
+            id: "clients", value: "Клиенты", icon: 'group',
+            data: [
+                {id: "record_users", value: "Запись на занятия"},
+                {id: "users", value: "Контакты клиентов"}
+            ]
+        },
         {id: "trener", value: "Тренеры", icon: 'child'},
         {id: "activity", value: "Занятия", icon: 'bicycle'}
     ],

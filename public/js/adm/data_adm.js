@@ -17,7 +17,7 @@ function call_custom_refresh() {
     $$("days_custom_datatable").enable();
     $$("days_custom_datatable").clearAll();
     $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-    $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
+    $$("days_custom_datatable").load("routes.php?getSchedule=1&adm=1");
 };
 function call_default_refresh() {
     if($$("deleted").data.value != undefined)$$("deleted").setValue('0')
@@ -26,7 +26,7 @@ function call_default_refresh() {
     $$("activity_datatable" + day).enable();
     $$("activity_datatable" + day).clearAll();
     $$("activity_datatable" + day).showProgress({type: "icon", hide: true});
-    $$("activity_datatable" + day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + day);
+    $$("activity_datatable" + day).load("/admin/getScheduleCicle?cycleday=" + day);
 };
 function call_custom_fil() {
     if ($$("to").data.value < $$("from").data.value)webix.message({
@@ -40,7 +40,7 @@ function call_custom_fil() {
         $$("days_custom_datatable").enable();
         $$("days_custom_datatable").clearAll();
         $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-        $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1&from=" + from + "&to=" + to + "&del=" + del);
+        $$("days_custom_datatable").load("/admin/getSchedule?adm=1&from=" + from + "&to=" + to + "&del=" + del);
     }
 };
 
@@ -142,8 +142,6 @@ function new_custom_day() {
                             d['activitydate'] = $$("activitydate").getValue();
                             d['maxcount'] = $$("max").getValue();
                             d['mincount'] = $$("min").getValue();
-                            d['setActivity'] = 1;
-                            d['setSchedule'] = 1;
                             if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
                             if (!d['starttime'])webix.message({
                                 type: "error",
@@ -157,11 +155,11 @@ function new_custom_day() {
                             var to = $$("to").data.value != undefined ? $$("to").data.text : '';
                             var del = $$("deleted").data.value != undefined ? $$("deleted").data.value : '';
                             if (d['activityname'] && d['starttime'] && d['activitydate']) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("../routes.php", d);
                                 $$("win_order").getTopParentView().hide();
                                 $$("days_custom_datatable").clearAll();
                                 $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-                                $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1&from=" + from + "&to=" + to + "&del=" + del);
+                                $$("days_custom_datatable").load("/admin/getSchedule?adm=1&from=" + from + "&to=" + to + "&del=" + del);
                             }
                         }
                     },
@@ -314,8 +312,6 @@ function edit_custom_day() {
                             d['activitydate'] = $$("activitydate").getValue();
                             d['maxcount'] = $$("maxcount").getValue();
                             d['mincount'] = $$("mincount").getValue();
-                            d['setActivity'] = 1;
-                            d['setSchedule'] = 1;
                             if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
                             if (!d['starttime'])webix.message({
                                 type: "error",
@@ -323,11 +319,11 @@ function edit_custom_day() {
                             });
                             if (!d['activitydate'])webix.message({type: "error", text: "Выберите день"});
                             if (d['activityname'] && d['starttime'] && d['activitydate']) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("../routes.php", d);
                                 $$("win_edit_custom_day").getTopParentView().hide();
                                 $$("days_custom_datatable").clearAll();
                                 $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-                                $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
+                                $$("days_custom_datatable").load("/admin/getSchedule?adm=1");
                             }
                         }
                     },
@@ -373,50 +369,31 @@ function new_default_day() {
         view: "form",
         borderless: true,
         elements: [{
-            cols: [{
-                rows: [
-                    {template: "Название тренировки", type: "section"},
-                    {id: "name", view: "text", labelPosition: "left"},
-
-
-                    {template: "Тренер", type: "section"},
-                    {
-                        id: "trainer", view: "richselect", labelPosition: "left",
-                        options: [
-                            {id: 1, value: "Бобруйченко"},
-                            {id: 2, value: "Мохнатов"}
-                        ]
-                    },
-                    {template: "Комментарий", type: "section"},
-                    {
-                        id: "comment",
-                        view: "text",
-                        labelPosition: "left"
-                    }, {height: 25}
-                ]
-            },
-                {width: 25},
-
+            cols: [
+                {
+                    rows: [
+                        { template: "Название тренировки", type: "section" },
+                        { id: "name", view: "text", labelPosition: "left" },
+                        { template: "Тренер", type: "section" },
+                        {
+                            id: "trainer", view: "richselect", labelPosition: "left",
+                            options: [
+                                {id: 1, value: "Бобруйченко"},
+                                {id: 2, value: "Мохнатов"}
+                            ]
+                        },
+                        { template: "Комментарий", type: "section" },
+                        { id: "comment", view: "text", labelPosition: "left" },
+                        { height: 25 }
+                    ]
+                },
+                { width: 25 },
                 {
                     width: 270,
                     rows: [
-                        {template: "Время", type: "section"},
-                        {
-                            id: 'time_start',
-                            view: "datepicker",
-                            type: "time",
-                            stringResult: true,
-                            format: '%H:%i',
-                            placeholder: 'Начало'
-                        },
-                        {
-                            id: 'time_end',
-                            view: "datepicker",
-                            type: "time",
-                            stringResult: true,
-                            format: '%H:%i',
-                            placeholder: 'Окончание'
-                        },
+                        { template: "Время", type: "section" },
+                        { id: 'time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Начало' },
+                        { id: 'time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Окончание' },
                         {template: "День недели", type: "section"},
                         {
                             id: "weekday", view: "richselect", labelPosition: "left",
@@ -436,20 +413,10 @@ function new_default_day() {
                 {
                     width: 200,
                     rows: [
-                        {template: "Количество участников", type: "section"},
-                        {
-                            id: "min",
-                            view: "text",
-                            labelPosition: "right",
-                            placeholder: 'Минимум'
-                        },
-                        {height: 23},
-                        {
-                            id: "max",
-                            view: "text",
-                            labelPosition: "right",
-                            placeholder: 'Максимум'
-                        }
+                        { template: "Количество участников", type: "section" },
+                        { id: "min", view: "text", labelPosition: "right", placeholder: 'Минимум' },
+                        { height: 23 },
+                        { id: "max", view: "text", labelPosition: "right", placeholder: 'Максимум' }
                     ]
                 }
             ]
@@ -472,8 +439,6 @@ function new_default_day() {
                             d['cycleday'] = $$("weekday").getValue();
                             d['maxcount'] = $$("max").getValue();
                             d['mincount'] = $$("min").getValue();
-                            d['setActivity'] = 1;
-                            d['setSchedule'] = 1;
                             if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
                             if (!d['starttime'])webix.message({
                                 type: "error",
@@ -481,11 +446,15 @@ function new_default_day() {
                             });
                             if (!d['cycleday'])webix.message({type: "error", text: "Выберите день недели"});
                             if (d['activityname'] && d['starttime']) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("/admin/addScheduleCicle", d, function(text){
+                                    txt = JSON.parse(text);
+                                    if(txt.result==0) webix.message(txt.message);
+                                    else webix.message({type:"error", text:txt.message});
+                                });
                                 $$("win_order").getTopParentView().hide();
                                 $$("activity_datatable" + d['cycleday']).clearAll();
                                 $$("activity_datatable" + d['cycleday']).showProgress({type: "icon", hide: true});
-                                $$("activity_datatable" + d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + d['cycleday']);
+                                $$("activity_datatable" + d['cycleday']).load("/admin/getScheduleCicle?cycleday=" + d['cycleday']);
                             }
                         }
                     },
@@ -557,35 +526,21 @@ function edit_default_day() {
                     {
                         width: 270,
                         rows: [
-                            {template: "Время", type: "section"},
+                            { template: "Время", type: "section" },
+                            { id: 'starttime', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Начало', value: edit_default_day_var.starttime },
+                            { id: 'endtime', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Окончание', value: edit_default_day_var.endtime },
+                            { template: "День недели", type: "section" },
                             {
-                                id: 'starttime',
-                                view: "datepicker",
-                                type: "time",
-                                stringResult: true,
-                                format: '%H:%i',
-                                placeholder: 'Начало',
-                                value: edit_default_day_var.starttime
-                            },
-                            {
-                                id: 'endtime',
-                                view: "datepicker",
-                                type: "time",
-                                stringResult: true,
-                                format: '%H:%i',
-                                placeholder: 'Окончание',
-                                value: edit_default_day_var.endtime
-                            },
-                            {template: "День недели", type: "section"},
-                            {
-                                id: "weekday",
-                                view: "richselect",
-                                labelPosition: "left",
-                                value: edit_default_day_var.cycleday,
-                                options: [{id: 1, value: "ПН"}, {id: 2, value: "ВТ"}, {id: 3, value: "СР"}, {
-                                    id: 4,
-                                    value: "ЧТ"
-                                }, {id: 5, value: "ПТ"}, {id: 6, value: "СБ"}, {id: 7, value: "ВС"}]
+                                id: "weekday", view: "richselect", labelPosition: "left", value: edit_default_day_var.cycleday,
+                                options: [
+                                    {id: 1, value: "ПН"},
+                                    {id: 2, value: "ВТ"},
+                                    {id: 3, value: "СР"},
+                                    {id: 4, value: "ЧТ"},
+                                    {id: 5, value: "ПТ"},
+                                    {id: 6, value: "СБ"},
+                                    {id: 7, value: "ВС"}
+                                ]
                             }
                         ]
                     },
@@ -593,22 +548,10 @@ function edit_default_day() {
                     {
                         width: 200,
                         rows: [
-                            {template: "Количество участников", type: "section"},
-                            {
-                                id: "mincount",
-                                view: "text",
-                                labelPosition: "right",
-                                placeholder: 'Минимум',
-                                value: edit_default_day_var.mincount
-                            },
-                            {height: 23},
-                            {
-                                id: "maxcount",
-                                view: "text",
-                                labelPosition: "right",
-                                placeholder: 'Максимум',
-                                value: edit_default_day_var.maxcount
-                            }
+                            { template: "Количество участников", type: "section" },
+                            { id: "mincount", view: "text", labelPosition: "right", placeholder: 'Минимум', value: edit_default_day_var.mincount },
+                            { height: 23 },
+                            { id: "maxcount", view: "text", labelPosition: "right", placeholder: 'Максимум', value: edit_default_day_var.maxcount }
                         ]
                     }
                 ]
@@ -620,8 +563,6 @@ function edit_default_day() {
                     {
                         view: "button", value: "Сохранить", hotkey: "enter",
                         click: function () {
-
-
                             var d = {};
                             d['schedule_id'] = edit_default_day_var.id;
                             d['activity_id'] = edit_default_day_var.activity_id;
@@ -633,8 +574,6 @@ function edit_default_day() {
                             d['cycleday'] = $$("weekday").getValue();
                             d['maxcount'] = $$("maxcount").getValue();
                             d['mincount'] = $$("mincount").getValue();
-                            d['setActivity'] = 1;
-                            d['setSchedule'] = 1;
                             if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
                             if (!d['starttime'])webix.message({
                                 type: "error",
@@ -642,15 +581,19 @@ function edit_default_day() {
                             });
                             if (!d['cycleday'])webix.message({type: "error", text: "Выберите день недели"});
                             if (d['activityname'] && d['starttime']) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("/admin/editScheduleCicle", d, function(text){
+                                    txt = JSON.parse(text);
+                                    if(txt.result==0) webix.message(txt.message);
+                                    else webix.message({type:"error", text:txt.message});
+                                });
                                 $$("win_edit_default_day").getTopParentView().hide();
                                 $$("activity_datatable" + d['cycleday']).clearAll();
                                 $$("activity_datatable" + d['cycleday']).showProgress({type: "icon", hide: true});
-                                $$("activity_datatable" + d['cycleday']).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + d['cycleday']);
+                                $$("activity_datatable" + d['cycleday']).load("/admin/getScheduleCicle?cycleday=" + d['cycleday']);
                                 if (day != d['cycleday']) {
                                     $$("activity_datatable" + day).clearAll();
                                     $$("activity_datatable" + day).showProgress({type: "icon", hide: true});
-                                    $$("activity_datatable" + day).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + day);
+                                    $$("activity_datatable" + day).load("/admin/getScheduleCicle?cycleday=" + day);
                                 }
                             }
                         }
@@ -711,16 +654,20 @@ function delete_it() {
                             var c = delete_day_var.cycleday;
                             d['setSchedule'] = 1;
                             if (d['schedule_id'] > 0) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("/admin/delScheduleCicle", d, function(text){
+                                    txt = JSON.parse(text);
+                                    if(txt.result==0) webix.message(txt.message);
+                                    else webix.message({type:"error", text:txt.message});
+                                });
                                 $$("win_delete_day").getTopParentView().hide();
                                 if (c) {
                                     $$("activity_datatable" + c).clearAll();
                                     $$("activity_datatable" + c).showProgress({type: "icon", hide: true});
-                                    $$("activity_datatable" + c).load("/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + c);
+                                    $$("activity_datatable" + c).load("/admin/getScheduleCicle?cycleday=" + c);
                                 } else {
                                     $$("days_custom_datatable").clearAll();
                                     $$("days_custom_datatable").showProgress({type: "icon", hide: true});
-                                    $$("days_custom_datatable").load("/controllers/db_querys.php?getSchedule=1&adm=1");
+                                    $$("days_custom_datatable").load("/admin/getSchedule?adm=1");
                                 }
                             }
                         }
@@ -779,11 +726,11 @@ function delete_record() {
                             d['record_id'] = delete_user_var.record_id;
                             d['delRecord'] = 1;
                             if (d['record_id'] > 0) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("../routes.php", d);
                                 $$("win_delete_user").getTopParentView().hide();
                                 $$("record_users_datatable").clearAll();
                                 $$("record_users_datatable").showProgress({type: "icon", hide: true});
-                                $$("record_users_datatable").load("/controllers/db_querys.php?getAdmUsersRecords=1&adm=1");
+                                $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1");
                             }
                         }
                     },
@@ -843,11 +790,11 @@ function delete_user() {
                             d['user_id'] = delete_user_var.user_id;
                             d['delUsers'] = 1;
                             if (d['user_id'] > 0) {
-                                webix.ajax().get("/controllers/db_querys.php", d);
+                                webix.ajax().get("../routes.php", d);
                                 $$("win_delete_user").getTopParentView().hide();
                                 $$("users_datatable").clearAll();
                                 $$("users_datatable").showProgress({type: "icon", hide: true});
-                                $$("users_datatable").load("/controllers/db_querys.php?getUsers=1&adm=1");
+                                $$("users_datatable").load("/admin/getUsers?adm=1");
                             }
                         }
                     },
@@ -886,31 +833,10 @@ function delete_user() {
 var call_recording_filter = {
     type: "space",
     cols: [
-        {view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_default_day},
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "pencil",
-            width: 160,
-            label: "Редактировать",
-            click: edit_default_day
-        },
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "remove",
-            width: 115,
-            label: "Удалить",
-            click: delete_it
-        },
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "refresh",
-            width: 38,
-            label: "",
-            click: call_default_refresh
-        },
+        { view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_default_day },
+        { view: "button", type: "iconButton", icon: "pencil", width: 160, label: "Редактировать", click: edit_default_day },
+        { view: "button", type: "iconButton", icon: "remove", width: 115, label: "Удалить", click: delete_it },
+        { view: "button", type: "iconButton", icon: "refresh", width: 38, label: "", click: call_default_refresh },
         {},
 
     ]
@@ -918,65 +844,15 @@ var call_recording_filter = {
 var call_custom_filter = {
     type: "space",
     cols: [
-        {view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_custom_day},
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "pencil",
-            width: 160,
-            label: "Редактировать",
-            click: edit_custom_day
-        },
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "remove",
-            width: 115,
-            label: "Удалить",
-            click: delete_it
-        },
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "refresh",
-            width: 38,
-            label: "",
-            click: call_custom_refresh
-        }, {},
-        {
-            id: 'from',
-            view: "datepicker",
-            format: '%Y-%m-%d',
-            timepicker: false,
-            width: 120,
-            placeholder: 'Начало',
-            value:''
-        },
-        {
-            id: 'to',
-            view: "datepicker",
-            format: '%Y-%m-%d',
-            timepicker: false,
-            width: 120,
-            placeholder: 'Окончание',
-        },
-        {
-            id: 'deleted',
-            width: 110,
-            view: "checkbox",
-            label: "Удаленные",
-            checkValue: 1,
-            labelWidth: 88,
-            format: '%H:%i',
-        },
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "filter",
-            width: 38,
-            label: "",
-            click: call_custom_fil
-        }
+        { view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_custom_day },
+        { view: "button", type: "iconButton", icon: "pencil", width: 160, label: "Редактировать", click: edit_custom_day },
+        { view: "button", type: "iconButton", icon: "remove", width: 115, label: "Удалить", click: delete_it },
+        { view: "button", type: "iconButton", icon: "refresh", width: 38, label: "", click: call_custom_refresh },
+        {},
+        { id: 'from', view: "datepicker", format: '%Y-%m-%d', timepicker: false, width: 120, placeholder: 'Начало', value:'' },
+        { id: 'to', view: "datepicker", format: '%Y-%m-%d', timepicker: false, width: 120, placeholder: 'Окончание' },
+        { id: 'deleted', width: 110, view: "checkbox", label: "Удаленные", checkValue: 1, labelWidth: 88, format: '%H:%i' },
+        { view: "button", type: "iconButton", icon: "filter", width: 38, label: "", click: call_custom_fil }
     ]
 };
 var record_filter = {
@@ -984,14 +860,7 @@ var record_filter = {
     cols: [
         //{view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_user},
         //{view: "button",  type: "iconButton", icon: "pencil", width: 160, label: "Редактировать", click: edit_user},
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "remove",
-            width: 115,
-            label: "Удалить",
-            click: delete_record
-        },
+        { view: "button", type: "iconButton", icon: "remove", width: 115, label: "Удалить", click: delete_record },
         {},
     ]
 };
@@ -1000,14 +869,7 @@ var users_filter = {
     cols: [
         //{view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_user},
         //{view: "button",  type: "iconButton", icon: "pencil", width: 160, label: "Редактировать", click: edit_user},
-        {
-            view: "button",
-            type: "iconButton",
-            icon: "remove",
-            width: 115,
-            label: "Удалить",
-            click: delete_user
-        },
+        { view: "button", type: "iconButton", icon: "remove", width: 115, label: "Удалить", click: delete_user },
         {},
     ]
 };
@@ -1036,7 +898,7 @@ function starttime(mystr) {
     else return '';
 }
 
-var days_default = [];
+var days_default = [];              //Расписание по умолчанию
 for (var i = 1; i < 8; i++) {
     days_default[i] = {
         id: "day" + i,
@@ -1056,48 +918,14 @@ for (var i = 1; i < 8; i++) {
                         css: "my_style",
                         select: "row",
                         columns: [
-                            {
-                                id: "num",
-                                header: "",
-                                width: 50,
-                                css: {"text-align": "right"},
-                                template: deact
-                            },
-                            {
-                                id: "starttime",
-                                header: "Начало",
-                                width: 70,
-                                css: {"text-align": "left"},
-                                template: starttime
-                            },
-                            {
-                                id: "endtime",
-                                header: "Окончание",
-                                width: 90,
-                                css: {"text-align": "left"},
-                                template: endtime
-                            },
-                            {
-                                id: "activityname",
-                                header: [{text: "Название тренировки"}],
-                                width: 200,
-                                //sort: "text"
-                            },
-                            {
-                                id: "maxcount",
-                                header: [{text: "Квота"}],
-                                width: 70,
-                                editor: "int",
-                                template: maxcount
-                            },
-                            {
-                                id: "activitycomment",
-                                header: [{text: "Комментарий"}],
-                                tooltip: true,
-                                width: 400,
-                            }
+                            { id: "num", header: "", width: 50, css: {"text-align": "right"}, template: deact },
+                            { id: "starttime", header: "Начало", width: 70, css: {"text-align": "left"}, template: starttime },
+                            { id: "endtime", header: "Окончание", width: 90, css: {"text-align": "left"}, template: endtime },
+                            { id: "activityname", header: [{text: "Название тренировки"}], width: 200 },
+                            { id: "maxcount", header: [{text: "Квота"}], width: 70, editor: "int", template: maxcount },
+                            { id: "activitycomment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
                         ],
-                        url: "/controllers/db_querys.php?getScheduleCicle=1&cycleday=" + i,
+                        url: "/admin/getScheduleCicle?cycleday=" + i,
                         ready: function () {
                             webix.extend(this, webix.ProgressBar);
                         }
@@ -1108,7 +936,7 @@ for (var i = 1; i < 8; i++) {
     };
 }
 
-var days_custom = {
+var days_custom = {     //Дополнительные занятия
     id: "days_custom",
     rows: [
         call_custom_filter,
@@ -1126,59 +954,15 @@ var days_custom = {
                     css: "my_style",
                     select: "row",
                     columns: [
-                        {
-                            id: "num",
-                            header: "",
-                            width: 50,
-                            css: {"text-align": "right"},
-                            template: deact
-                        },
-                        {
-                            id: "activitydate",
-                            header: [{text: "Дата"}],
-                            width: 100,
-                            css: {"text-align": "left"}
-
-                            /*	{ id:"date",	header:[
-                             "Released",
-                             { content:"dateFilter" }
-                             ] , width:160,	format:webix.i18n.dateFormatStr,  sort:"int"},*/
-                        },
-                        {
-                            id: "starttime",
-                            header: "Начало",
-                            width: 70,
-                            css: {"text-align": "left"},
-                            template: starttime
-                        },
-                        {
-                            id: "endtime",
-                            header: "Окончание",
-                            width: 90,
-                            css: {"text-align": "left"},
-                            template: endtime
-                        },
-                        {
-                            id: "activityname",
-                            header: [{text: "Название тренировки"}],
-                            width: 200,
-                            //sort: "text"
-                        },
-                        {
-                            id: "maxcount",
-                            header: [{text: "Квота"}],
-                            width: 70,
-                            editor: "int",
-                            template: maxcount
-                        },
-                        {
-                            id: "activitycomment",
-                            header: [{text: "Комментарий"}],
-                            tooltip: true,
-                            width: 400,
-                        }
+                        { id: "num", header: "", width: 50, css: {"text-align": "right"}, template: deact },
+                        { id: "activitydate", header: [{text: "Дата"}], width: 100, css: {"text-align": "left"} },
+                        { id: "starttime", header: "Начало", width: 70, css: {"text-align": "left"}, template: starttime },
+                        { id: "endtime", header: "Окончание", width: 90, css: {"text-align": "left"}, template: endtime },
+                        { id: "activityname", header: [{text: "Название тренировки"}], width: 200 },
+                        { id: "maxcount", header: [{text: "Квота"}], width: 70, editor: "int", template: maxcount },
+                        { id: "activitycomment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
                     ],
-                    url: "/controllers/db_querys.php?getSchedule=1&adm=1",
+                    url: "/admin/getSchedule?adm=1",
                     ready: function () {
                         webix.extend(this, webix.ProgressBar);
                     }
@@ -1188,7 +972,7 @@ var days_custom = {
     ],
 }
 
-var record_users = {
+var record_users = {        //Запись на занятия
     id: "record_users",
     rows: [
         record_filter,
@@ -1206,51 +990,15 @@ var record_users = {
                     css: "my_style",
                     select: "row",
                     columns: [
-                        {
-                            id: "num",
-                            header: "",
-                            width: 50,
-                            css: {"text-align": "right"},
-                            //template: deact
-                        },
-                        {
-                            id: "activitydate",
-                            header: "Дата",
-                            width: 100,
-                            css: {"text-align": "left"},
-                        },
-                        {
-                            id: "starttime",
-                            header: "Начало",
-                            width: 70,
-                            css: {"text-align": "left"},
-                            template: starttime
-                        },
-                        {
-                            id: "username",
-                            header: [{text: "Имя"}],
-                            width: 200,
-                            template: "#username# #surname#"
-                        },
-                        {
-                            id: "phone",
-                            header: [{text: "Телефон"}],
-                            width: 120,
-                            editor: "int"
-                        },
-                        {
-                            id: "activityname",
-                            header: [{text: "Название тренировки"}],
-                            width: 150,
-                        },
-                        {
-                            id: "usercomment",
-                            header: [{text: "Комментарий к пользователю"}],
-                            tooltip: true,
-                            width: 400,
-                        }
+                        { id: "num", header: "", width: 50, css: {"text-align": "right"} },
+                        { id: "activitydate", header: "Дата", width: 100, css: {"text-align": "left"} },
+                        { id: "starttime", header: "Начало", width: 70, css: {"text-align": "left"}, template: starttime },
+                        { id: "username", header: [{text: "Имя"}], width: 200, template: "#username# #surname#" },
+                        { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" },
+                        { id: "activityname", header: [{text: "Название тренировки"}], width: 150, },
+                        { id: "usercomment", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
                     ],
-                    url: "/controllers/db_querys.php?getAdmUsersRecords=1&adm=1",
+                    url: "/admin/getAdmUsersRecords?&adm=1",
                     ready: function () {
                         webix.extend(this, webix.ProgressBar);
                     }
@@ -1260,7 +1008,7 @@ var record_users = {
     ],
 };
 
-var users = {
+var users = {       //Контакты клиентов
     id: "users",
     rows: [
         users_filter,
@@ -1278,33 +1026,11 @@ var users = {
                     css: "my_style",
                     select: "row",
                     columns: [
-                        {
-                            id: "num",
-                            header: "",
-                            width: 50,
-                            css: {"text-align": "right"},
-
-                        },
-                        {
-                            id: "username",
-                            header: [{text: "Имя"}],
-                            width: 200,
-                            template: "#username# #surname#"
-                        },
-                        {
-                            id: "phone",
-                            header: [{text: "Телефон"}],
-                            width: 120,
-                            editor: "int"
-                        }/*,
-                         {
-                         id: "usercomment",
-                         header: [{text: "Комментарий к пользователю"}],
-                         tooltip: true,
-                         width: 400,
-                         }*/
+                        { id: "num", header: "", width: 50, css: {"text-align": "right"}, },
+                        { id: "username", header: [{text: "Имя"}], width: 200, template: "#username# #surname#" },
+                        { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" }
                     ],
-                    url: "/controllers/db_querys.php?getUsers=1&adm=1",
+                    url: "/admin/getUsers?adm=1",
                     ready: function () {
                         webix.extend(this, webix.ProgressBar);
                     }

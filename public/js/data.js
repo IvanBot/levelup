@@ -68,7 +68,7 @@ $(function () {
                 data: msg,
                 success: function (data) {
                     data = data.split('-');
-                    var name = a[0] + ' ' + a[1];
+                    var name = a[0]/* + ' ' + a[1]*/;
                     url['phone'] = url['phone'].replace(/-/g, '');
                     var date = new Date(0);
                     console.log(url['myData']);
@@ -267,6 +267,7 @@ $(function () {
                         td.appendChild(div);
                     }
                 }
+                console.log(res);
 
 
                 tr.appendChild(td);

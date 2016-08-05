@@ -20,7 +20,7 @@
 }
 .webix_sidebar .webix_tree_item.webix_selected,
 .webix_sidebar .webix_tree_item.webix_selected span{
-	background-color: #ffe09e;
+	background-color: #818181;
 	padding-right:0;
 }
 .webix_sidebar .webix_tree_branch_1 .webix_tree_item{
