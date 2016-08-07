@@ -17,6 +17,8 @@ session_start();
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);
 
+setlocale (LC_ALL, "ru_RU.utf8");
+
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
 

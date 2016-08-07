@@ -127,9 +127,8 @@
             </div>
         </div>
         <div class="text">
-            <p class="write_text">* Просьба записываться заранее. Запись доступна с 10:00 - 22:00.</p>
-            <p class="write_text">* Записаться можно по телефону по тел. 33-72-00 и мы
-                Вас запишем на тренировку.</p>
+            <p class="write_text">* Просьба записываться заранее.</p>
+            <p class="write_text">* Так же Вы можете записаться в рабочее время по телефону 33-72-00.</p>
         </div>
     </div>
     <!-- Конец контента-->
@@ -146,11 +145,11 @@
                         <h4 class="modal-title">Записаться на тренировку</h4>
                     </div>
                     <div class="modal-body">
-                        <p class="error error_username hidden">Представьтесь, пожалуйста.</p>
+                        <p class="error error_name hidden">Представьтесь, пожалуйста.</p>
 
                         <div class="form-group">
                             <label for="inputName">Имя</label>
-                            <input name="username" type="name" class="form-control" id="inputName" placeholder="Имя">
+                            <input name="name" type="name" class="form-control" id="inputName" placeholder="Имя">
                             <input type="hidden" name="setUser" type="name" class="form-control" value="1">
                             <input type="hidden" name="setRecord" type="name" class="form-control" value="1">
                             <input type="hidden" name="schedule_id" type="name" class="form-control" value="0" id="schedule_id">
@@ -160,7 +159,7 @@
 
                         <div class="form-group">
                             <label for="inputSurname">Фамилия</label>
-                            <input name="surname" type="name" class="form-control" id="inputSurname"
+                            <input name="last_name" type="name" class="form-control" id="inputLastname"
                                    placeholder="Фамилия">
                         </div>
                         <p class="error error_userphone hidden">Пожалуйста, введите номер телефона.</p>
@@ -171,8 +170,8 @@
 
                         <div class="form-group">
                             <label for="inputCount">Количество человек</label>
-                            <select name="count" type="count" class="form-control" id="inputCount" placeholder="Количество человек">
-                                <option selected>1</option>
+                            <select name="cnt" type="count" class="form-control" id="inputCount" placeholder="Количество человек">
+<?php for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "").">$i</option>"; } ?>
                             </select>
                         </div>
 

@@ -1,0 +1,61 @@
+<?
+
+$months = [ "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря" ];
+
+foreach ($data as $date => $table) { 
+
+list($year,$month,$day) = explode("-", $date);
+
+?>
+<table class="table_posit">
+<caption><h3 id="tab-h"><?="$day ".$months[$month-1]." $year"?></h3></caption>
+<tbody id="tab-block">
+<?php 
+foreach ($table as $line) { 
+
+list($start_hour, $start_minute) = explode(":", $line['starttime']);
+list($end_hour, $end_minute) = explode(":", $line['endtime']);
+
+$starttime = mktime($start_hour, $start_minute, 0, $month, $day, $year);
+$endtime = mktime($end_hour, $end_minute, 0, $month, $day, $year);
+
+$now = time();
+
+$avaiable = $line["maxcount"] - $line["registered_count"];
+
+?>
+<tr>
+<td id="write_n_n" data-time="<?=$line['starttime']?>"><?=$line['starttime']?></td>
+<td id="write_n_b"><?=$line['activityname']?></td>
+<td id="write_n_f"><?
+if ($avaiable > 0 && $now < $starttime) {
+  ?><span class="badge">Свободно: <?=$avaiable?></span><?
+} 
+foreach ($line['registered'] as $guest) {
+  ?><div id="record_<?=$guest["id"]?>" class="username"><?=$guest["name"]?></div><?
+}
+?></td>
+<td id="write_n"><?
+if ($now < $starttime) {
+   if ($avaiable > 0) {
+   ?><button type="button" data-toggle="modal" data-avaiable="<?=$avaiable;?>" data-id="<?=$line['id']?>" data-actid="<?=$line['activityid']?>" data-date="<?=$date?>" data-time="<?=$line['starttime']?>" data-target=".fade" class="btn btn-secondary">Запись</button><?
+   } else {
+   ?><div class="finished">Нет мест</div><?
+   }
+} else if ($now > $endtime) {
+?><div class="finished old">Занятие окончено</div><?
+} else {
+?><div class="finished now">Идет занятие</div><?
+}
+?>
+</td>
+</tr>
+<? } ?>
+</tbody>
+</table>
+<? 
+
+break; 
+}
+
+?>

@@ -6,6 +6,11 @@ $app->get('/getSchedule[/{date}[/]]', function ($request, $response, $args) {
   return $response;
 });
 
+$app->get('/getTimeTable[/{date}[/]]', function ($request, $response, $args) {
+  $args['data'] = scheduler::getSchedule($args);
+  return $this->renderer->render($response, 'timetable.phtml', $args);
+});
+
 $app->post('/delRecord', function ($request, $response, $args) {
   $response = json_encode(scheduler::delRecordByPhone($_POST));
   return $response;
@@ -17,17 +22,31 @@ $app->post('/addRecord', function ($request, $response, $args) {
   } else {
     $user_id = $_POST['user_id'];
   }
+    $date = $_POST['schedule_date'];
+    $plaintime = str_replace(":", "", $_POST['schedule_time']);
 
-    $rec_id = '';
-    if ($_POST['username'] || $_POST['surname']) $_POST['name'] = $_POST['username'].' '.$_POST['surname'];
-    if ($_POST['schedule_time']) $_POST['starttime'] = $_POST['schedule_time'];
-    if ($_POST['schedule_date']) $_POST['activitydate'] = $_POST['schedule_date'];
-    if ($_POST['schedule_id'] == 0 and $_POST['schedule_date'] and $_POST['schedule_time'])
-        $_POST['schedule_id'] = scheduler::setSchedule(array('activity_id' => 0, 'starttime' => $_POST['schedule_time'], 'activitydate' => $_POST['schedule_date'], 'activityduration' => 1)); // добавим в график занятие
-    if ($user_id) {$_POST['user_id'] = $user_id;
-    $rec_id = scheduler::setRecord($_POST);}
-    $response = $user_id.'-'.$rec_id;
-    return $response;
+    $schedule = scheduler::getSchedule($args);
+
+    $avaiable = $schedule[$date][$plaintime]["maxcount"] - $schedule[$date][$plaintime]["registered_count"];
+
+    if ($_POST['cnt'] > $avaiable) {
+      $error = "Извините, мы не можем записать на занятие ".$_POST['cnt']." человек, потому что свободно только $avaiable места.\nПожалуйста, уменьшите количество человек.";
+    } else {
+      $rec_id = '';
+//    if ($_POST['username'] || $_POST['surname']) $_POST['name'] = $_POST['username'].' '.$_POST['surname'];
+      if ($_POST['schedule_time']) $_POST['starttime'] = $_POST['schedule_time'];
+      if ($_POST['schedule_date']) $_POST['activitydate'] = $_POST['schedule_date'];
+      if ($_POST['schedule_id'] == 0 and $_POST['schedule_date'] and $_POST['schedule_time'])
+          $_POST['schedule_id'] = scheduler::setSchedule(array('activity_id' => 0, 'starttime' => $_POST['schedule_time'], 'activitydate' => $_POST['schedule_date'], 'activityduration' => 1)); // добавим в график занятие
+      if ($user_id) {$_POST['user_id'] = $user_id;
+
+      $error = "none";
+    
+      $rec_id = scheduler::setRecord($_POST);}    
+      if ($rec_id <= 0) $error = "Произошла ошибка при сохранении записи. Попробуйте повторить попытку позднее.";
+    }
+
+    return json_encode([ "error" => $error ]);
 });
 
 /*
@@ -104,7 +123,11 @@ $app->get('/[{page}[/]]', function ($request, $response, $args) {
       $content_file = $this->get('settings')['pages_path']."index.phtml";      
     }
 
-    $args['content'] = file_get_contents($content_file);
+    ob_start();
+    include $content_file;
+    $args['content'] = ob_get_clean();
+    ob_end_clean();
+//    $args['content'] = file_get_contents($content_file);
 
     $args['menu'] = Array("price" => "Цены",
                           "playday" => "Детские праздники",
