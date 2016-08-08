@@ -154,7 +154,7 @@ $(function () {
             dataType: "html",
             async: true,
             success: function (data) {
-                $('#datatable_record').html(data);
+                $('#datatable_record').html(data);console.log(111);
             },
             error: function () {
                 $('#datatable_record').html("Извините, что то пошло не так.");

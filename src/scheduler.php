@@ -197,10 +197,12 @@ class scheduler
     public static function getAdminUsersRecords($d)
     {
         $date = $d['date'];
-        if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d',strtotime("-1 month")) . '" AND "' . date('Y-m-d') . '"';
-        else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
+        /*if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d',strtotime("-1 month")) . '" AND "' . date('Y-m-d') . '"';
+        else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";*/
+        if (!$date) $between = 'ra.activitydate = "'.date('Y-m-d') .'" ';
+        else $between = "ra.activitydate = '".$date."' ";
         $query = "
-            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.name,u.last_name,ra.id,u.email,u.ip,u.usercomment,a.activityname
+            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname
             FROM record_activity AS ra
             LEFT OUTER JOIN users AS u ON ra.user_id = u.id
             LEFT OUTER JOIN schedule_activity AS sa ON ra.schedule_id = sa.id
@@ -220,14 +222,15 @@ class scheduler
                     'num' => $i,
                     'activitydate' => $row['activitydate'],
                     'starttime' => $row['starttime'],
-                    'name' => $row['name'] ? $row['name'] : '',
+                    'name' => $row['username'] ? $row['username'] : '',
                     'phone' => $row['phone'],
                     'activityname' => $row['activityname'] ? $row['activityname'] : '',
-                    'last_name' => $row['last_name'] ? $row['last_name'] : '',
+                    'last_name' => $row['surname'] ? $row['surname'] : '',
                     'email' => [$row['email']],
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
-                    'usercomment' => $row['usercomment']
+                    'usercomment' => $row['usercomment'],
+                    'username' => ($row['username'] ? $row['username'] : '')." ".($row['surname'] ? $row['surname'] : '')
 
                 ];
                 $data['data'][] = $row_data;
@@ -388,8 +391,8 @@ class scheduler
         if($d['del']) $del = 'sa.deleted = 1';
         else $del = 'sa.deleted IS NULL';
         $query = "
-        select  sa.id,sa.activity_id,sa.trainer_id,sa.starttime,endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,ra.name, ra.cnt from
-        schedule_activity as sa
+        select  sa.id,sa.activity_id,sa.trainer_id,sa.starttime,endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,ra.name, ra.cnt
+        from schedule_activity as sa
         left outer join activity as a on sa.activity_id = a.id
         left outer join record_activity as ra on sa.id = ra.schedule_id
         left outer join users as u on ra.user_id = u.id
@@ -486,7 +489,8 @@ class scheduler
             }
 
         }*/        
-        return $data;
+        var_dump($data);
+        //return $data;
     }
 
     public static function getScheduleCicle($d)
@@ -570,7 +574,7 @@ class scheduler
         else $limit = "";
 
         $query =   "
-        SELECT  A.id, A.activity_id, A.trainer_id, A.starttime, A.endtime, A.activityduration, A.activitydate, activityname, activitycomment, A.mincount, A.maxcount, A.cycleday, B.user_id
+        SELECT  A.id, A.activity_id, A.trainer_id, A.starttime, A.endtime, A.activityduration, A.activitydate, activityname, activitycomment, A.comment, A.maxcount, A.cycleday, B.user_id
         FROM schedule_activity as A
         LEFT JOIN record_activity as B on A.id = B.schedule_id
         LEFT OUTER JOIN activity as C on A.activity_id = C.id
@@ -595,7 +599,8 @@ class scheduler
                 'activityduration' => $row['endtime'] ? substr($row['endtime'], 0, 2) - substr($row['starttime'], 0, 2) : 1,
                 'activityname' => $row['activityname'],
                 'maxcount' => $row['maxcount'],
-                'mincount' => $row['mincount'],
+                'comment' => $row['comment'],
+                'trainer_id' => $row['trainer_id'],
                 'activitycomment' => $row['activitycomment'],
                 'cycleday' => $row['cycleday'],
                 'cycledayname' => $weekday[$row['cycleday']],
@@ -649,16 +654,20 @@ class scheduler
     public static function addScheduleCicle($data)
     {
         $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
-        if(!$activity) {
-            mysql_query("INSERT INTO activity (activityname) VALUES ('".$data["activityname"]."')") or die(mysql_error());
-            $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
-        };
         $activity = mysql_fetch_array($activity_query);
+        if(empty($activity)) {
+            $activity_insert = mysql_query("INSERT INTO activity (activityname) VALUES ('".$data["activityname"]."')") or die(mysql_error());
+            if($activity_insert) {
+                $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
+                $activity = mysql_fetch_array($activity_query);
+            }
+            else exit(array('result'=>1, 'message'=>'Error insert activity!'));
+        };
         $demand = "
             INSERT INTO schedule_activity 
-            (activity_id,trainer_id,starttime,endtime,cycleday,maxcount,mincount)
+            (activity_id,trainer_id,starttime,endtime,cycleday,maxcount,comment)
             VALUES
-            ('".$activity['id']."','".$data["trainer_id"]."','".$data["starttime"]."','".$data["endtime"]."','".$data["cycleday"]."','".$data["maxcount"]."','".$data["mincount"]."')";
+            ('".$activity['id']."','".$data["trainer_id"]."','".$data["starttime"]."','".$data["endtime"]."','".$data["cycleday"]."','".$data["maxcount"]."','".$data["activitycomment"]."')";
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');
         else return array('result'=>1, 'message'=>'Error!');
@@ -667,15 +676,19 @@ class scheduler
     public static function editScheduleCicle($data)
     {
         $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
-        if(!$activity) {
-            mysql_query("INSERT INTO activity (activityname) VALUES ('".$data["activityname"]."')") or die(mysql_error());
-            $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
-        };
         $activity = mysql_fetch_array($activity_query);
+        if(empty($activity)) {
+            $activity_insert = mysql_query("INSERT INTO activity (activityname) VALUES ('".$data["activityname"]."')") or die(mysql_error());
+            if($activity_insert) {
+                $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
+                $activity = mysql_fetch_array($activity_query);
+            }
+            else exit(array('result'=>1, 'message'=>'Error insert activity!'));
+        };
         $demand = "
             UPDATE schedule_activity SET
             activity_id = '".$activity['id']."',trainer_id = '".$data["trainer_id"]."',starttime = '".$data["starttime"]."',endtime = '".$data["endtime"]."',
-            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."',mincount = '".$data["mincount"]."'
+            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."',comment = '".$data["comment"]."'
             WHERE id=".$data['schedule_id'];
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');
