@@ -23,11 +23,11 @@ class scheduler
                 }
             }
         }*/
-        if (empty($data['phone']) or empty($data['username'])) return 0; // решить!!!
+        if (empty($data['phone']) or empty($data['name'])) return 0; // решить!!!
         //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
         foreach (array_keys($data) as $key) {
-            if (!in_array($key, ['phone', 'username', 'surname', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'name', 'last_name', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
@@ -130,7 +130,7 @@ class scheduler
         if($data['phone'])$data['phone'] = str_replace('-', '', $data['phone']);
         foreach (array_keys($data) as $key) {
 
-            if (!in_array($key, ['phone', 'name', 'user_id', 'schedule_id', 'activity_id', 'activitydate', 'starttime', 'recordcomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'name', 'last_name', 'cnt', 'user_id', 'schedule_id', 'activity_id', 'activitydate', 'starttime', 'recordcomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
@@ -152,7 +152,7 @@ class scheduler
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
         else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-        select ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname
+        select ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.name,u.last_name,ra.id,u.email,u.ip,u.usercomment,a.activityname
         from record_activity as ra
         left outer join users as u on ra.user_id = u.id
         left outer join schedule_activity as sa on ra.schedule_id = sa.id
@@ -172,10 +172,10 @@ class scheduler
                     'num' => $i,
                     'activitydate' => $row['activitydate'],
                     'starttime' => $row['starttime'],
-                    'username' => $row['username'] ? $row['username'] : '',
+                    'name' => $row['name'] ? $row['name'] : '',
                     'phone' => $row['phone'],
                     'activityname' => $row['activityname'] ? $row['activityname'] : '',
-                    'surname' => $row['surname'] ? $row['surname'] : '',
+                    'last_name' => $row['last_name'] ? $row['last_name'] : '',
                     'email' => [$row['email']],
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
@@ -200,7 +200,7 @@ class scheduler
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d',strtotime("-1 month")) . '" AND "' . date('Y-m-d') . '"';
         else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname
+            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.name,u.last_name,ra.id,u.email,u.ip,u.usercomment,a.activityname
             FROM record_activity AS ra
             LEFT OUTER JOIN users AS u ON ra.user_id = u.id
             LEFT OUTER JOIN schedule_activity AS sa ON ra.schedule_id = sa.id
@@ -220,10 +220,10 @@ class scheduler
                     'num' => $i,
                     'activitydate' => $row['activitydate'],
                     'starttime' => $row['starttime'],
-                    'username' => $row['username'] ? $row['username'] : '',
+                    'name' => $row['name'] ? $row['name'] : '',
                     'phone' => $row['phone'],
                     'activityname' => $row['activityname'] ? $row['activityname'] : '',
-                    'surname' => $row['surname'] ? $row['surname'] : '',
+                    'last_name' => $row['last_name'] ? $row['last_name'] : '',
                     'email' => [$row['email']],
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
@@ -247,7 +247,7 @@ class scheduler
         $query = "
         select * from users
         where deleted IS NULL
-        order by username ;";
+        order by name ;";
         //echo $query;
         $res = mysql_query($query) or die();
 
@@ -258,9 +258,9 @@ class scheduler
                 $row_data = [
                     'user_id' => $row['id'],
                     'num' => $i,
-                    'username' => $row['username'] ? $row['username'] : '',
+                    'name' => $row['name'] ? $row['name'] : '',
                     'phone' => $row['phone'],
-                    'surname' => $row['surname'] ? $row['surname'] : ''
+                    'last_name' => $row['last_name'] ? $row['last_name'] : ''
                 ];
                 $data['data'][] = $row_data;
                 $i++;
@@ -295,9 +295,9 @@ class scheduler
     public static function getUsersRecords($date)
     {
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
-        else $between = "ra.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
+        else $between = "ra.activitydate = '$date'";//BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,ra.name,ra.phone
+        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,ra.name,ra.phone,ra.cnt
         from
         record_activity as ra
         where ra.deleted IS NULL AND " . $between . "
@@ -314,6 +314,7 @@ class scheduler
                     'starttime' => $row['starttime'],
                     'activitydate' => $row['activitydate'],
                     'name' => $row['name'],
+                    'cnt' => $row['cnt'],
                     'phone' => [$row['phone']]
 
                 ];
@@ -332,29 +333,41 @@ class scheduler
 
         if (!$adm) {
             $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
-
             $date = self::sqlInjection($date);
+
+		    if (!strlen($date)) {
+		    	$date = date("Y-m-d");
+			}
+			list($year,$month,$day) = explode("-", $date);
+			$datetime = mktime(0, 0, 0, $month, $day, $year);
+
+            $weekday = date('N', $datetime);
 
             $users = self::getUsersRecords($date);
 
-            $cicle = self::getScheduleCicle([]);
-
-            $n = 1;
+            $cicle = self::getScheduleCicle(['cycleday' => $weekday]);
+//            print_r($cicle);die();
+            /*$n = 1;
             $wd = date('w', mktime(0, 0, 0,  (int)substr($date, 5, 2), $n, (int)substr($date, 0, 4)));
             for ($wd; $wd <= 7; $wd++) {
                 $date = substr($date, 0, 4) . '-' . substr($date, 5, 2) . '-' . ($n <= 9 ? '0' . $n : $n);
-                if (isset($cicle[$wd])) {
-                    $data[$date] = $cicle[$wd];
+                if (isset($cicle[$wd])) {*/
+                    $data[$date] = $cicle[$weekday];
 
-                    foreach (array_keys($cicle[$wd]) as $time) {
+                    foreach (array_keys($cicle[$weekday]) as $time) {
                         $data[$date][$time]['activitydate'] = $date;
                         if ($users[$date][$time]) {
                             $u = [];
-                            foreach ($users[$date][$time] as $val)//добавить проверку привязки по ид
-                                $u[] = [$val['name'] , $val['record_id']];
-                            $data[$date][$time]['username'] = $u;
+                            $cnt = 0;
+                            foreach ($users[$date][$time] as $val) {//добавить проверку привязки по ид
+                                $u[] = ["name" => $val['name'] . ($val['cnt'] > 1 ? " + ".($val['cnt']-1) : "") , "id" => $val['record_id']];
+                                $cnt += $val['cnt'];
+                            }
+                            //$data[$date][$time]['name'] = $u;
+                            $data[$date][$time]['registered'] = $u;
+                            $data[$date][$time]['registered_count'] = $cnt;
                         }
-                    }
+                    }/*
                 } else {
                     $data[$date] = [];
                 }
@@ -362,7 +375,8 @@ class scheduler
                     $wd = 0;
                 $n++;
 
-            }
+            }*/
+            return $data;
             $between = "sa.activitydate BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . $number . "'";
         } else {
             $users = self::getUsersRecords('');
@@ -374,16 +388,16 @@ class scheduler
         if($d['del']) $del = 'sa.deleted = 1';
         else $del = 'sa.deleted IS NULL';
         $query = "
-        select  sa.id,sa.activity_id,sa.trainer_id,sa.starttime,endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,username  from
+        select  sa.id,sa.activity_id,sa.trainer_id,sa.starttime,endtime,sa.activityduration,sa.activitydate,activityname,activitycomment,sa.mincount,sa.maxcount,ra.name, ra.cnt from
         schedule_activity as sa
         left outer join activity as a on sa.activity_id = a.id
         left outer join record_activity as ra on sa.id = ra.schedule_id
         left outer join users as u on ra.user_id = u.id
         where ".$del." AND " . $between . " AND (cycleday = 0 OR cycleday IS NULL)
         order by sa.starttime;";
-
-       // print_r($query);
+        
         $res = mysql_query($query) or die(mysql_error());
+//        die($query);
         if ($res) {
             $i = 1;
             $row_data = [];
@@ -401,8 +415,8 @@ class scheduler
                 $u = [];
                 if ($users[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)]) {
                     foreach ($users[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)] as $val)
-                        $u[] = [$val['username'] . ' ' . $val['surname'], $val['record_id']];
-                    $data[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)]['username'] = $u;
+                        $u[] = [$val['name'], $val['record_id']];
+                    $data[$row['activitydate']][substr($row['starttime'], 0, 2) . substr($row['starttime'], 3, 2)]['name'] = $u;
                 }
                 $row_data = [
                     'id' => $row['id'],
@@ -418,7 +432,7 @@ class scheduler
                     'mincount' => $row['mincount'],
                     'activitycomment' => $row['activitycomment'],
                     'cycleday' => $row['cycleday'],
-                    'username' => $u
+                    'name' => $u
                 ];
                 $i++;
             }
@@ -464,9 +478,9 @@ class scheduler
                 if ($users[$d][$worktime]) {
                     $u = array();
                     foreach ($users[$d][$worktime] as $key => $val) {
-                        $u[] = $val['username'] . ' ' . $val['surname'];
+                        $u[] = $val['name'] . ' ' . $val['last_name'];
                     }
-                    $data[$d][$worktime.'00']['username'] = $u;
+                    $data[$d][$worktime.'00']['name'] = $u;
                 }
                 $worktime--;
             }
@@ -495,7 +509,7 @@ class scheduler
         AND (ra.id IS NULL or (ra.id IS not null and ra.deleted IS NULL /*and ra.activitydate>=CURDATE()*/))
         group by sa.id
         order by cycleday,sa.starttime " . $limit . ";";
-
+        //die($query);
         $res = mysql_query($query) or die(mysql_error());
         $data = [];
         $array_row_data = [];
@@ -506,13 +520,7 @@ class scheduler
                 //echo '<pre>'; print_r($row);
                 $row['starttime'] = substr($row['starttime'], 0, -3);
                 $row['endtime'] = substr($row['endtime'], 0, -3);
-                if (($d['cycleday'] > -1 or $d['start'] > -1) and $row_data) {
-                    $starttime = $row['starttime'];
-                    if ($row_data['starttime'] == $starttime) $row_data['dots'] = 'deact';
-                    $data['data'][] = $row_data;
-                } elseif ($row_data) {
-                    $data[$row_data['cycleday']][substr($row_data['starttime'], 0, 2) . substr($row_data['starttime'], 3, 2)] = $row_data;
-                }
+
                 $row_data = [
                     'num' => $i,
                     'dots' => '',
@@ -530,14 +538,16 @@ class scheduler
                     'haverec' => ($row['user_id']>0?1:0)
                 ];
 
+                $data[$row_data['cycleday']][substr($row_data['starttime'], 0, 2) . substr($row_data['starttime'], 3, 2)] = $row_data;
+
                 $i++;
             }
 
-            if (($d['cycleday'] > -1 or $d['start'] > -1) and $row_data) {
+/*            if (($d['cycleday'] > -1 or $d['start'] > -1) and $row_data) {
                 $data['data'][] = $row_data;
-            } elseif ($row_data) {
-                $data[$row_data['cycleday']][substr($row_data['starttime'], 0, 2) . substr($row_data['starttime'], 3, 2)] = $row_data;
-            }
+            } elseif ($row_data) {*/
+//                $data[$row_data['cycleday']][substr($row_data['starttime'], 0, 2) . substr($row_data['starttime'], 3, 2)] = $row_data;
+//            }
         }
         if ($d['start'] == 0) {
             $data['total_count'] = mysql_fetch_row(mysql_query("

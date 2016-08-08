@@ -7,15 +7,15 @@ while ($s = fgets($fcfg)) {
  $value = trim($value, " \"\t\n\r\0\x0B");
  $config[$key] = $value;
 };
-fclose($fcfg);*/
+fclose($fcfg);
 
 /**/
+/**/
 
-$config['db_host'] = "127.0.0.1";
+$config['db_host'] = "localhost";
 $config['db_user'] = "root";
 $config['db_password'] = "";
-$config['db_schema'] = "levelup76";
-
+$config['db_schema'] = "levelup";
 
 $db = mysql_connect($config['db_host'],$config['db_user'],$config['db_password']);
 if (!$db) die(mysql_error());
