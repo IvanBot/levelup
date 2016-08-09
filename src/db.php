@@ -12,9 +12,9 @@ fclose($fcfg);
 /**/
 /**/
 
-$config['db_host'] = "localhost";
+$config['db_host'] = "192.168.137.137";
 $config['db_user'] = "root";
-$config['db_password'] = "";
+$config['db_password'] = "kuravaza42";
 $config['db_schema'] = "levelup";
 
 $db = mysql_connect($config['db_host'],$config['db_user'],$config['db_password']);

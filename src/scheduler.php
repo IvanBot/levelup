@@ -28,14 +28,14 @@ class scheduler
         if (empty($data['phone'])) return ["result"=>2, "message"=>"Введите телефон"]; // есть!!!
         //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
-        $data['username'] = $data['name'];
-        $data['surname'] = $data['last_name'];
-        $demand_check = "SELECT id FROM users WHERE username='".$data['username']."' AND surname='".$data['surname']."' ";
-        $result = mysql_query($demand_check) or die(mysql_query());
+//        $data['username'] = $data['name'];
+//        $data['surname'] = $data['last_name'];
+        $demand_check = "SELECT id FROM users WHERE name='".$data['name']."' AND last_name='".$data['last_name']."' ";
+        $result = mysql_query($demand_check) or die(mysql_error());
         $user_check = mysql_fetch_array($result);
         if(!empty($user_check)) return $user_check['id'];
         foreach (array_keys($data) as $key) {
-            if (!in_array($key, ['phone', 'username', 'surname', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'name', 'last_name', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
@@ -247,7 +247,7 @@ class scheduler
         if (!$date) $between = 'ra.activitydate = "'.date('Y-m-d') .'" ';
         else $between = "ra.activitydate = '".$date."' ";
         $query = "
-            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname,ra.cnt
+            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.name,u.last_name,ra.id,u.email,u.ip,u.usercomment,a.activityname,ra.cnt
             FROM record_activity AS ra
             LEFT OUTER JOIN users AS u ON ra.user_id = u.id
             LEFT OUTER JOIN schedule_activity AS sa ON ra.schedule_id = sa.id
@@ -267,7 +267,7 @@ class scheduler
                     'num' => $i,
                     'activitydate' => $row['activitydate'],
                     'starttime' => $row['starttime'],
-                    'name' => $row['username'] ? $row['username'] : '',
+                    'name' => $row['name'] ? $row['last_name'] : '',
                     'phone' => $row['phone'],
                     'activityname' => $row['activityname'] ? $row['activityname'] : '',
                     'last_name' => $row['surname'] ? $row['surname'] : '',
@@ -275,7 +275,7 @@ class scheduler
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
                     'cnt' => $row['cnt'],
-                    'username' => ($row['username'] ? $row['username'] : '')." ".($row['surname'] ? $row['surname'] : '')
+                    'username' => ($row['name'] ? $row['name'] : '')." ".($row['last_name'] ? $row['last_name'] : '')
 
                 ];
                 $data['data'][] = $row_data;
@@ -635,7 +635,7 @@ class scheduler
         else $limit = "";
 
         $query =   "
-        SELECT  A.id, A.activity_id, A.trainer_id, A.starttime, A.endtime, A.activityduration, A.activitydate, activityname, activitycomment, A.comment, A.maxcount, A.cycleday, B.user_id
+        SELECT  A.id, A.activity_id, A.trainer_id, A.starttime, A.endtime, A.activityduration, A.activitydate, activityname, activitycomment,A.maxcount, A.cycleday, B.user_id
         FROM schedule_activity as A
         LEFT JOIN record_activity as B on A.id = B.schedule_id
         LEFT OUTER JOIN activity as C on A.activity_id = C.id

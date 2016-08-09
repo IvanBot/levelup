@@ -118,6 +118,7 @@ $(function () {
                         $('#inputName').addClass('done');
                         $('#inputCount').addClass('done');
                         $('#inputLastname').addClass('done');
+                        $('#record').addClass('hidden');
                         setTimeout(function(){
                             $('.done.error_name').addClass('hidden');
                             $('#inputPhone').removeClass('done');
