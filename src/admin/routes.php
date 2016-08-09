@@ -23,6 +23,12 @@ $app->get('/admin/delScheduleCicle', function ($request, $response, $args) {
 $app->get('/admin/getSchedule', function ($request, $response, $args) {
   return json_encode(scheduler::getSchedule($args));
 });
+$app->get('/admin/delRecord', function ($request, $response, $args) {
+  return json_encode(scheduler::delRecordById($_GET));
+});
+$app->get('/admin/editRecord', function ($request, $response, $args) {
+  return json_encode(scheduler::editRecord($_GET));
+});
 
 
 /*if ($_POST['delUsers'] > 0) //?delUsers=1&user_id=1

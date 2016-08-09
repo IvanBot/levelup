@@ -32,16 +32,16 @@ if (webix.storage.cookie.get("token")) var menu = {
                 {id: "day7", value: "ВС"}
             ]
         },
-        {id: "days_custom", value: "Дополнительные занятия", icon: 'calendar-o'},
-        {
+        /*{id: "days_custom", value: "Дополнительные занятия", icon: 'calendar-o'},*/
+        /*{
             id: "clients", value: "Клиенты", icon: 'group',
-            data: [
-                {id: "record_users", value: "Запись на занятия"},
-                {id: "users", value: "Контакты клиентов"}
+            data: [*/
+                { id: "record_users", value: "Запись на занятия", icon: 'group' },
+                /*{id: "users", value: "Контакты клиентов"}
             ]
-        },
-        {id: "trener", value: "Тренеры", icon: 'child'},
-        {id: "activity", value: "Занятия", icon: 'bicycle'}
+        },*/
+        /*{id: "trener", value: "Тренеры", icon: 'child'},
+        {id: "activity", value: "Занятия", icon: 'bicycle'}*/
     ],
     on: {
         onAfterSelect: function (id) {
@@ -136,8 +136,8 @@ var ui = {
 webix.ready(function () {
     webix.ui.fullScreen();
     webix.ui(ui);
-    $$("$sidebar1").select("days_custom");
-    $$("$sidebar1").callEvent("onAfterSelect", ["days_custom"]);
+    $$("$sidebar1").select("record_users");
+    $$("$sidebar1").callEvent("onAfterSelect", ["record_users"]);
     setInterval(function () {
         if (token_flag == 0) {
             login();

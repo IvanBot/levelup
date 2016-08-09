@@ -721,72 +721,122 @@ function record_date(){
     $$("record_users_datatable").showProgress({type: "icon", hide: true});
     $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1&date="+sd1);
 };
+function new_record(){
+    var form_order = {
+        view: "form",
+        borderless: true,
+        elements: [
+            { id:"new_rec_name", name:"new_rec_name", view:"text", label:"Имя", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите имя" },
+            { id:"new_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите фамилию" },
+            { id:"new_rec_phone", name:"new_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите телефон" },
+            {
+                id:"new_rec_count", view:"richselect", label:"Количество человек", labelWidth:170, labelAlign:"right", labelPosition:"left", value:1,
+                options:[
+                    { id:1 },
+                    { id:2 },
+                    { id:3 },
+                    { id:4 },
+                    { id:5 },
+                    { id:6 },
+                    { id:7 },
+                    { id:8 },
+                    { id:9 },
+                    { id:10 }
+                ]
+            },
+            {
+                cols: [
+                    {},
+                    {
+                        view: "button", value: "Сохранить", hotkey: "enter",
+                        click: function () {
+                            if ($$("new_rec_name").getParentView().validate() ) {
+                                var d = {};
+                                d['name'] = $$("new_rec_name").getValue();
+                                d['surname'] = $$("new_rec_surname").getValue();
+                                d['phone'] = $$("new_rec_phone").getValue();
+                                d['count'] = $$("new_rec_count").getValue();
+                                var sd = $$("record_date").getValue();
+                                var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
+                                var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
+                                d['date'] = sd.getFullYear()+"-"+m+"-"+day;
+                                webix.ajax().get("/admin/addRecord", d, function(text){
+                                    txt = JSON.parse(text);
+                                    if(txt.result==0) webix.message(txt.message);
+                                    else webix.message({type:"error", text:txt.message});
+                                    $$("win_order").getTopParentView().hide();
+                                    $$("record_users_datatable").clearAll();
+                                    $$("record_users_datatable").showProgress({type: "icon", hide: true});
+                                    $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1&date="+d['date']);
+                                });
+                            } else webix.message({type:"error", text:"Введите имя и телефон!"});
+                        }
+                    },
+                    {
+                        view: "button", value: "Отмена",
+                        click: function () {
+                            $$("win_order").getTopParentView().hide();
+                        }
+                    },
+                    {}
+                ]
+            }
+        ],
+        rules: {
+            "new_rec_name":webix.rules.isNotEmpty,
+            "new_rec_phone":webix.rules.isNotEmpty
+        },
+        elementsConfig: {
+            labelPosition: "top",
+        }
+    };
+
+    webix.ui({
+        view: "window",
+        id: "win_order",
+        width: 400,
+        position: "center",
+        modal: true,
+        head: "Добавить запись на занятие",
+        body: webix.copy(form_order)
+    });
+
+    function showForm_order(winId, node) {
+        $$(winId).getBody().clear();
+        $$(winId).show(node);
+        $$(winId).getBody().focus();
+    };
+
+    showForm_order("win_order");
+};
 function edit_record(){
     var edit_record = $$("record_users_datatable").getSelectedItem();
     if (!edit_record) {
         webix.message({type: "error", text: "Выберите запись!"});
         return;
     }
-
     var edit_record_item = {
         view: "form",
         borderless: true,
         elements: [
+            { id:"edit_rec_name", view:"text", label:"Имя", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.name },
+            { id:"edit_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.last_name },
+            { id:"edit_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.phone },
             {
-                cols: [
-                    {
-                        rows:[
-                            { template: "Общее", type: "section" },
-                            {
-                                rows:[
-                                    { id:"edit_def_name", view:"text", label:"Название тренировки", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.activityname },
-                                    {
-                                        id:"edit_def_trainer", view:"richselect", label:"Выбор тренера", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.trainer_id,
-                                        options: [
-                                            {id: 1, value: "Бобруйченко"},
-                                            {id: 2, value: "Мохнатов"}
-                                        ]
-                                    },
-                                    {
-                                        id:"edit_def_max", view:"counter", label:"Число участников", labelWidth:170, labelAlign:"right", labelPosition:"left", min:1, value:edit_record.maxcount,
-                                        on:{
-                                            onChange:function(){
-                                                if(isNaN($$('add_def_max').getValue())) $$('add_def_max').setValue("1");
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    { width:30 },
-                    {
-                        rows:[
-                            { template: "День и время", type: "section" },
-                            {
-                                rows:[
-                                    { id: 'edit_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_record.starttime, label:"Начало", labelWidth:120, labelAlign:"right", labelPosition:"left" },
-                                    { id: 'edit_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_record.endtime, label:"Окончание", labelWidth:120, labelAlign:"right", labelPosition:"left" },
-                                    {
-                                        id:"edit_def_weekday", view:"richselect", labelPosition:"left", value:edit_record.cycleday, label:"День недели", labelWidth:120, labelAlign:"right",
-                                        options: [
-                                            {id: 1, value: "Понедельник"},
-                                            {id: 2, value: "Вторник"},
-                                            {id: 3, value: "Среда"},
-                                            {id: 4, value: "Четверг"},
-                                            {id: 5, value: "Пятница"},
-                                            {id: 6, value: "Суббота"},
-                                            {id: 7, value: "Воскресенье"}
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    }
+                id:"edit_rec_count", view:"richselect", label:"Количество человек", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.cnt,
+                options:[
+                    { id:1 },
+                    { id:2 },
+                    { id:3 },
+                    { id:4 },
+                    { id:5 },
+                    { id:6 },
+                    { id:7 },
+                    { id:8 },
+                    { id:9 },
+                    { id:10 }
                 ]
             },
-            { template:"<center>Комментарий</center>", type:"clean", height:25 },
-            { id:"edit_def_comment", view:"textarea", height:150, labelPosition:"top", value:edit_record.comment },
             {
                 cols: [
                     {},
@@ -794,43 +844,31 @@ function edit_record(){
                         view: "button", value: "Сохранить", hotkey: "enter",
                         click: function () {
                             var d = {};
-                            d['schedule_id'] = edit_record.id;
-                            d['activity_id'] = edit_record.activity_id;
-                            d['activityname'] = $$("edit_def_name").getValue();
-                            d['trainer_id'] = $$("edit_def_trainer").getValue();
-                            d['comment'] = $$("edit_def_comment").getValue();
-                            d['starttime'] = $$("edit_def_time_start").getValue();
-                            d['endtime'] = $$("edit_def_time_end").getValue();
-                            d['cycleday'] = $$("edit_def_weekday").getValue();
-                            d['maxcount'] = $$("edit_def_max").getValue();
-                            if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
-                            if (!d['starttime'])webix.message({
-                                type: "error",
-                                text: "Введите время начала тренировки"
+                            d['id'] = edit_record.record_id;
+                            d['user_id'] = edit_record.user_id;
+                            d['name'] = $$("edit_rec_name").getValue();
+                            d['last_name'] = $$("edit_rec_surname").getValue();
+                            d['phone'] = $$("edit_rec_phone").getValue();
+                            d['cnt'] = $$("edit_rec_count").getValue();
+                            var sd = $$("record_date").getValue();
+                            var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
+                            var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
+                            d['date'] = sd.getFullYear()+"-"+m+"-"+day;
+                            webix.ajax().get("/admin/editRecord", d, function(text){
+                                txt = JSON.parse(text);
+                                if(txt.result==0) webix.message(txt.message);
+                                else webix.message({type:"error", text:txt.message});
+                                $$("edit_rec_name").getTopParentView().hide();
+                                $$("record_users_datatable").clearAll();
+                                $$("record_users_datatable").showProgress({type: "icon", hide: true});
+                                $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1&date="+d['date']);
                             });
-                            if (!d['cycleday'])webix.message({type: "error", text: "Выберите день недели"});
-                            if (d['activityname'] && d['starttime']) {
-                                webix.ajax().get("/admin/editScheduleCicle", d, function(text){
-                                    txt = JSON.parse(text);
-                                    if(txt.result==0) webix.message(txt.message);
-                                    else webix.message({type:"error", text:txt.message});
-                                    $$("win_edit_custom_day").getTopParentView().hide();
-                                    $$("activity_datatable" + d['cycleday']).clearAll();
-                                    $$("activity_datatable" + d['cycleday']).showProgress({type: "icon", hide: true});
-                                    $$("activity_datatable" + d['cycleday']).load("/admin/getScheduleCicle?cycleday=" + d['cycleday']);
-                                    if (day != d['cycleday']) {
-                                        $$("activity_datatable" + day).clearAll();
-                                        $$("activity_datatable" + day).showProgress({type: "icon", hide: true});
-                                        $$("activity_datatable" + day).load("/admin/getScheduleCicle?cycleday=" + day);
-                                    }
-                                });
-                            }
                         }
                     },
                     {
                         view: "button", value: "Отмена",
                         click: function () {
-                            $$("win_edit_custom_day").getTopParentView().hide();
+                            $$("edit_rec_name").getTopParentView().hide();
                         }
                     },
                     {}
@@ -845,7 +883,7 @@ function edit_record(){
     webix.ui({
         view: "window",
         id: "win_edit_custom_day",
-        width: 810,
+        width: 400,
         position: "center",
         modal: true,
         head: "Редактировать запись на занятие",
@@ -882,11 +920,18 @@ function delete_record() {
                             d['record_id'] = delete_user_var.record_id;
                             d['delRecord'] = 1;
                             if (d['record_id'] > 0) {
-                                webix.ajax().get("../routes.php", d);
-                                $$("win_delete_user").getTopParentView().hide();
-                                $$("record_users_datatable").clearAll();
-                                $$("record_users_datatable").showProgress({type: "icon", hide: true});
-                                $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1");
+                                webix.ajax().get("/admin/delRecord?adm=1", d, function(text){
+                                    text = JSON.parse(text);
+                                    if(text.result!=0) {
+                                        webix.message(text.message);
+                                    }
+                                    else {
+                                        $$("win_delete_user").getTopParentView().hide();
+                                        $$("record_users_datatable").clearAll();
+                                        $$("record_users_datatable").showProgress({type: "icon", hide: true});
+                                        $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1");
+                                    };
+                                });
                             }
                         }
                     },
@@ -1014,10 +1059,10 @@ var call_custom_filter = {
 var record_filter = {
     type: "space",
     cols: [
-        //{view: "button", type: "iconButton", icon: 'clock-o', width: 120, label: "Добавить", click: new_user},
-        { view: "button",  type: "iconButton", icon: "pencil", width: 160, label: "Редактировать", click:edit_record },
-        { view: "button", type: "iconButton", icon: "remove", width: 115, label: "Удалить", click:delete_record },
-        { view: "button", type: "iconButton", icon: "refresh", width: 38, label: "", click:refresh_record },
+        { view:"button", type:"iconButton", icon:'clock-o', width:120, label:"Добавить", click:new_record },
+        { view:"button",  type:"iconButton", icon:"pencil", width:160, label:"Редактировать", click:edit_record },
+        { view:"button", type:"iconButton", icon:"remove", width:115, label:"Удалить", click:delete_record },
+        { view:"button", type:"iconButton", icon:"refresh", width:38, label:"", click:refresh_record },
         {},
         { id:"record_date", view:"datepicker", width:190, label:'Дата', labelWidth:50, format:"%d-%m-%Y", value:new Date(), on:{onchange:record_date} }
     ]
@@ -1148,13 +1193,13 @@ var record_users = {        //Запись на занятия
                     css: "my_style",
                     select: "row",
                     columns: [
-                        { id: "num", header: "", width: 50, css: {"text-align": "right"} },
-                        { id: "activitydate", header: "Дата", width: 100, css: {"text-align": "left"} },
-                        { id: "starttime", header: "Начало", width: 70, css: {"text-align": "left"}, template: starttime },
-                        { id: "username", header: [{text: "Имя"}], width: 200 },
+                        { id: "num", header: "", width: 40, css: {"text-align": "right"} },
+                        //{ id: "activitydate", header: "Дата", width: 100, css: {"text-align": "left"} },
+                        { id: "starttime", header: "Начало", width: 90, css: {"text-align": "left"}, template: starttime },
+                        { id: "username", header: [{text: "ФИО"}], width: 200 },
                         { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" },
-                        { id: "activityname", header: [{text: "Название тренировки"}], width: 150, },
-                        { id: "usercomment", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
+                        { id: "cnt", header: [{text: "Количество"}], width: 150, },
+                        //{ id: "usercomment", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
                     ],
                     url: "/admin/getAdmUsersRecords?&adm=1",
                     ready: function () {

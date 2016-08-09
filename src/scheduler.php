@@ -121,6 +121,21 @@ class scheduler
         }
     }
 
+    public static function editRecord($data)
+    {
+        if (isset($data['id'])) {
+            $demand_user = "UPDATE users SET username='".$data['name']."', surname='".$data['last_name']."', phone='".$data['phone']."' WHERE id=".$data['user_id'];
+            $result_user = mysql_query($demand_user) or die(mysql_error());
+            if(!$result_user) return ["result"=>1, "message"=>"Данные пользователя не отредактированы!"];
+
+            $demand = "UPDATE record_activity SET phone='".$data['phone']."', cnt='".$data['cnt']."' WHERE id=".$data['id'];
+            $result = mysql_query($demand) or die(mysql_error());
+            if($result) return ["result"=>0, "message"=>"Запись удачно отредактирована!"];
+            else return ["result"=>1, "message"=>"Запись не отредактирована!"];
+        }
+        else return ["result"=>1, "message"=>"Отсутствует id!"];
+    }
+
     public static function delRecord($data)
     {
         if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
@@ -210,7 +225,7 @@ class scheduler
         if (!$date) $between = 'ra.activitydate = "'.date('Y-m-d') .'" ';
         else $between = "ra.activitydate = '".$date."' ";
         $query = "
-            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname
+            SELECT ra.id,ra.user_id,ra.schedule_id,sa.activity_id,ra.activitydate,ra.starttime,ra.recordcomment,u.phone,u.username,u.surname,ra.id,u.email,u.ip,u.usercomment,a.activityname,ra.cnt
             FROM record_activity AS ra
             LEFT OUTER JOIN users AS u ON ra.user_id = u.id
             LEFT OUTER JOIN schedule_activity AS sa ON ra.schedule_id = sa.id
@@ -237,7 +252,7 @@ class scheduler
                     'email' => [$row['email']],
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
-                    'usercomment' => $row['usercomment'],
+                    'cnt' => $row['cnt'],
                     'username' => ($row['username'] ? $row['username'] : '')." ".($row['surname'] ? $row['surname'] : '')
 
                 ];
@@ -303,6 +318,18 @@ class scheduler
         $row = mysql_fetch_array($result); //. " AND user_id=".$data['user_id'].";"));
         if(empty($row)) return ["result"=>2, "message"=>"Введен не корректный номер"];
         $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']." AND phone=".$data['phone']; //. " AND user_id=".$data['user_id'].";";
+        $res = mysql_query($query) or die(mysql_error());
+        return ["result"=>0, "message"=>"Запись успешно удалена"];
+    }
+
+    public static function delRecordById($data)
+    {
+        if(empty($data['record_id'])) return ["result"=>1, "message"=>"Отсутствует id записи"];
+        $demand = "SELECT id FROM record_activity WHERE deleted IS NULL AND id=".$data['record_id'];
+        $result = mysql_query($demand) or die(mysql_error());
+        $row = mysql_fetch_array($result); //. " AND user_id=".$data['user_id'].";"));
+        if(empty($row)) return ["result"=>2, "message"=>"Передан некорректный id записи"];
+        $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']; //. " AND user_id=".$data['user_id'].";";
         $res = mysql_query($query) or die(mysql_error());
         return ["result"=>0, "message"=>"Запись успешно удалена"];
     }
