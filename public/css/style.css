@@ -767,12 +767,20 @@ input.error {
     box-shadow: 0 2px 10px rgba(201, 113, 178, 1);
 }
 
+select.error {
+    box-shadow: 0 2px 10px rgba(201, 113, 178, 1);
+}
+
 p.done {
     font-size: 14px;
     color: green;
 }
 
 input.done {
+    box-shadow: 0 2px 10px green;
+}
+
+select.done {
     box-shadow: 0 2px 10px green;
 }
 

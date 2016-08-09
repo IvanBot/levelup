@@ -71,15 +71,62 @@ $(function () {
                 success: function (data) {
                     //data = JSON.parse(data);
                     if(data['result']==1) {
-                        alert(data['message']);
-                    } else {
-                        loadTimeTable($('#schedule_date').val());
-                        $('#formx')[0].reset();
-                        $('.error.error_name').addClass('hidden');
+                        $('.error.error_name').removeClass('hidden');
+                        $('#inputName').addClass('error');
                         $('.error.error_userphone').addClass('hidden');
                         $('#inputPhone').removeClass('error');
+                        $('.error.error_count').addClass('hidden');
+                        $('#inputCount').removeClass('error');
+                        $('.error.error_error').addClass('hidden');
+                    } else if(data['result']==2) {
+                        $('.error.error_userphone').removeClass('hidden');
+                        $('#inputPhone').addClass('error');
+                        $('.error.error_name').addClass('hidden');
                         $('#inputName').removeClass('error');
-                        $('.close').click();
+                        $('.error.error_count').addClass('hidden');
+                        $('#inputCount').removeClass('error');
+                        $('.error.error_error').addClass('hidden');
+                    } else if(data['result']==3) {
+                        $('.error.error_count').html(data['message']);
+                        $('.error.error_count').removeClass('hidden');
+                        $('#inputCount').addClass('error');
+                        $('.error.error_userphone').addClass('hidden');
+                        $('#inputPhone').removeClass('error');
+                        $('.error.error_name').addClass('hidden');
+                        $('#inputName').removeClass('error');
+                        $('.error.error_error').addClass('hidden');
+                    } else if(data['result']==4) {
+                        $('.error.error_error').removeClass('hidden');
+                        $('.error.error_name').addClass('hidden');
+                        $('#inputName').removeClass('error');
+                        $('.error.error_userphone').addClass('hidden');
+                        $('#inputPhone').removeClass('error');
+                        $('.error.error_count').addClass('hidden');
+                        $('#inputCount').removeClass('error');
+                    } else {
+                        $('.error.error_name').addClass('hidden');
+                        $('.error.error_userphone').addClass('hidden');
+                        $('.error.error_count').addClass('hidden');
+                        $('.error.error_error').addClass('hidden');
+                        $('#inputPhone').removeClass('error');
+                        $('#inputName').removeClass('error');
+                        $('#inputCount').removeClass('error');
+
+                        $('.done.error_name').removeClass('hidden');
+                        $('#inputPhone').addClass('done');
+                        $('#inputName').addClass('done');
+                        $('#inputCount').addClass('done');
+                        $('#inputLastname').addClass('done');
+                        setTimeout(function(){
+                            $('.done.error_name').addClass('hidden');
+                            $('#inputPhone').removeClass('done');
+                            $('#inputName').removeClass('done');
+                            $('#inputCount').removeClass('done');
+                            $('#inputLastname').removeClass('done');
+                            loadTimeTable($('#schedule_date').val());
+                            $('#formx')[0].reset();
+                            $('.close').click();
+                        },3000);
                     };
                 },
                 error: function (xhr, str) {
@@ -122,7 +169,7 @@ $(function () {
                         $('#inputDelPhone').addClass('error');
                     } else {
                         var url = URLToArray(msg);
-                        var badge = $('.selected-tr .badge')[0].innerText;
+                        var badge = $('.selected-tr .badge').innerText;
                         if (badge) {
                             badge = badge.split(': ');
                             badge[1]++;

@@ -25,7 +25,7 @@ class scheduler
         }*/
         //if (empty($data['phone']) or empty($data['name'])) return "error"; // решить!!!
         if (empty($data['name'])) return ["result"=>1, "message"=>"Введите имя"]; // есть!!!
-        if (empty($data['phone'])) return ["result"=>1, "message"=>"Введите телефон"]; // есть!!!
+        if (empty($data['phone'])) return ["result"=>2, "message"=>"Введите телефон"]; // есть!!!
         //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
         $data['username'] = $data['name'];
