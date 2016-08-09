@@ -128,7 +128,7 @@ class scheduler
             $result_user = mysql_query($demand_user) or die(mysql_error());
             if(!$result_user) return ["result"=>1, "message"=>"Данные пользователя не отредактированы!"];
 
-            $demand = "UPDATE record_activity SET phone='".$data['phone']."', cnt='".$data['cnt']."' WHERE id=".$data['id'];
+            $demand = "UPDATE record_activity SET phone='".$data['phone']."', cnt='".$data['cnt']."' , starttime='".$data['time']."' WHERE id=".$data['id'];
             $result = mysql_query($demand) or die(mysql_error());
             if($result) return ["result"=>0, "message"=>"Запись удачно отредактирована!"];
             else return ["result"=>1, "message"=>"Запись не отредактирована!"];
@@ -140,6 +140,28 @@ class scheduler
     {
         if ($data['record_id'] > 0) mysql_query('update record_activity set deleted = 1 where id = ' . $data['record_id']);
         return 1;
+    }
+
+    public static function addRecord($data)
+    {
+        $demand_user = "SELECT id FROM users WHERE username='".$data['name']."' AND surname='".$data['surname']."' AND phone='".$data['phone']."' ";
+        $result_user = mysql_query($demand_user) or die(mysql_error());
+        $user = mysql_fetch_array($result_user);
+        if(empty($user)) {
+            $demand_user = "INSERT INTO users (phone,username,surname,ip) VALUES ('".$data['phone']."','".$data['name']."','".$data['surname']."','".$_SERVER["REMOTE_ADDR"]."') ";
+            $result_user = mysql_query($demand_user) or die(mysql_error());
+            $user_id = mysql_insert_id();
+        }
+        else $user_id = $user['id'];
+        $demand_schedule = "SELECT id FROM schedule_activity WHERE starttime='".$data['time']."' AND activitydate IS NULL AND cycleday='".(date("w",strtotime($data['date']))+1)."'";
+        $result_schedule = mysql_query($demand_schedule);
+        $schedule = mysql_fetch_array($result_schedule);
+        $schedule_id = $schedule['id'];
+
+        $demand = "INSERT INTO record_activity (user_id,schedule_id,activitydate,starttime,`name`,last_name,phone,cnt) VALUES ('".$user_id."','".$schedule_id."','".$data['date']."','".$data['time']."','".$data['name']."','".$data['surname']."','".$data['phone']."','".$data['count']."') ";
+        $result = mysql_query($demand) or die(mysql_error());
+        if(!$result) return ["result"=>1, "message"=>"Ошибка при вставке записи!"];
+        else return ["result"=>0, "message"=>"Запись успешно произведена!"];
     }
 
     public static function setRecord($data)

@@ -722,6 +722,10 @@ function record_date(){
     $$("record_users_datatable").load("/admin/getAdmUsersRecords?adm=1&date="+sd1);
 };
 function new_record(){
+    var sd = $$("record_date").getValue();
+    var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
+    var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
+    var sd1 = sd.getFullYear()+"-"+m+"-"+day;
     var form_order = {
         view: "form",
         borderless: true,
@@ -730,19 +734,19 @@ function new_record(){
             { id:"new_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите фамилию" },
             { id:"new_rec_phone", name:"new_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите телефон" },
             {
+                id:"new_rec_date", view:"richselect", label:"Выбор времени", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Выберите время",
+                options:"/admin/getTimeTable/"+sd1+"?chosetime=1",
+                on:{
+                    onChange:function(){
+                        $$("new_rec_count").define("options","/admin/getTimeTable/"+sd1+"?gettime="+$$("new_rec_date").getValue());
+                        $$("new_rec_count").refresh();
+                    }
+                }
+
+            },
+            {
                 id:"new_rec_count", view:"richselect", label:"Количество человек", labelWidth:170, labelAlign:"right", labelPosition:"left", value:1,
-                options:[
-                    { id:1 },
-                    { id:2 },
-                    { id:3 },
-                    { id:4 },
-                    { id:5 },
-                    { id:6 },
-                    { id:7 },
-                    { id:8 },
-                    { id:9 },
-                    { id:10 }
-                ]
+                options:"/admin/getTimeTable/"+sd1+"?gettime="+edit_record.starttime+"&record_id="+edit_record.record_id
             },
             {
                 cols: [
@@ -756,6 +760,7 @@ function new_record(){
                                 d['surname'] = $$("new_rec_surname").getValue();
                                 d['phone'] = $$("new_rec_phone").getValue();
                                 d['count'] = $$("new_rec_count").getValue();
+                                d['time'] = $$("new_rec_date").getValue();
                                 var sd = $$("record_date").getValue();
                                 var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
                                 var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
@@ -831,7 +836,7 @@ function edit_record(){
                 options:"/admin/getTimeTable/"+sd1+"?chosetime=1",
                 on:{
                     onChange:function(){
-                        $$("edit_rec_count").define("options","/admin/getTimeTable/"+sd1+"?gettime="+$$("edit_rec_date").getValue());
+                        $$("edit_rec_count").define("options","/admin/getTimeTable/"+sd1+"?gettime="+$$("edit_rec_date").getValue()+"&record_id="+edit_record.record_id);
                         $$("edit_rec_count").refresh();
                     }
                 }
@@ -839,7 +844,7 @@ function edit_record(){
             },
             {
                 id:"edit_rec_count", view:"richselect", label:"Количество человек", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.cnt,
-                options:[]
+                options:"/admin/getTimeTable/"+sd1+"?gettime="+edit_record.starttime+"&record_id="+edit_record.record_id
             },
             {
                 cols: [
@@ -854,6 +859,7 @@ function edit_record(){
                             d['last_name'] = $$("edit_rec_surname").getValue();
                             d['phone'] = $$("edit_rec_phone").getValue();
                             d['cnt'] = $$("edit_rec_count").getValue();
+                            d['time'] = $$("edit_rec_date").getValue();
                             var sd = $$("record_date").getValue();
                             var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
                             var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
@@ -1203,7 +1209,7 @@ var record_users = {        //Запись на занятия
                         { id: "username", header: [{text: "ФИО"}], width: 200 },
                         { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" },
                         { id: "cnt", header: [{text: "Количество"}], width: 150, },
-                        //{ id: "usercomment", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
+                        //{ id: "record_id", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
                     ],
                     url: "/admin/getAdmUsersRecords?&adm=1",
                     ready: function () {

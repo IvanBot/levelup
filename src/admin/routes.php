@@ -29,16 +29,25 @@ $app->get('/admin/delRecord', function ($request, $response, $args) {
 $app->get('/admin/editRecord', function ($request, $response, $args) {
   return json_encode(scheduler::editRecord($_GET));
 });
+$app->get('/admin/addRecord', function ($request, $response, $args) {
+  return json_encode(scheduler::addRecord($_GET));
+});
 $app->get('/admin/getTimeTable[/{date}[/]]', function ($request, $response, $args) {
   $timetable = scheduler::getSchedule($args);
   $keys = array_keys($timetable[$args['date']]);
   $date = array_keys($timetable);
   $count = array();
   $arr = array();
+  if(isset($_GET['record_id'])) {
+    $query = mysql_query("SELECT starttime,cnt FROM record_activity WHERE id=".$_GET['record_id']) or die(mysql_error());
+    $current_count = mysql_fetch_array($query);
+  }
+  else $current_count['cnt'] = 0;
+  if($current_count['starttime']!=$_GET['gettime']) $current_count['cnt'] = 0;
   for($i=0; $i<count($keys); $i++) {
     $activity = mysql_fetch_array(mysql_query("SELECT activityname FROM activity WHERE id=".$timetable[$date[0]][$keys[$i]]['activity_id']));
     $time = substr($keys[$i],0,2).":".substr($keys[$i],2,2).":00";
-    $count[$time] = $timetable[$date[0]][$keys[$i]]['maxcount'] - $timetable[$date[0]][$keys[$i]]['registrated_count'];
+    $count[$time] = $timetable[$date[0]][$keys[$i]]['maxcount'] - $timetable[$date[0]][$keys[$i]]['registered_count'] + $current_count['cnt'];
     $row = ["id"=>$time, "value"=>$time.($activity['activityname']!=null?" - ".$activity['activityname']:"")];
     $keys[$i] = $row;
   }
@@ -48,7 +57,6 @@ $app->get('/admin/getTimeTable[/{date}[/]]', function ($request, $response, $arg
       $arr[] = ["id"=>$j, "value"=>$j];
     };
     return json_encode($arr);
-    //return json_encode(["eee"=>$count['15:00:00']]);
   };
 });
 
