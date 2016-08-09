@@ -731,7 +731,7 @@ function new_record(){
         borderless: true,
         elements: [
             { id:"new_rec_name", name:"new_rec_name", view:"text", label:"Имя", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите имя" },
-            { id:"new_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите фамилию" },
+            { id:"new_rec_last_name", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите фамилию" },
             { id:"new_rec_phone", name:"new_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Введите телефон" },
             {
                 id:"new_rec_date", view:"richselect", label:"Выбор времени", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Выберите время",
@@ -757,7 +757,7 @@ function new_record(){
                             if ($$("new_rec_name").getParentView().validate() ) {
                                 var d = {};
                                 d['name'] = $$("new_rec_name").getValue();
-                                d['surname'] = $$("new_rec_surname").getValue();
+                                d['last_name'] = $$("new_rec_last_name").getValue();
                                 d['phone'] = $$("new_rec_phone").getValue();
                                 d['count'] = $$("new_rec_count").getValue();
                                 d['time'] = $$("new_rec_date").getValue();
@@ -829,7 +829,7 @@ function edit_record(){
         borderless: true,
         elements: [
             { id:"edit_rec_name", view:"text", label:"Имя", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.name },
-            { id:"edit_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.last_name },
+            { id:"edit_rec_last_name", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.last_name },
             { id:"edit_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.phone },
             {
                 id:"edit_rec_date", view:"richselect", label:"Выбор времени", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.starttime,
@@ -856,7 +856,7 @@ function edit_record(){
                             d['id'] = edit_record.record_id;
                             d['user_id'] = edit_record.user_id;
                             d['name'] = $$("edit_rec_name").getValue();
-                            d['last_name'] = $$("edit_rec_surname").getValue();
+                            d['last_name'] = $$("edit_rec_last_name").getValue();
                             d['phone'] = $$("edit_rec_phone").getValue();
                             d['cnt'] = $$("edit_rec_count").getValue();
                             d['time'] = $$("edit_rec_date").getValue();
@@ -1206,7 +1206,8 @@ var record_users = {        //Запись на занятия
                         { id: "num", header: "", width: 40, css: {"text-align": "right"} },
                         //{ id: "activitydate", header: "Дата", width: 100, css: {"text-align": "left"} },
                         { id: "starttime", header: "Начало", width: 90, css: {"text-align": "left"}, template: starttime },
-                        { id: "username", header: [{text: "ФИО"}], width: 200 },
+                        { id: "name", header: [{text: "Имя"}], width: 200 },
+                        { id: "last_name", header: [{text: "Фамилия"}], width: 200 },
                         { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" },
                         { id: "cnt", header: [{text: "Количество"}], width: 150, },
                         //{ id: "record_id", header: [{text: "Комментарий к пользователю"}], tooltip: true, width: 400, }
@@ -1240,7 +1241,7 @@ var users = {       //Контакты клиентов
                     select: "row",
                     columns: [
                         { id: "num", header: "", width: 50, css: {"text-align": "right"}, },
-                        { id: "username", header: [{text: "Имя"}], width: 200, template: "#username# #surname#" },
+                        { id: "name", header: [{text: "Имя"}], width: 200, template: "#name# #last_name#" },
                         { id: "phone", header: [{text: "Телефон"}], width: 120, editor: "int" }
                     ],
                     url: "/admin/getUsers?adm=1",

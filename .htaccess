@@ -1,5 +1,5 @@
 #AuthType Basic   
-##BAuthName "Private zone. Only for testing" 
+#AuthName "Private zone. Only for testing" 
 #AuthUserFile /var/www/html_levelup76.beta/.htpasswd   
 #require valid-user
 

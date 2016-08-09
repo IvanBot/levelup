@@ -28,8 +28,8 @@ class scheduler
         if (empty($data['phone'])) return ["result"=>2, "message"=>"Введите телефон"]; // есть!!!
         //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
-//        $data['username'] = $data['name'];
-//        $data['surname'] = $data['last_name'];
+//        $data['name'] = $data['name'];
+//        $data['last_name'] = $data['last_name'];
         $demand_check = "SELECT id FROM users WHERE name='".$data['name']."' AND last_name='".$data['last_name']."' ";
         $result = mysql_query($demand_check) or die(mysql_error());
         $user_check = mysql_fetch_array($result);
@@ -80,7 +80,7 @@ class scheduler
         if ($data['trainer_id'] > 0) mysql_query('update trainers set deleted = 1 where id = ' . $data['trainer_id']);
 
         foreach (array_keys($data) as $key) {
-            if (!in_array($key, ['phone', 'trainername', 'trainersurname', 'experience', 'email', 'photo', 'userpassword', 'permission', 'active', 'trainercomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'trainername', 'trainerlast_name', 'experience', 'email', 'photo', 'userpassword', 'permission', 'active', 'trainercomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
@@ -124,7 +124,7 @@ class scheduler
     public static function editRecord($data)
     {
         if (isset($data['id'])) {
-            $demand_user = "UPDATE users SET username='".$data['name']."', surname='".$data['last_name']."', phone='".$data['phone']."' WHERE id=".$data['user_id'];
+            $demand_user = "UPDATE users SET name='".$data['name']."', last_name='".$data['last_name']."', phone='".$data['phone']."' WHERE id=".$data['user_id'];
             $result_user = mysql_query($demand_user) or die(mysql_error());
             if(!$result_user) return ["result"=>1, "message"=>"Данные пользователя не отредактированы!"];
 
@@ -144,11 +144,11 @@ class scheduler
 
     public static function addRecord($data)
     {
-        $demand_user = "SELECT id FROM users WHERE username='".$data['name']."' AND surname='".$data['surname']."' AND phone='".$data['phone']."' ";
+        $demand_user = "SELECT id FROM users WHERE name='".$data['name']."' AND last_name='".$data['last_name']."' AND phone='".$data['phone']."' ";
         $result_user = mysql_query($demand_user) or die(mysql_error());
         $user = mysql_fetch_array($result_user);
         if(empty($user)) {
-            $demand_user = "INSERT INTO users (phone,username,surname,ip) VALUES ('".$data['phone']."','".$data['name']."','".$data['surname']."','".$_SERVER["REMOTE_ADDR"]."') ";
+            $demand_user = "INSERT INTO users (phone,name,last_name,ip) VALUES ('".$data['phone']."','".$data['name']."','".$data['last_name']."','".$_SERVER["REMOTE_ADDR"]."') ";
             $result_user = mysql_query($demand_user) or die(mysql_error());
             $user_id = mysql_insert_id();
         }
@@ -158,7 +158,7 @@ class scheduler
         $schedule = mysql_fetch_array($result_schedule);
         $schedule_id = $schedule['id'];
 
-        $demand = "INSERT INTO record_activity (user_id,schedule_id,activitydate,starttime,`name`,last_name,phone,cnt) VALUES ('".$user_id."','".$schedule_id."','".$data['date']."','".$data['time']."','".$data['name']."','".$data['surname']."','".$data['phone']."','".$data['count']."') ";
+        $demand = "INSERT INTO record_activity (user_id,schedule_id,activitydate,starttime,`name`,last_name,phone,cnt) VALUES ('".$user_id."','".$schedule_id."','".$data['date']."','".$data['time']."','".$data['name']."','".$data['last_name']."','".$data['phone']."','".$data['count']."') ";
         $result = mysql_query($demand) or die(mysql_error());
         if(!$result) return ["result"=>1, "message"=>"Ошибка при вставке записи!"];
         else return ["result"=>0, "message"=>"Запись успешно произведена!"];
@@ -267,15 +267,15 @@ class scheduler
                     'num' => $i,
                     'activitydate' => $row['activitydate'],
                     'starttime' => $row['starttime'],
-                    'name' => $row['name'] ? $row['last_name'] : '',
+                    'name' => $row['name'] ? $row['name'] : '',
                     'phone' => $row['phone'],
                     'activityname' => $row['activityname'] ? $row['activityname'] : '',
-                    'last_name' => $row['surname'] ? $row['surname'] : '',
+                    'last_name' => $row['last_name'] ? $row['last_name'] : '',
                     'email' => [$row['email']],
                     'ip' => $row['ip'],
                     'cycleday' => $row['cycleday'],
-                    'cnt' => $row['cnt'],
-                    'username' => ($row['name'] ? $row['name'] : '')." ".($row['last_name'] ? $row['last_name'] : '')
+                    'cnt' => $row['cnt']//,
+                    //'name' => ($row['name'] ? $row['name'] : '')." ".($row['last_name'] ? $row['last_name'] : '')
 
                 ];
                 $data['data'][] = $row_data;
