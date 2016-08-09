@@ -96,6 +96,7 @@ $(function () {
                         $('#inputName').removeClass('error');
                         $('.error.error_error').addClass('hidden');
                     } else if(data['result']==4) {
+                        $('.error.error_error').html(data['message']);
                         $('.error.error_error').removeClass('hidden');
                         $('.error.error_name').addClass('hidden');
                         $('#inputName').removeClass('error');
