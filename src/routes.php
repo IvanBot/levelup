@@ -17,8 +17,9 @@ $app->post('/delRecord', function ($request, $response, $args) {
 });
 
 $app->post('/addRecord', function ($request, $response, $args) {
-  if (($_POST['setUser'] > 0 or ($_POST['setUser'] > 0 and $_POST['user_id'])) && !$_POST['user_sess']) {//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
+  if (!$_POST['user_id']) {//?setUser=1&phone=206607-0788&username=Kesha&surname=Popkin&email=ke@popkin.ru&usercomment=Kakadu
     $user_id = scheduler::setUser($_POST);
+    if(is_array($user_id)) return json_encode($user_id);
   } else {
     $user_id = $_POST['user_id'];
   }
@@ -29,8 +30,11 @@ $app->post('/addRecord', function ($request, $response, $args) {
 
     $avaiable = $schedule[$date][$plaintime]["maxcount"] - $schedule[$date][$plaintime]["registered_count"];
 
+  if($avaiable==1) $message_word_place = " место";
+  if($avaiable>1 && $avaiable<5) $message_word_place = " места";
+  if($avaiable>4) $message_word_place = " мест";
     if ($_POST['cnt'] > $avaiable) {
-      $error = "Извините, мы не можем записать на занятие ".$_POST['cnt']." человек, потому что свободно только $avaiable места.\nПожалуйста, уменьшите количество человек.";
+      return json_encode(["result"=>1, "message"=>"Извините, мы не можем записать на занятие ".$_POST['cnt']." человек, потому что свободно только ".$avaiable.$message_word_place.".\nПожалуйста, уменьшите количество человек."]);
     } else {
       $rec_id = '';
 //    if ($_POST['username'] || $_POST['surname']) $_POST['name'] = $_POST['username'].' '.$_POST['surname'];
@@ -40,13 +44,11 @@ $app->post('/addRecord', function ($request, $response, $args) {
           $_POST['schedule_id'] = scheduler::setSchedule(array('activity_id' => 0, 'starttime' => $_POST['schedule_time'], 'activitydate' => $_POST['schedule_date'], 'activityduration' => 1)); // добавим в график занятие
       if ($user_id) {$_POST['user_id'] = $user_id;
 
-      $error = "none";
-    
-      $rec_id = scheduler::setRecord($_POST);}    
-      if ($rec_id <= 0) $error = "Произошла ошибка при сохранении записи. Попробуйте повторить попытку позднее.";
+      $rec_id = scheduler::setRecord($_POST);}
+      if ($rec_id <= 0) return json_encode(["result"=>1, "message"=>"Произошла ошибка при сохранении записи. Попробуйте повторить попытку позднее." ]);
     }
 
-    return json_encode([ "error" => $error ]);
+    return json_encode(["result"=>0, "message"=>"OK" ]);
 });
 
 /*

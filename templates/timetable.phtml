@@ -1,7 +1,7 @@
 <?
 
 $months = [ "Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря" ];
-
+//var_dump($data);
 foreach ($data as $date => $table) { 
 
 list($year,$month,$day) = explode("-", $date);
@@ -32,7 +32,7 @@ if ($avaiable > 0 && $now < $starttime) {
   ?><span class="badge">Свободно: <?=$avaiable?></span><?
 } 
 if(!empty($line['registered'])) foreach ($line['registered'] as $guest) {
-  ?><div id="record_<?=$guest["id"]?>" class="username"><?=$guest["name"]?></div><?
+  ?><div id="record_<?=$guest["id"]?>" class="username"><?=$guest["name"]?><button data-record="<?=$guest["id"]?>" title="Удалить мою запись" type="button" class="close record" data-target=".recdel" data-toggle="modal">×</button></div><?
 }
 ?></td>
 <td id="write_n"><?

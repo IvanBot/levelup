@@ -23,11 +23,19 @@ class scheduler
                 }
             }
         }*/
-        if (empty($data['phone']) or empty($data['name'])) return 0; // решить!!!
+        //if (empty($data['phone']) or empty($data['name'])) return "error"; // решить!!!
+        if (empty($data['name'])) return ["result"=>1, "message"=>"Введите имя"]; // есть!!!
+        if (empty($data['phone'])) return ["result"=>1, "message"=>"Введите телефон"]; // есть!!!
         //if ($data['user_id'] > 0) mysql_query('select * from users where deleted IS NULL and phone=' . $data['user_id']);
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
+        $data['username'] = $data['name'];
+        $data['surname'] = $data['last_name'];
+        $demand_check = "SELECT id FROM users WHERE username='".$data['username']."' AND surname='".$data['surname']."' ";
+        $result = mysql_query($demand_check) or die(mysql_query());
+        $user_check = mysql_fetch_array($result);
+        if(!empty($user_check)) return $user_check['id'];
         foreach (array_keys($data) as $key) {
-            if (!in_array($key, ['phone', 'name', 'last_name', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
+            if (!in_array($key, ['phone', 'username', 'surname', 'ip', 'email', 'userpassword', 'permission', 'usercomment']) or strlen($data[$key]) == 0) {
                 unset($data[$key]);
             } else {
                 $field[] = $key;
@@ -36,7 +44,7 @@ class scheduler
         }
         if ($value and count($data) > 1) {
             $query = "insert into users (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
-            mysql_query($query) or die();
+            mysql_query($query) or die(mysql_error());
             return mysql_insert_id();
         }
     }
@@ -288,11 +296,15 @@ class scheduler
     }
 
     public static function delRecordByPhone($data)
-    {   $row = mysql_fetch_assoc(mysql_query("select * from record_activity where deleted IS NULL AND id =" . $data['record_id'] . " AND user_id=".$data['user_id'].";"));
-        if(!$row) return 0;
-        $query = "update record_activity set deleted = 1 where id =" . $data['record_id'] . " AND user_id=".$data['user_id'].";";
-        $res = mysql_query($query) or die();
-        return 1;
+    {
+        if(empty($data['phone'])) return ["result"=>1, "message"=>"Введите номер"];
+        $demand = "SELECT id FROM record_activity WHERE deleted IS NULL AND id=".$data['record_id']." AND phone=".$data['phone'];
+        $result = mysql_query($demand) or die(mysql_error());
+        $row = mysql_fetch_array($result); //. " AND user_id=".$data['user_id'].";"));
+        if(empty($row)) return ["result"=>2, "message"=>"Введен не корректный номер"];
+        $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']." AND phone=".$data['phone']; //. " AND user_id=".$data['user_id'].";";
+        $res = mysql_query($query) or die(mysql_error());
+        return ["result"=>0, "message"=>"Запись успешно удалена"];
     }
 
     public static function getUsersRecords($date)
@@ -335,7 +347,7 @@ class scheduler
         $data = [];
 
         if (!$adm) {
-            $number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
+            //$number = cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4));
             $date = self::sqlInjection($date);
 
 		    if (!strlen($date)) {
@@ -489,8 +501,8 @@ class scheduler
             }
 
         }*/        
-        var_dump($data);
-        //return $data;
+        //var_dump($data);
+        return $data;
     }
 
     public static function getScheduleCicle($d)
