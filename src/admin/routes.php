@@ -29,6 +29,28 @@ $app->get('/admin/delRecord', function ($request, $response, $args) {
 $app->get('/admin/editRecord', function ($request, $response, $args) {
   return json_encode(scheduler::editRecord($_GET));
 });
+$app->get('/admin/getTimeTable[/{date}[/]]', function ($request, $response, $args) {
+  $timetable = scheduler::getSchedule($args);
+  $keys = array_keys($timetable[$args['date']]);
+  $date = array_keys($timetable);
+  $count = array();
+  $arr = array();
+  for($i=0; $i<count($keys); $i++) {
+    $activity = mysql_fetch_array(mysql_query("SELECT activityname FROM activity WHERE id=".$timetable[$date[0]][$keys[$i]]['activity_id']));
+    $time = substr($keys[$i],0,2).":".substr($keys[$i],2,2).":00";
+    $count[$time] = $timetable[$date[0]][$keys[$i]]['maxcount'] - $timetable[$date[0]][$keys[$i]]['registrated_count'];
+    $row = ["id"=>$time, "value"=>$time.($activity['activityname']!=null?" - ".$activity['activityname']:"")];
+    $keys[$i] = $row;
+  }
+  if($_GET['chosetime']==1) return json_encode($keys);
+  else {
+    for($j=1; $j<=$count[$_GET['gettime']]; $j++) {
+      $arr[] = ["id"=>$j, "value"=>$j];
+    };
+    return json_encode($arr);
+    //return json_encode(["eee"=>$count['15:00:00']]);
+  };
+});
 
 
 /*if ($_POST['delUsers'] > 0) //?delUsers=1&user_id=1

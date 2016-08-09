@@ -815,6 +815,10 @@ function edit_record(){
         webix.message({type: "error", text: "Выберите запись!"});
         return;
     }
+    var sd = $$("record_date").getValue();
+    var m = (sd.getMonth()+1 <10) ? "0"+(sd.getMonth()+1) : (sd.getMonth()+1);
+    var day = (sd.getDate() <10) ? "0"+sd.getDate() : sd.getDate();
+    var sd1 = sd.getFullYear()+"-"+m+"-"+day;
     var edit_record_item = {
         view: "form",
         borderless: true,
@@ -823,19 +827,19 @@ function edit_record(){
             { id:"edit_rec_surname", view:"text", label:"Фамилия", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.last_name },
             { id:"edit_rec_phone", view:"text", label:"Телефон", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.phone },
             {
+                id:"edit_rec_date", view:"richselect", label:"Выбор времени", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.starttime,
+                options:"/admin/getTimeTable/"+sd1+"?chosetime=1",
+                on:{
+                    onChange:function(){
+                        $$("edit_rec_count").define("options","/admin/getTimeTable/"+sd1+"?gettime="+$$("edit_rec_date").getValue());
+                        $$("edit_rec_count").refresh();
+                    }
+                }
+
+            },
+            {
                 id:"edit_rec_count", view:"richselect", label:"Количество человек", labelWidth:170, labelAlign:"right", labelPosition:"left", value:edit_record.cnt,
-                options:[
-                    { id:1 },
-                    { id:2 },
-                    { id:3 },
-                    { id:4 },
-                    { id:5 },
-                    { id:6 },
-                    { id:7 },
-                    { id:8 },
-                    { id:9 },
-                    { id:10 }
-                ]
+                options:[]
             },
             {
                 cols: [
