@@ -1,7 +1,7 @@
-AuthType Basic   
-AuthName "Private zone. Only for testing" 
-AuthUserFile /var/www/html_levelup76.beta/.htpasswd   
-require valid-user
+#AuthType Basic   
+#AuthName "Private zone. Only for testing" 
+#AuthUserFile /var/www/html_levelup76.beta/.htpasswd   
+#require valid-user
 
 Options FollowSymLinks
 AddDefaultCharset utf-8
