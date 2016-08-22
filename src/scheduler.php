@@ -30,7 +30,7 @@ class scheduler
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
 //        $data['name'] = $data['name'];
 //        $data['last_name'] = $data['last_name'];
-        $demand_check = "SELECT id FROM users WHERE name='".$data['name']."' AND last_name='".$data['last_name']."' ";
+        $demand_check = "SELECT id FROM users WHERE `name`='".$data['name']."' AND last_name='".$data['last_name']."' ";
         $result = mysql_query($demand_check) or die(mysql_error());
         $user_check = mysql_fetch_array($result);
         if(!empty($user_check)) return $user_check['id'];
@@ -185,7 +185,7 @@ class scheduler
         if ($value) {
             $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
 
-            mysql_query($query) or die();
+            mysql_query($query) or die(mysql_error());
             return mysql_insert_id();
         }
         return 0;
@@ -749,7 +749,7 @@ class scheduler
         $demand = "
             UPDATE schedule_activity SET
             activity_id = '".$activity['id']."',trainer_id = '".$data["trainer_id"]."',starttime = '".$data["starttime"]."',endtime = '".$data["endtime"]."',
-            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."',comment = '".$data["comment"]."'
+            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."'
             WHERE id=".$data['schedule_id'];
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');

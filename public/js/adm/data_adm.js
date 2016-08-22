@@ -136,7 +136,7 @@ function new_custom_day() {
                             var d = {};
                             d['activityname'] = $$("name").getValue();
                             d['trainer_id'] = $$("trainer").getValue();
-                            d['activitycomment'] = $$("comment").getValue();
+                            //d['activitycomment'] = $$("comment").getValue();
                             d['starttime'] = $$("time_start").getValue();
                             d['endtime'] = $$("time_end").getValue();
                             d['activitydate'] = $$("activitydate").getValue();
@@ -306,7 +306,7 @@ function edit_custom_day() {
                             d['activity_id'] = edit_custom_day_var.activity_id;
                             d['activityname'] = $$("name").getValue();
                             d['trainer_id'] = $$("trainer").getValue();
-                            d['activitycomment'] = $$("comment").getValue();
+                            //d['activitycomment'] = $$("comment").getValue();
                             d['starttime'] = $$("starttime").getValue();
                             d['endtime'] = $$("endtime").getValue();
                             d['activitydate'] = $$("activitydate").getValue();
@@ -370,7 +370,8 @@ function new_default_day() {
         borderless: true,
         elements: [
             {
-                cols: [
+                width:400,
+                rows: [
                     {
                         rows:[
                             { template: "Общее", type: "section" },
@@ -402,10 +403,10 @@ function new_default_day() {
                             { template: "День и время", type: "section" },
                             {
                                 rows:[
-                                    { id: 'add_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Начало', label:"Начало", labelWidth:120, labelAlign:"right", labelPosition:"left" },
-                                    { id: 'add_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Окончание', label:"Окончание", labelWidth:120, labelAlign:"right", labelPosition:"left" },
+                                    { id: 'add_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Начало', label:"Начало", labelWidth:170, labelAlign:"right", labelPosition:"left" },
+                                    { id: 'add_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Окончание', label:"Окончание", labelWidth:170, labelAlign:"right", labelPosition:"left" },
                                     {
-                                        id:"add_def_weekday", view:"richselect", labelPosition:"left", value:day, label:"День недели", labelWidth:120, labelAlign:"right",
+                                        id:"add_def_weekday", view:"richselect", labelPosition:"left", value:day, label:"День недели", labelWidth:170, labelAlign:"right",
                                         options: [
                                             {id: 1, value: "Понедельник"},
                                             {id: 2, value: "Вторник"},
@@ -422,8 +423,8 @@ function new_default_day() {
                     }
                 ]
             },
-            { template:"<center>Комментарий</center>", type:"clean", height:25 },
-            { id:"add_def_comment", view:"textarea", height:150, labelPosition:"top" },
+            //{ template:"<center>Комментарий</center>", type:"clean", height:25 },
+            //{ id:"add_def_comment", view:"textarea", height:150, labelPosition:"top" },
             {
                 cols: [
                     {},
@@ -433,7 +434,7 @@ function new_default_day() {
                             var d = {};
                             d['activityname'] = $$("add_def_name").getValue();
                             d['trainer_id'] = $$("add_def_trainer").getValue();
-                            d['activitycomment'] = $$("add_def_comment").getValue();
+                            //d['activitycomment'] = $$("add_def_comment").getValue();
                             d['starttime'] = $$("add_def_time_start").getValue();
                             d['endtime'] = $$("add_def_time_end").getValue();
                             d['cycleday'] = $$("add_def_weekday").getValue();
@@ -504,7 +505,8 @@ function edit_default_day() {
         borderless: true,
         elements: [
             {
-                cols: [
+                width:400,
+                rows: [
                     {
                         rows:[
                             { template: "Общее", type: "section" },
@@ -536,10 +538,10 @@ function edit_default_day() {
                             { template: "День и время", type: "section" },
                             {
                                 rows:[
-                                    { id: 'edit_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_default_day_var.starttime, label:"Начало", labelWidth:120, labelAlign:"right", labelPosition:"left" },
-                                    { id: 'edit_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_default_day_var.endtime, label:"Окончание", labelWidth:120, labelAlign:"right", labelPosition:"left" },
+                                    { id: 'edit_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_default_day_var.starttime, label:"Начало", labelWidth:170, labelAlign:"right", labelPosition:"left" },
+                                    { id: 'edit_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', value:edit_default_day_var.endtime, label:"Окончание", labelWidth:170, labelAlign:"right", labelPosition:"left" },
                                     {
-                                        id:"edit_def_weekday", view:"richselect", labelPosition:"left", value:edit_default_day_var.cycleday, label:"День недели", labelWidth:120, labelAlign:"right",
+                                        id:"edit_def_weekday", view:"richselect", labelPosition:"left", value:edit_default_day_var.cycleday, label:"День недели", labelWidth:170, labelAlign:"right",
                                         options: [
                                             {id: 1, value: "Понедельник"},
                                             {id: 2, value: "Вторник"},
@@ -556,8 +558,8 @@ function edit_default_day() {
                     }
                 ]
             },
-            { template:"<center>Комментарий</center>", type:"clean", height:25 },
-            { id:"edit_def_comment", view:"textarea", height:150, labelPosition:"top", value:edit_default_day_var.comment },
+            //{ template:"<center>Комментарий</center>", type:"clean", height:25 },
+            //{ id:"edit_def_comment", view:"textarea", height:150, labelPosition:"top", value:edit_default_day_var.comment },
             {
                 cols: [
                     {},
@@ -569,7 +571,7 @@ function edit_default_day() {
                             d['activity_id'] = edit_default_day_var.activity_id;
                             d['activityname'] = $$("edit_def_name").getValue();
                             d['trainer_id'] = $$("edit_def_trainer").getValue();
-                            d['comment'] = $$("edit_def_comment").getValue();
+                            //d['comment'] = $$("edit_def_comment").getValue();
                             d['starttime'] = $$("edit_def_time_start").getValue();
                             d['endtime'] = $$("edit_def_time_end").getValue();
                             d['cycleday'] = $$("edit_def_weekday").getValue();
@@ -1136,7 +1138,7 @@ for (var i = 1; i < 8; i++) {
                             { id: "endtime", header: "Окончание", width: 90, css: {"text-align": "left"}, template: endtime },
                             { id: "activityname", header: [{text: "Название тренировки"}], width: 200 },
                             { id: "maxcount", header: [{text: "Квота"}], width: 70, editor: "int", template: maxcount },
-                            { id: "comment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
+                            //{ id: "comment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
                         ],
                         url: "/admin/getScheduleCicle?cycleday=" + i,
                         ready: function () {
@@ -1173,7 +1175,7 @@ var days_custom = {     //Дополнительные занятия
                         { id: "endtime", header: "Окончание", width: 90, css: {"text-align": "left"}, template: endtime },
                         { id: "activityname", header: [{text: "Название тренировки"}], width: 200 },
                         { id: "maxcount", header: [{text: "Квота"}], width: 70, editor: "int", template: maxcount },
-                        { id: "activitycomment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
+                        //{ id: "activitycomment", header: [{text: "Комментарий"}], tooltip: true, width: 400 }
                     ],
                     url: "/admin/getSchedule?adm=1",
                     ready: function () {
