@@ -26,7 +26,7 @@ $app->post('/addRecord', function ($request, $response, $args) {
     $date = $_POST['schedule_date'];
     $plaintime = str_replace(":", "", $_POST['schedule_time']);
 
-    $schedule = scheduler::getSchedule($args);
+    $schedule = scheduler::getSchedule([ "date" => $date ]);
 
     $avaiable = $schedule[$date][$plaintime]["maxcount"] - $schedule[$date][$plaintime]["registered_count"];
 

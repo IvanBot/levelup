@@ -17,7 +17,7 @@ function login() {
 							webix.storage.cookie.put("token", "1");
 							webix.storage.cookie.put("username", "Админ");
 							$$("profile_login").getTopParentView().hide();
-							location.href = 'index.html';
+							location.href = '/admin/';
 						}
 						else webix.message({type:"error",text:"Неверный логин или пароль"});
 					};
