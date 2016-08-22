@@ -15,7 +15,7 @@ fclose($fcfg);
 $config['db_host'] = "localhost";
 $config['db_user'] = "root";
 $config['db_password'] = "";
-$config['db_schema'] = "levelup";
+$config['db_schema'] = "levelup76";
 
 $db = mysql_connect($config['db_host'],$config['db_user'],$config['db_password']);
 if (!$db) die(mysql_error());
