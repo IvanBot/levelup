@@ -17,6 +17,7 @@ $config['db_user'] = "root";
 $config['db_password'] = "kuravaza42";
 $config['db_schema'] = "levelup";
 */
+
 $db = mysql_connect($config['db_host'],$config['db_user'],$config['db_password']);
 if (!$db) die(mysql_error());
 mysql_select_db($config['db_schema'],$db);

@@ -29,6 +29,5 @@ require __DIR__ . '/../src/middleware.php';
 require __DIR__ . '/../src/routes.php';
 require __DIR__ . '/../src/admin/routes.php';
 
-
 // Run app
 $app->run();

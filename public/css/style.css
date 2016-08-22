@@ -553,7 +553,7 @@ a:visited {
     border-radius: 4px;
     -webkit-transition: border .2s ease-in-out;
     -o-transition: border .2s ease-in-out;
-    transition: border .2s ease-in-out;
+    transition: border .2s ease-in-out;    
 }
 
 /* Конец расписания */
@@ -1020,7 +1020,7 @@ select.done {
 
 #tab_text_down {
     font-size: 17px;
-    font-weight: bold;
+    font-weight: normal;
     line-height: normal;
     color: #2b2a29;
     text-align: justify;

@@ -130,7 +130,7 @@ $app->get('/[{page}[/]]', function ($request, $response, $args) {
     $args['content'] = ob_get_clean();
     ob_end_clean();
 //    $args['content'] = file_get_contents($content_file);
-
+//die("5");
     $args['menu'] = Array("price" => "Цены",
                           "playday" => "Детские праздники",
                           "schedule" => "Запись на тренировку",
