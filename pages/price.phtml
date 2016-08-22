@@ -3,7 +3,7 @@
     <div class="content_price">
         <div class="container">
             <div class="row">
-                <div class="name_price">Цены и действующие акции</div>
+                <h1 class="name_price">Цены и действующие акции</h1>
                 <span class="cherta_ind hidden-xs"></span>
             </div>
         </div>
@@ -33,35 +33,28 @@
                     <tbody class="tab-block">
                     <tr>
                         <td id="tab_n_n">Взрослый тариф/1 час</td>
-                        <td id="tab_n">200 <i class="fa fa-rub" aria-hidden="true"></i></td>
-                        <td id="tab_n">400 <i class="fa fa-rub" aria-hidden="true"></i></td>
+                        <td id="tab_n">200 <i class="fa fa-rub" aria-hidden="true"></i> <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=20000&refId=1&text=LevelUp разовое посещение в будний день'">Купить</button></td>
+                        <td id="tab_n">400 <i class="fa fa-rub" aria-hidden="true"></i> <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=40000&refId=2&text=LevelUp разовое посещение в выходной день'">Купить</button></td>
                     </tr>
 
                     <tr>
                         <td id="tab_n_n">Взорслый + ребенок/1 час</td>
-                        <td id="tab_n">300 <i class="fa fa-rub" aria-hidden="true"></i></td>
-                        <td id="tab_n">600 <i class="fa fa-rub" aria-hidden="true"></i></td>
+                        <td id="tab_n">300 <i class="fa fa-rub" aria-hidden="true"></i>  <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=30000&refId=1&text=LevelUp взрослый+ребенок в будний день'">Купить</button></td>
+                        <td id="tab_n">600 <i class="fa fa-rub" aria-hidden="true"></i>  <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=60000&refId=1&text=LevelUp взрослный+ребенок в выходной день'">Купить</button></td>
                     </tr>
 
                     <tr>
                         <td id="tab_n_n">JAM (15:00-18:00)/3 часа</td>
-                        <td id="tab_n">500 <i class="fa fa-rub" aria-hidden="true"></i></td>
-                        <td id="tab_n">1 000 <i class="fa fa-rub" aria-hidden="true"></i></td>
+                        <td id="tab_n">500 <i class="fa fa-rub" aria-hidden="true"></i>  <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=50000&refId=1&text=LevelUp JAM в будний день'">Купить</button></td>
+                        <td id="tab_n">1 000 <i class="fa fa-rub" aria-hidden="true"></i>  <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=100000&refId=1&text=LevelUp JAM в выходной день'">Купить</button></td>
                     </tr>
 
                     <tr>
                         <td id="tab_n_n">Вместе веселее (20:00-22:00)/1 час</td>
                         <td id="tab_n"></td>
-                        <td id="tab_n">600 <i class="fa fa-rub" aria-hidden="true"></i>/2человека</td>
+                        <td id="tab_n">600 <i class="fa fa-rub" aria-hidden="true"></i>/2человека  <button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=60000&refId=1&text=LevelUp вместе веселее'">Купить</button></td>
 
                     </tr>
-
-                    <tr>
-                        <td></td>
-                        <td><button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=20000&refId=1&text=LevelUp разовое посещение в будний день'">Купить</button></td>
-                        <td><button type="button" class="btn btn-secondary" onclick="window.location.href='https://pay.erpico.ru/pay.php?partner=1&amount=40000&refId=2&text=LevelUp разовое посещение в выходной день'">Купить</button></td>
-                    </tr>
-
 
                     <tr>
                         <td colspan="3"><hr id="cherta_tab"></td>
@@ -123,11 +116,11 @@
                         <td id="tab_n">30 000 <i class="fa fa-rub" aria-hidden="true"></i></td>
                     </tr>
 
-                    <tr>
+<!--                    <tr>
                         <td></td>
                         <td><button type="button" class="btn btn-secondary">Купить</button></td>
                         <td><button type="button" class="btn btn-secondary">Купить</button></td>
-                    </tr>
+                    </tr>-->
 
                     <tr>
                         <td colspan="3"><hr id="cherta_tab"></td>
@@ -235,14 +228,15 @@
 
 
                 <div class="container">
-                    <div class="row" id="tab_text_down">
-                <span>ВНИМАНИЕ: смена всех тарифов осуществляется в 18:00, все посетители батутного центра, пришедшие до 18:00, обязаны покинуть зал в 18:00 или произвести доплаты по тарифам, действующим с 18:00!
+                    <div class="row" id="tab_text_down" style="font-weight: normal;">
+                <span><b>ВНИМАНИЕ: смена всех тарифов осуществляется в 18:00!</b> Все посетители батутного центра, пришедшие до 18:00, обязаны покинуть зал в 18:00 или произвести доплаты по тарифам, действующим с 18:00.
                 <br>
                 <br>
-                Мы допускаем к занятиям детей согласно возрастов:<br>
-                - индивидуальная тренировка – от 5 лет;<br>
-                - групповая тренировка – от 6 лет;<br>
-                - детские праздники – от 7 лет.
+                Мы допускаем к занятиям детей согласно возрастов:<br><ul> 
+                <li><strong>индивидуальная тренировка – от 5 лет;</strong>
+                <li>групповая тренировка – от 6 лет; 
+                <li>детские праздники – от 7 лет.
+                </ul>
                 </span>
                     </div>
                 </div>
