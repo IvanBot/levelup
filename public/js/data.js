@@ -120,7 +120,7 @@ $(function () {
                         $('#inputSave').removeClass('hidden');
                         $('.modal-body label').removeClass('hidden');
                         loadTimeTable($('#schedule_date').val());
-                        $('#formx')[0].reset();
+                        if(!!!url['save']) $('#formx')[0].reset();
                         $('.close').click();
                     },3000);
                 };

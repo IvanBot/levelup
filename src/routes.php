@@ -48,17 +48,12 @@ $app->post('/addRecord', function ($request, $response, $args) {
       if ($rec_id <= 0) return json_encode(["result"=>4, "message"=>"Произошла ошибка при сохранении записи. Попробуйте повторить попытку позднее." ]);
     }
     if(isset($_POST['save']) && $_POST['save']=='on') {
-      $_COOKIE['save'] = 1;
-      $_COOKIE['name'] = $_POST['name'];
-      $_COOKIE['last_name'] = $_POST['last_name'];
-      $_COOKIE['phone'] = $_POST['phone'];
       setcookie("save", 1);
       setcookie("name", $_POST['name']);
       setcookie("last_name", $_POST['last_name']);
-      setcookie("phone", $_POST['phone']);
+      setcookie("phone", str_replace("-","",$_POST['phone']));
     }
     else {
-      $_COOKIE['save'] = 0;
       setcookie("save", 0);
       setcookie("name", "");
       setcookie("last_name", "");
