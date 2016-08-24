@@ -44,7 +44,7 @@ $(function () {
     if (sessvars.my_records == undefined)sessvars.my_records = [];
     function call() {
         var msg = $('#formx').serialize();
-        var url = URLToArray(msg);
+        var url = URLToArray(msg);//console.log(url);//alert(url['save']);
         url['phone'] = url['phone'].replace(/-/g, '');
         for (var user_id in sessvars.recordphone) {
             if (sessvars.recordphone[user_id] == url['phone'])

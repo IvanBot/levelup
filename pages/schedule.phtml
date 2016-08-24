@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <label for="inputName">Имя</label>
-                            <input name="name" type="name" class="form-control" id="inputName" placeholder="Имя">
+                            <input name="name" type="name" class="form-control" id="inputName" placeholder="Имя" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['name'])) ? $_COOKIE['name'] : "") ?>">
                             <input type="hidden" name="setUser" type="name" class="form-control" value="1">
                             <input type="hidden" name="setRecord" type="name" class="form-control" value="1">
                             <input type="hidden" name="schedule_id" type="name" class="form-control" value="0" id="schedule_id">
@@ -70,13 +70,12 @@
 
                         <div class="form-group">
                             <label for="inputSurname">Фамилия</label>
-                            <input name="last_name" type="name" class="form-control" id="inputLastname"
-                                   placeholder="Фамилия">
+                            <input name="last_name" type="name" class="form-control" id="inputLastname" placeholder="Фамилия" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['last_name'])) ? $_COOKIE['last_name'] : "") ?>">
                         </div>
                         <p class="error error_userphone hidden">Пожалуйста, введите номер телефона.</p>
                         <div class="form-group">
                             <label for="inputPhone">Телефон</label>
-                            <input name="phone" type="phone" class="form-control" id="inputPhone" placeholder="Телефон*">
+                            <input name="phone" type="phone" class="form-control" id="inputPhone" placeholder="Телефон*" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['phone'])) ? $_COOKIE['phone'] : "") ?>">
                         </div>
 
                         <p class="error error_count hidden"></p>
@@ -89,7 +88,7 @@ for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." va
                             </select>
                         </div>
                         <div class="mycheckbox">
-                            <input type="checkbox" checked name="save" id="inputSave"><label for="inputSave">&nbsp&nbspСохранить данные</label>
+                            <input type="checkbox" name="save" id="inputSave" <?=((isset($_COOKIE['save']) && $_COOKIE['save']==1) ? "checked" : "") ?>><label for="inputSave">&nbsp&nbspСохранить данные</label>
                         </div>
                     </div>
                     <div class="modal-footer">

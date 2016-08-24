@@ -335,11 +335,15 @@ class scheduler
     public static function delRecordByPhone($data)
     {
         if(empty($data['phone'])) return ["result"=>1, "message"=>"Введите номер"];
-        $demand = "SELECT id,activitydate FROM record_activity WHERE deleted IS NULL AND id=".$data['record_id']." AND phone=".$data['phone'];
+        $demand = "
+            SELECT A.id AS id, A.activitydate AS activitydate
+            FROM record_activity AS A
+            LEFT JOIN users AS B ON (B.id = A.user_id)
+            WHERE A.deleted IS NULL AND A.id=".$data['record_id']." AND B.phone=".$data['phone'];
         $result = mysql_query($demand) or die(mysql_error());
         $row = mysql_fetch_array($result); //. " AND user_id=".$data['user_id'].";"));
         if(empty($row)) return ["result"=>2, "message"=>"Введен не корректный номер"];
-        $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']." AND phone=".$data['phone']; //. " AND user_id=".$data['user_id'].";";
+        $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']; //. " AND user_id=".$data['user_id'].";";
         $res = mysql_query($query) or die(mysql_error());
         return ["result"=>0, "message"=>"Запись успешно удалена", "activitydate"=>$row['activitydate']];
     }
