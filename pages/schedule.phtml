@@ -56,7 +56,7 @@
                     <div class="modal-body">
                         <p class="error error_name hidden">Представьтесь, пожалуйста.</p>
                         <p class="error error_error hidden"></p>
-                        <p class="done error_name hidden">Ваша запись успешно добавлена!</p>
+                        <p class="done error_name hidden"><b>Ваша запись успешно добавлена!</b></p>
 
                         <div class="form-group">
                             <label for="inputName">Имя</label>
@@ -88,10 +88,11 @@
 for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." value=\"$i\">$i</option>"; } ?>
                             </select>
                         </div>
-
+                        <div class="mycheckbox">
+                            <input type="checkbox" checked name="save" id="inputSave"><label for="inputSave">&nbsp&nbspСохранить данные</label>
+                        </div>
                     </div>
                     <div class="modal-footer">
-
                         <input type="button" id="record" class="btn btn-secondary" value="Записаться">
                     </div>
                 </form>
@@ -109,7 +110,7 @@ for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." va
                     <div class="modal-body">
                         <p class="error error_userphone del hidden">Для удаления записи введите номер телефона.</p>
                         <p class="error error_userphone undel hidden">Введен неверный номер телефона.</p>
-                        <p class="done error_userphone undel hidden">Ваша запись успешно удалена!</p>
+                        <p class="done error_userphone undel hidden"><b>Ваша запись успешно удалена!</b></p>
                         <div class="form-group">
                             <label for="inputDelPhone">Телефон</label>
                             <input name="phone" type="phone" class="form-control" id="inputDelPhone" placeholder="Телефон*">

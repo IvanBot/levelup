@@ -1422,3 +1422,15 @@ button.close.record {
     line-height: 0.5;
     font-size: 15px;
 }
+
+.mycheckbox{
+    bottom:0;
+    position:relative;
+}
+
+.mycheckbox input{
+    height:13px;
+    position:relative;
+    bottom:-2px;
+    left:2px;
+}

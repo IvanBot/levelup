@@ -30,7 +30,7 @@ class scheduler
         $data['ip'] = $_SERVER["REMOTE_ADDR"];
 //        $data['name'] = $data['name'];
 //        $data['last_name'] = $data['last_name'];
-        $demand_check = "SELECT id FROM users WHERE `name`='".$data['name']."' AND last_name='".$data['last_name']."' ";
+        $demand_check = "SELECT id FROM users WHERE name='".$data['name']."' AND last_name='".$data['last_name']."' ";
         $result = mysql_query($demand_check) or die(mysql_error());
         $user_check = mysql_fetch_array($result);
         if(!empty($user_check)) return $user_check['id'];
@@ -185,7 +185,7 @@ class scheduler
         if ($value) {
             $query = "insert into record_activity (" . implode(",", $field) . ") values (" . implode(",", $value) . ");";
 
-            mysql_query($query) or die(mysql_error());
+            mysql_query($query) or die();
             return mysql_insert_id();
         }
         return 0;
@@ -335,13 +335,13 @@ class scheduler
     public static function delRecordByPhone($data)
     {
         if(empty($data['phone'])) return ["result"=>1, "message"=>"Введите номер"];
-        $demand = "SELECT id FROM record_activity WHERE deleted IS NULL AND id=".$data['record_id']." AND phone=".$data['phone'];
+        $demand = "SELECT id,activitydate FROM record_activity WHERE deleted IS NULL AND id=".$data['record_id']." AND phone=".$data['phone'];
         $result = mysql_query($demand) or die(mysql_error());
         $row = mysql_fetch_array($result); //. " AND user_id=".$data['user_id'].";"));
         if(empty($row)) return ["result"=>2, "message"=>"Введен не корректный номер"];
         $query = "UPDATE record_activity SET deleted = 1 WHERE id=". $data['record_id']." AND phone=".$data['phone']; //. " AND user_id=".$data['user_id'].";";
         $res = mysql_query($query) or die(mysql_error());
-        return ["result"=>0, "message"=>"Запись успешно удалена"];
+        return ["result"=>0, "message"=>"Запись успешно удалена", "activitydate"=>$row['activitydate']];
     }
 
     public static function delRecordById($data)
@@ -361,9 +361,9 @@ class scheduler
         if (!$date) $between = 'ra.activitydate BETWEEN "' . date('Y-m-d') . '" AND "2050-01-01"';
         else $between = "ra.activitydate = '$date'";//BETWEEN '" . substr($date, 0, -3) . "-01' AND '" . substr($date, 0, -3) . "-" . cal_days_in_month(CAL_GREGORIAN, substr($date, 5, 2), substr($date, 0, 4)) . "'";
         $query = "
-        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,ra.name,ra.phone,ra.cnt
-        from
-        record_activity as ra
+        select  ra.id,ra.activity_id,ra.schedule_id,ra.starttime,ra.activitydate,B.name AS name,B.phone AS phone,ra.cnt
+        from record_activity as ra
+        LEFT JOIN users AS B ON (B.id = ra.user_id)
         where ra.deleted IS NULL AND " . $between . "
         order by ra.activitydate,ra.starttime;";
         //print_r($query);
@@ -749,7 +749,7 @@ class scheduler
         $demand = "
             UPDATE schedule_activity SET
             activity_id = '".$activity['id']."',trainer_id = '".$data["trainer_id"]."',starttime = '".$data["starttime"]."',endtime = '".$data["endtime"]."',
-            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."'
+            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."',comment = '".$data["comment"]."'
             WHERE id=".$data['schedule_id'];
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');
