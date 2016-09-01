@@ -706,16 +706,7 @@ class scheduler
         else
             return intval($data, 'integer');
     }
-
-
-
-
-
-
-
-
-
-
+    
     public static function addScheduleCicle($data)
     {
         $activity_query = mysql_query("SELECT id FROM activity WHERE activityname='".$data["activityname"]."'") or die(mysql_error());
