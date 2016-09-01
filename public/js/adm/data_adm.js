@@ -366,63 +366,45 @@ function new_default_day() {
     day = day.substr(day.length - 1);
 
     var form_order = {
-        view: "form",
+        id:"new_default_day",
+        view:"form",
         borderless: true,
         elements: [
-            {
-                width:400,
-                rows: [
+
+
+                    { template: "Общее", type: "section" },
+                    { id:"add_def_name", view:"text", label:"Название тренировки", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Название тренировки" },
                     {
-                        rows:[
-                            { template: "Общее", type: "section" },
-                            {
-                                rows:[
-                                    { id:"add_def_name", view:"text", label:"Название тренировки", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Название тренировки" },
-                                    {
-                                        id:"add_def_trainer", view:"richselect", label:"Выбор тренера", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Выбор тренера",
-                                        options: [
-                                            {id: 1, value: "Бобруйченко"},
-                                            {id: 2, value: "Мохнатов"}
-                                        ]
-                                    },
-                                    {
-                                        id:"add_def_max", view:"counter", label:"Число участников", labelWidth:170, labelAlign:"right", labelPosition:"left", min:1, value:1,
-                                        on:{
-                                            onChange:function(){
-                                                if(isNaN($$('add_def_max').getValue())) $$('add_def_max').setValue("1");
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
+                        id:"add_def_trainer", view:"richselect", label:"Выбор тренера", labelWidth:170, labelAlign:"right", labelPosition:"left", placeholder:"Выбор тренера",
+                        options: [
+                            {id: 1, value: "Бобруйченко"},
+                            {id: 2, value: "Мохнатов"}
                         ]
                     },
-                    { width:30 },
                     {
-                        rows:[
-                            { template: "День и время", type: "section" },
-                            {
-                                rows:[
-                                    { id: 'add_def_time_start', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Начало', label:"Начало", labelWidth:170, labelAlign:"right", labelPosition:"left" },
-                                    { id: 'add_def_time_end', view: "datepicker", type: "time", stringResult: true, format: '%H:%i', placeholder: 'Окончание', label:"Окончание", labelWidth:170, labelAlign:"right", labelPosition:"left" },
-                                    {
-                                        id:"add_def_weekday", view:"richselect", labelPosition:"left", value:day, label:"День недели", labelWidth:170, labelAlign:"right",
-                                        options: [
-                                            {id: 1, value: "Понедельник"},
-                                            {id: 2, value: "Вторник"},
-                                            {id: 3, value: "Среда"},
-                                            {id: 4, value: "Четверг"},
-                                            {id: 5, value: "Пятница"},
-                                            {id: 6, value: "Суббота"},
-                                            {id: 7, value: "Воскресенье"}
-                                        ]
-                                    }
-                                ]
+                        id:"add_def_max", view:"counter", label:"Число участников", labelWidth:170, labelAlign:"right", labelPosition:"left", min:1, value:1,
+                        on:{
+                            onChange:function(){
+                                if(isNaN($$('add_def_max').getValue())) $$('add_def_max').setValue("1");
                             }
+                        }
+                    },
+                    { template: "День и время", type: "section" },
+                    { id:'add_def_time_start', name:'add_def_time_start', view:"datepicker", type:"time", stringResult:true, format:'%H:%i', placeholder:'Начало', label:"Начало", labelWidth:170, labelAlign:"right", labelPosition:"left" },
+                    { id:'add_def_time_end', name:'add_def_time_end', view:"datepicker", type:"time", stringResult:true, format:'%H:%i', placeholder:'Окончание', label:"Окончание", labelWidth:170, labelAlign:"right", labelPosition:"left" },
+                    {
+                        id:"add_def_weekday", name:"add_def_weekday", view:"richselect", labelPosition:"left", value:day, label:"День недели", labelWidth:170, labelAlign:"right",
+                        options: [
+                            {id: 1, value: "Понедельник"},
+                            {id: 2, value: "Вторник"},
+                            {id: 3, value: "Среда"},
+                            {id: 4, value: "Четверг"},
+                            {id: 5, value: "Пятница"},
+                            {id: 6, value: "Суббота"},
+                            {id: 7, value: "Воскресенье"}
                         ]
                     }
-                ]
-            },
+              ,
             //{ template:"<center>Комментарий</center>", type:"clean", height:25 },
             //{ id:"add_def_comment", view:"textarea", height:150, labelPosition:"top" },
             {
@@ -431,21 +413,14 @@ function new_default_day() {
                     {
                         view: "button", value: "Сохранить", hotkey: "enter",
                         click: function () {
-                            var d = {};
-                            d['activityname'] = $$("add_def_name").getValue();
-                            d['trainer_id'] = $$("add_def_trainer").getValue();
-                            //d['activitycomment'] = $$("add_def_comment").getValue();
-                            d['starttime'] = $$("add_def_time_start").getValue();
-                            d['endtime'] = $$("add_def_time_end").getValue();
-                            d['cycleday'] = $$("add_def_weekday").getValue();
-                            d['maxcount'] = $$("add_def_max").getValue();
-                            if (!d['activityname'])webix.message({type: "error", text: "Введите название тренировки"});
-                            if (!d['starttime'])webix.message({
-                                type: "error",
-                                text: "Введите время начала тренировки"
-                            });
-                            if (!d['cycleday'])webix.message({type: "error", text: "Выберите день недели"});
-                            if (d['activityname'] && d['starttime']) {
+                            if($$("add_def_time_start").getParentView().validate()){
+                                var d = {};
+                                d['activityname'] = $$("add_def_name").getValue();
+                                d['trainer_id'] = $$("add_def_trainer").getValue();
+                                d['starttime'] = $$("add_def_time_start").getValue();
+                                d['endtime'] = $$("add_def_time_end").getValue();
+                                d['cycleday'] = $$("add_def_weekday").getValue();
+                                d['maxcount'] = $$("add_def_max").getValue();
                                 webix.ajax().get("/admin/addScheduleCicle", d, function(text){
                                     txt = JSON.parse(text);
                                     if(txt.result==0) webix.message(txt.message);
@@ -456,6 +431,7 @@ function new_default_day() {
                                     $$("activity_datatable" + d['cycleday']).load("/admin/getScheduleCicle?cycleday=" + d['cycleday']);
                                 });
                             }
+                            else webix.message({"type":"error", "text":"Введите дату и время!"});
                         }
                     },
                     {
@@ -468,7 +444,11 @@ function new_default_day() {
                 ]
             }
         ],
-        rules: {},
+        rules: {
+            "add_def_time_start":webix.rules.isNotEmpty,
+            "add_def_time_end":webix.rules.isNotEmpty,
+            "add_def_weekday":webix.rules.isNotEmpty
+        },
         elementsConfig: {
             labelPosition: "top",
         }
@@ -477,7 +457,7 @@ function new_default_day() {
     webix.ui({
         view: "window",
         id: "win_order",
-        width: 800,
+        width: 400,
         position: "center",
         modal: true,
         head: "Добавить тренировку",

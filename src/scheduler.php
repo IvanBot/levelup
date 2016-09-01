@@ -664,7 +664,7 @@ class scheduler
                 'activityduration' => $row['endtime'] ? substr($row['endtime'], 0, 2) - substr($row['starttime'], 0, 2) : 1,
                 'activityname' => $row['activityname'],
                 'maxcount' => $row['maxcount'],
-                'comment' => $row['comment'],
+                //'comment' => $row['comment'],
                 'trainer_id' => $row['trainer_id'],
                 'activitycomment' => $row['activitycomment'],
                 'cycleday' => $row['cycleday'],
@@ -730,9 +730,9 @@ class scheduler
         };
         $demand = "
             INSERT INTO schedule_activity 
-            (activity_id,trainer_id,starttime,endtime,cycleday,maxcount,comment)
+            (activity_id,trainer_id,starttime,endtime,cycleday,maxcount)
             VALUES
-            ('".$activity['id']."','".$data["trainer_id"]."','".$data["starttime"]."','".$data["endtime"]."','".$data["cycleday"]."','".$data["maxcount"]."','".$data["activitycomment"]."')";
+            ('".$activity['id']."','".$data["trainer_id"]."','".$data["starttime"]."','".$data["endtime"]."','".$data["cycleday"]."','".$data["maxcount"]."')";
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');
         else return array('result'=>1, 'message'=>'Error!');
@@ -753,7 +753,7 @@ class scheduler
         $demand = "
             UPDATE schedule_activity SET
             activity_id = '".$activity['id']."',trainer_id = '".$data["trainer_id"]."',starttime = '".$data["starttime"]."',endtime = '".$data["endtime"]."',
-            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."',comment = '".$data["comment"]."'
+            cycleday = '".$data["cycleday"]."',maxcount = '".$data["maxcount"]."'
             WHERE id=".$data['schedule_id'];
         $result = mysql_query($demand) or die(mysql_error());
         if($result) return array('result'=>0, 'message'=>'OK');
