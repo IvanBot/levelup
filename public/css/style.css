@@ -553,6 +553,296 @@ a:visited {
 
 /* Конец расписания */
 
+/* Цены */
+
+@media (max-width: 349px) {
+    .name_price {
+    color: #2b2a29;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    line-height: normal;
+}
+    
+    #tab-h {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+
+}
+    #tab-b-n {
+    font-size: 13px;
+    line-height: normal;
+    color: #2b2a29;
+    font-weight: bold;
+    text-align: center;
+}
+    #tab_n_n {
+    height: 35px;
+    font-size: 11px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #f0f0f0;
+    padding: 3px 10px 0 10px;
+    margin: 3px 0;
+
+}
+    #tab_n {
+    height: 100%;
+    min-height: 30px;
+    font-size: 11px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 3px 0;
+    padding: 3px 10px 0 10px;
+
+}
+    .btn-secondary {
+
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    background: #416d75;
+    margin: 3px 0;
+}
+    #tab_text_down {
+    font-size: 12px;
+    font-weight: normal;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: justify;
+    padding: 0 5px 35px 5px;
+    
+
+}
+    #tab-h_invers {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+}
+    
+    #tab_n_n_invers {
+    height: 60px;
+    font-size: 11px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #fff;
+    padding: 3px 10px 0 10px;
+    margin: 3px 0;
+
+}
+    .chil_text_2 {
+    margin: 10px 0;
+    padding: 0 5px;
+    color: #2b2a29;
+    font-size: 12px;
+    text-align: justify;
+}
+    
+}
+@media (min-width: 350px) and (max-width: 767px) {
+    .name_price {
+    color: #2b2a29;
+    text-align: center;
+    font-size: 27px;
+    font-weight: bold;
+    line-height: normal;
+}
+    
+    #tab-h {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+
+}
+    #tab-b-n {
+    font-size: 14px;
+    line-height: normal;
+    color: #2b2a29;
+    font-weight: bold;
+    text-align: center;
+}
+    #tab_n_n {
+    height: 35px;
+    font-size: 12px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #f0f0f0;
+    padding: 3px 10px 0 10px;
+    margin: 3px 0;
+
+}
+    #tab_n {
+    height: 100%;
+    min-height: 30px;
+    font-size: 12px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 3px 0;
+    padding: 3px 10px 0 10px;
+
+}
+    .btn-secondary {
+
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    background: #416d75;
+    margin: 3px 0;
+}
+    #tab_text_down {
+    font-size: 13px;
+    font-weight: normal;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: justify;
+    padding: 0 5px 35px 5px;
+    
+
+}
+    #tab-h_invers {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+}
+ 
+    #tab_n_n_invers {
+    height: 60px;
+    font-size: 12px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #fff;
+    padding: 3px 10px 0 10px;
+    margin: 3px 0;
+
+}
+    
+    .chil_text_2 {
+    margin: 10px 0;
+    padding: 0 5px;
+    color: #2b2a29;
+    font-size: 13px;
+    text-align: justify;
+}
+    
+}
+@media (min-width: 768px) {
+    .name_price {
+    color: #2b2a29;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: normal;
+}
+    
+    #tab-h {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+
+}
+    #tab-b-n {
+    font-size: 16px;
+    line-height: normal;
+    color: #2b2a29;
+    font-weight: bold;
+    text-align: center;
+}
+    #tab_n_n {
+    height: 35px;
+    font-size: 17px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #f0f0f0;
+    padding: 3px 0 0 35px;
+    margin: 3px 0;
+
+}
+    #tab_n {
+    height: 100%;
+    min-height: 30px;
+    font-size: 17px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: center;
+    background: #f0f0f0;
+    margin: 3px 0;
+    padding: 3px 0 0 0;
+
+}
+    .btn-secondary {
+
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    background: #416d75;
+    margin: 3px 0;
+}
+    #tab_text_down {
+    font-size: 17px;
+    font-weight: normal;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: justify;
+    padding: 0 5px 35px 5px;
+    
+
+}
+    
+    #tab-h_invers {
+    color: #2b2a29;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    padding: 2px 5px;
+    margin-top: 0;
+}
+    
+    #tab_n_n_invers {
+    height: 60px;
+    font-size: 17px;
+    line-height: normal;
+    color: #2b2a29;
+    text-align: left;
+    background: #fff;
+    padding: 3px 0 0 35px;
+    margin: 3px 0;
+
+}
+    .chil_text_2 {
+    margin: 10px 0;
+    padding: 0 5px;
+    color: #2b2a29;
+    font-size: 17px;
+    text-align: justify;
+}
+    
+    
+}
 /* Таблица */
 
 .cont_price {
@@ -571,15 +861,7 @@ a:visited {
 
 }
 
-#tab-h {
-    color: #2b2a29;
-    font-weight: bold;
-    font-size: 24px;
-    text-align: center;
-    padding: 2px 5px;
-    margin-top: 0;
 
-}
 
 #tab-h-p {
     font-size: 14px;
@@ -601,39 +883,11 @@ a:visited {
     margin: 3px 0;
 }
 
-#tab_n {
-    height: 100%;
-    min-height: 30px;
-    font-size: 17px;
-    line-height: normal;
-    color: #2b2a29;
-    text-align: center;
-    background: #f0f0f0;
-    margin: 3px 0;
-    padding: 3px 0 0 0;
 
-}
 
-#tab_n_n {
-    height: 35px;
-    font-size: 17px;
-    line-height: normal;
-    color: #2b2a29;
-    text-align: left;
-    background: #f0f0f0;
-    padding: 3px 0 0 35px;
-    margin: 3px 0;
 
-}
 
-#tab-h_invers {
-    color: #2b2a29;
-    font-weight: bold;
-    font-size: 24px;
-    text-align: center;
-    padding: 15px 5px;
-    margin-top: 0;
-}
+
 
 #tab_b_invers {
     height: 100%;
@@ -659,17 +913,7 @@ a:visited {
 
 }
 
-#tab_n_n_invers {
-    height: 60px;
-    font-size: 17px;
-    line-height: normal;
-    color: #2b2a29;
-    text-align: left;
-    background: #fff;
-    padding: 3px 0 0 35px;
-    margin: 3px 0;
 
-}
 
 .tab-block {
     height: 100%;
@@ -704,14 +948,7 @@ a:visited {
     padding: 0 10px;
 }
 
-.btn-secondary {
 
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    background: #416d75;
-    margin: 3px 0;
-}
 
 .btn-secondary:hover {
     color: #a1fff1;
@@ -979,6 +1216,8 @@ select.done {
     text-align: justify;
 }
 
+
+
 .text {
 
     margin: 20px 0;
@@ -1013,15 +1252,7 @@ select.done {
 
 /* Контент */
 
-#tab_text_down {
-    font-size: 17px;
-    font-weight: normal;
-    line-height: normal;
-    color: #2b2a29;
-    text-align: justify;
-    padding: 0 5px 35px 5px;
 
-}
 
 .special_offer {
     top: 100%;
