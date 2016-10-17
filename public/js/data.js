@@ -43,6 +43,13 @@ $(function () {
     // if (sessvars.recordarr == undefined)sessvars.recordarr = [];
     if (sessvars.my_records == undefined)sessvars.my_records = [];
     function call() {
+	if ($('#inputRules').is(":checked")) {
+            $('#inputRules').removeClass('error');
+        } else {
+            $('#inputRules').addClass('error');
+            alert("Пожалуйста, ознакомьтесь с правилами посещения батутного зала и примите их.");
+ 	    return;
+	}
         var msg = $('#formx').serialize();
         var url = URLToArray(msg);//console.log(url);//alert(url['save']);
         url['phone'] = url['phone'].replace(/-/g, '');
@@ -108,6 +115,7 @@ $(function () {
                     $('#inputName').addClass('hidden');
                     $('#inputCount').addClass('hidden');
                     $('#inputSave').addClass('hidden');
+		    $('#inputRules').addClass('hidden');
                     $('#inputLastname').addClass('hidden');
                     $('.modal-body label').addClass('hidden');
                     setTimeout(function(){
@@ -118,6 +126,7 @@ $(function () {
                         $('#inputLastname').removeClass('hidden');
                         $('#record').removeClass('hidden');
                         $('#inputSave').removeClass('hidden');
+			$('#inputRules').removeClass('hidden');
                         $('.modal-body label').removeClass('hidden');
                         loadTimeTable($('#schedule_date').val());
                         if(!!!url['save']) $('#formx')[0].reset();

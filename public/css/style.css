@@ -131,12 +131,7 @@ a:visited {
 }
 
 .navbar-right {
-<<<<<<< HEAD
-    margin-right: -50px;
-	
-=======
     margin-right: -40px;
->>>>>>> b860a11e5e426c76c51ccb3dd2a11383d33d1566
 }
 
 .item-menu {
@@ -1405,6 +1400,19 @@ a.socialIcon:hover, .socialHoverClass {
     100% {
         box-shadow: 0 0 8px 6px rgba(23, 167, 167, 0), 0 0 0px 40px rgba(0, 0, 0, 0), 0 0 0px 40px rgba(23, 167, 167, 0);
     }
+}
+
+.rules a {
+  color: blue;
+}
+
+.rules a:hover {
+  color: blue;
+}
+
+.rules ul {
+  color: black;
+  font-size: 17px;
 }
 
 /* Конец Кнопка Запись на тренировку */
