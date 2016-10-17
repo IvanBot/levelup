@@ -2,3 +2,5 @@
 /logs/*
 !/logs/README.md
 .bak
+composer.phar
+.gitignore
