@@ -99,8 +99,13 @@ for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." va
                         <div class="mycheckbox">
                             <input type="checkbox" name="save" id="inputSave" <?=((isset($_COOKIE['save']) && $_COOKIE['save']==1) ? "checked" : "") ?>><label for="inputSave">&nbsp&nbspСохранить данные</label>
                         </div>
+                        <div class="mycheckbox" style="font: 14px 'Calibri', Arial">
+                          Указание достоверной информации (Имя, Фамилия, номер телефона) является обязательным условием оформления записи на посещение Батутного Центра.<br/>
+                          Записи, не содержащие достоверной информации, будут аннулированы и удалены. Спасибо за понимание.
+                        </div>                        
                     </div>
                     <div class="modal-footer">
+                    
                         <input type="button" id="record" class="btn btn-secondary" value="Записаться">
                     </div>
                 </form>
