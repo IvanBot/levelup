@@ -13,13 +13,174 @@
 
     <!-- Карта -->
 
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        var myMap, 
+            myPlacemark;
+
+        function init(){              
+            myMap = new ymaps.Map("map", {
+                center: [57.627261, 39.869879],
+                zoom: 17,
+		controls: ["zoomControl", "fullscreenControl", "typeSelector"]
+            });                           
+            
+            markEnter = new ymaps.Placemark([57.627261, 39.869879], {
+                hintContent: 'Батутный центр LevelUp'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/ballon.png',
+                iconImageSize: [48, 62],
+                iconImageOffset: [-3, -48]
+            });                       
+
+            var roadCar = new ymaps.GeoObject({
+                geometry: {
+                    type: "LineString",
+                    coordinates: [
+                        [57.625897, 39.870877],
+                        [57.625920, 39.870223],
+			[57.626254, 39.870298],
+			[57.626467, 39.870405],
+			[57.626582, 39.870083],
+			[57.627164, 39.870309],
+			[57.627181, 39.870105]
+                    ]
+                },
+                properties:{
+                    hintContent: "Схема проезда на автомобиле",
+                    balloonContent: "Схема проезда на автомобиле"
+                }
+            }, {
+                draggable: false,
+                strokeColor: "#A0A0FF",
+                strokeWidth: 4
+            });            
+                         
+            markCar = new ymaps.Placemark([57.626156, 39.870287], {
+                hintContent: 'Въезд на автомобиле',
+		balloonContent: 'Въезд на автомобиле со стороны улицы Свободы после церкви, через шлагбаум. Парковка платная, первый час - басплатно, последующие по 10 рублей/час.'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/car.png',
+                iconImageSize: [18, 34],
+                iconImageOffset: [-10, -20]
+            });
+
+            var roadWalk1 = new ymaps.GeoObject({
+                geometry: {
+                    type: "LineString",
+                    coordinates: [
+                        [57.626300, 39.868270],
+                        [57.626283, 39.868603],
+			[57.627146, 39.868817],
+			[57.627112, 39.869128],
+			[57.627048, 39.869665],
+			[57.627164, 39.869837],
+			[57.627158, 39.870116]
+                    ]
+                },
+                properties:{
+                    hintContent: "Проход пешком",
+                    balloonContent: "Проход пешком"
+                }
+            }, {
+                draggable: false,
+                strokeColor: "#50D550",
+                strokeWidth: 3
+            });            
+
+            markWalk1 = new ymaps.Placemark([57.626300, 39.868270], {
+                hintContent: 'Пешком через проходную',
+		balloonContent: 'Пешком через проходную'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/foot.png',
+                iconImageSize: [11, 14],
+                iconImageOffset: [-10, -10]
+            });
+
+            var roadWalk2 = new ymaps.GeoObject({
+                geometry: {
+                    type: "LineString",
+                    coordinates: [
+                        [57.627745, 39.868689],
+                        [57.627474, 39.870276],
+			[57.627164, 39.870223],
+			[57.627181, 39.870105]
+                    ]
+                },
+                properties:{
+                    hintContent: "Проход пешком",
+                    balloonContent: "Проход пешком"
+                }
+            }, {
+                draggable: false,
+                strokeColor: "#50D550",
+                strokeWidth: 3
+            });                        
+
+            markWalk2 = new ymaps.Placemark([57.627745, 39.868689], {
+                hintContent: 'Пешком от торца Ауры на Победе',
+		balloonContent: 'Пешком от торца Ауры на Победе'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/foot.png',
+                iconImageSize: [11, 14],
+                iconImageOffset: [-5, -10]
+            });
+
+            var roadWalk3 = new ymaps.GeoObject({
+                geometry: {
+                    type: "LineString",
+                    coordinates: [
+                        [57.626208, 39.871618],
+                        [57.626588, 39.871736],
+			[57.626674, 39.871403],
+			[57.627008, 39.871231],
+			[57.627279, 39.870416],
+			[57.627135, 39.870309],
+			[57.627158, 39.870116],
+			[57.627181, 39.870105]
+                    ]
+                },
+                properties:{
+                    hintContent: "Проход пешком",
+                    balloonContent: "Проход пешком"
+                }
+            }, {
+                draggable: false,
+                strokeColor: "#50D550",
+                strokeWidth: 3
+            }); 
+
+	    markWalk3 = new ymaps.Placemark([57.626208, 39.871618], {
+                hintContent: 'Пешком от входа в Ауру со Свободы',
+		balloonContent: 'Пешком от входа в Ауру со Свободы'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/foot.png',
+                iconImageSize: [11, 14],
+                iconImageOffset: [-5, -10]
+            });           
+
+            myMap.geoObjects
+		.add(markEnter)
+		.add(roadCar)
+		.add(markCar)
+		.add(roadWalk1)
+		.add(roadWalk2)
+		.add(roadWalk3)
+		.add(markWalk1)
+		.add(markWalk2)
+		.add(markWalk3);
+        }
+    </script>
+
     <div class="container">
         <div class="row">
-            <div class="map">
-
-                <script type="text/javascript" charset="utf-8" async
-                        src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=t3W8U-dHCLy2t2wM_oVfRtwrA7sImlwZ&width=100%&height=550&lang=ru_RU&sourceType=constructor&scroll=true"></script>
-            </div>
+            <div class="map" id="map" style="width: 100%; height: 550px"></div>
         </div>
     </div>
 
