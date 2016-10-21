@@ -14,7 +14,7 @@
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/font-awesome.css" rel="stylesheet">
 
-    <? if ($page == 'schedule'): ?>
+    <? if (isset($page) && ($page == 'schedule')): ?>
         <link rel="stylesheet" type="text/css" href="/css/calendar.css"/>
         <link rel="stylesheet" type="text/css" href="/css/custom_2.css"/>
     <? endif ?>
@@ -76,7 +76,7 @@
             <div class="navbar-collapse collapse" id="responsive-menu">
                 <ul id="menu-main-menu" class="nav navbar-nav navbar-right">
                     <?php foreach($menu as $url => $title) {
-                        print "<li id=\"\" class=\"item-menu ".($url == $page ? "active" : "")."\"><a href=\"/$url\">$title</a></li>";
+                        print "<li id=\"\" class=\"item-menu ".(isset($page) && ($url == $page) ? "active" : "")."\"><a href=\"/$url\">$title</a></li>";
                       }
                     ?>
                 </ul>
@@ -181,7 +181,7 @@
 
 <script src="/js/salvattore.min.js"></script>
 <script type="text/javascript" src="/js/sessvars.js"></script>
-<? if ($page == 'schedule'): ?>
+<? if (isset($page) && ($page == 'schedule')): ?>
     <script type="text/javascript" src="/js/jquery.calendario.js"></script>
     <script src="/js/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="/js/modernizr.custom.63321.js"></script>
