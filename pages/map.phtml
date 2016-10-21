@@ -32,7 +32,7 @@
                 iconLayout: 'default#image',   
                 iconImageHref: 'img/ballon.png',
                 iconImageSize: [48, 62],
-                iconImageOffset: [-3, -48]
+                iconImageOffset: [-3, -62]
             });                       
 
             var roadCar = new ymaps.GeoObject({
@@ -67,6 +67,8 @@
                 iconImageSize: [18, 34],
                 iconImageOffset: [-10, -20]
             });
+
+            markCar.properties.set('direction', 90);
 
             var roadWalk1 = new ymaps.GeoObject({
                 geometry: {
@@ -165,6 +167,16 @@
                 iconImageOffset: [-5, -10]
             });           
 
+            markArrow = new ymaps.Placemark([57.627180, 39.870104], {
+                hintContent: 'Вход в батутный центр LevelUp',
+		balloonContent: 'Вход в батутный центр LevelUp'
+            }, {
+                iconLayout: 'default#image',   
+                iconImageHref: 'img/arrow.gif',
+                iconImageSize: [25, 15],
+                iconImageOffset: [-4, -7]
+            });
+
             myMap.geoObjects
 		.add(markEnter)
 		.add(roadCar)
@@ -174,7 +186,8 @@
 		.add(roadWalk3)
 		.add(markWalk1)
 		.add(markWalk2)
-		.add(markWalk3);
+		.add(markWalk3)
+		.add(markArrow);
         }
     </script>
 
