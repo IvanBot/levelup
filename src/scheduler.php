@@ -757,4 +757,86 @@ class scheduler
         if($result) return array('result'=>0, 'message'=>'OK');
         else return array('result'=>1, 'message'=>'Error!');
     }
+
+
+}
+
+
+class Autorization
+{
+    public static function createToken()
+    {
+        global $user;
+
+        $time_taken = time();
+        $time_expire = $time_taken + 60;
+
+        $acl_token = [
+            'token'       => base64_encode(mcrypt_create_iv(32)),
+            'user_id'     => $user['id'],
+            'time_taken'  => $time_taken,
+            'time_expire' => $time_expire
+        ];
+
+        $add_token = mysql_query("INSERT INTO tokens (user_id, token_name, time_taken, time_exprie) VALUES ('" .
+            $acl_token['user_id'] . "','" . $acl_token['token'] . "','" . $acl_token['time_taken'] . "','" .
+            $acl_token['time_expire'] . "')");
+
+        $query = mysql_query("SELECT * FROM tokens WHERE token_name='" . $acl_token['token'] . "'");
+        $current_token = mysql_fetch_array($query);
+
+        setcookie('token_id', $current_token['id'], $time_expire);
+        setcookie('token_name', $current_token['token_name'], $time_expire);
+        setcookie('user_id', $current_token['user_id'], $time_expire);
+        setcookie('time_taken', $current_token['time_taken'], $time_expire);
+        setcookie('time_expire', $current_token["time_exprie"], $time_expire);
+    }
+
+    public static function checkUsersRecords($data)
+    {
+        $hash_passw = crypt($data['passw'], '$6$greatdays$');
+        $result = mysql_query("SELECT id, login, password, role FROM admins WHERE login='" . $data['login'] . "' and password='" . $hash_passw . "'");
+
+        global $user;
+        $user = mysql_fetch_array($result);
+        
+        if ($result)
+        {
+            Autorization::createToken();
+            echo json_encode(array('result'  => 0, 'message' => 'OK' ));
+        }
+        else
+        {
+            echo json_encode(array('result'  =>1, 'message' =>'Error!' ));
+        }
+    }
+
+    public static function getToken($data)
+    {
+        if ($data['token_id'] && $data['token_name'] && $data['user_id'] && $data['time_taken'] && $data['time_expire'])
+        {
+            $result = mysql_query("SELECT * FROM tokens WHERE id='" . $data['token_id'] . "'");
+            $current_token = mysql_fetch_array($result);
+
+            if (($data['token_name'] == $current_token['token_name']) &&
+                ($data['user_id'] == $current_token['user_id']) &&
+                ($data['time_taken'] == $current_token['time_taken']) &&
+                ($data['time_expire'] == $current_token['time_expire']))
+            {
+                $new_time_taken = time();
+                $new_time_expire = $new_time_taken + 60;
+                $result = mysql_query("UPDATE tokens SET time_taken ='" . $new_time_taken . "', time_expire ='" . $new_time_expire . "' WHERE id ='" . $current_token['id'] . "'");
+
+                setcookie('token_id', $current_token['id'], $new_time_expire);
+                setcookie('token_name', $current_token['token_name'], $new_time_expire);
+                setcookie('user_id', $current_token['user_id'], $new_time_expire);
+                setcookie('time_taken', $new_time_taken, $new_time_expire);
+                setcookie('time_expire', $new_time_expire, $new_time_expire);
+            }
+        }
+        else
+        {
+            Autorization::checkUsersRecords($data);
+        }
+    }
 }

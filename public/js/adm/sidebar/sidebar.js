@@ -32,7 +32,7 @@ webix.protoUI({
 				this._showPopup(id, node);
 		});
 		this.attachEvent("onBeforeSelect", function(id){
-			if(!this.getItem(id).$count){
+			if(!this.getItem(id).count){
 				var selected = this.getSelectedId();
 				if(selected && id!= selected){
 					var parentId = this.getParentId(selected);

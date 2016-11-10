@@ -26,12 +26,15 @@ $app->get('/admin/getSchedule', function ($request, $response, $args) {
 $app->get('/admin/delRecord', function ($request, $response, $args) {
   return json_encode(scheduler::delRecordById($_GET));
 });
+
 $app->get('/admin/editRecord', function ($request, $response, $args) {
   return json_encode(scheduler::editRecord($_GET));
 });
+
 $app->get('/admin/addRecord', function ($request, $response, $args) {
   return json_encode(scheduler::addRecord($_GET));
 });
+
 $app->get('/admin/getTimeTable[/{date}[/]]', function ($request, $response, $args) {
   $timetable = scheduler::getSchedule($args);
   $keys = array_keys($timetable[$args['date']]);
@@ -58,6 +61,10 @@ $app->get('/admin/getTimeTable[/{date}[/]]', function ($request, $response, $arg
     };
     return json_encode($arr);
   };
+});
+
+$app->get('/admin/login', function ($request, $response, $args) {
+  Autorization::getToken($_GET);
 });
 
 
