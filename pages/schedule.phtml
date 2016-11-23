@@ -50,17 +50,29 @@
 
 
     <br>
+
+    <div>
+    </div>
+
     <!-- Окно записи на тренировку -->
     <div class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="formx">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Записаться на тренировку</h4>
+                        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+                        <div class="modal-icon"></div>
+                        <h1 class="modal-title">Записаться на тренировку</h1>
                     </div>
+
                     <div class="modal-body">
-                        <p class="error error_name hidden">Представьтесь, пожалуйста.</p>
+
+                        <div class="form-group modal-center">
+                            <label for="inputPhone">Введите номер телефона</label>
+                            <input name="phone" type="phone" class="form-control" id="inputPhone" placeholder="Телефон*" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['phone'])) ? $_COOKIE['phone'] : "") ?>">
+                        </div>
+
+<!--                         <p class="error error_name hidden">Представьтесь, пожалуйста.</p>
                         <p class="error error_error hidden"></p>
                         <p class="done error_name hidden"><b>Ваша запись успешно добавлена!</b></p>
 
@@ -102,12 +114,14 @@ for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." va
                         <div class="mycheckbox" style="font: 14px 'Calibri', Arial">
                           Указание достоверной информации (Имя, Фамилия, номер телефона) является обязательным условием оформления записи на посещение Батутного Центра.<br/>
                           Записи, не содержащие достоверной информации, будут аннулированы и удалены. Спасибо за понимание.
-                        </div>                        
+                        </div>   -->
+
                     </div>
+
                     <div class="modal-footer">
-                    
                         <input type="button" id="record" class="btn btn-secondary" value="Записаться">
                     </div>
+
                 </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

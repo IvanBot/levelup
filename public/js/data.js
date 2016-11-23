@@ -13,9 +13,11 @@ $(function () {
         $("html, body").animate({scrollTop: 0}, 600);
         return false;
     });
+
     $('#record').click(function () {
         call()
     });
+    
     $('#recorddel').click(function () {
         recorddel()
     });

@@ -1236,10 +1236,34 @@ select.done {
 
 /* Окно записи на тренировку */
 
+.modal-icon {
+    /*width: auto;*/
+    height: 52px;
+    width: 35px;
+    background-image: url(../img/logo_3.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    float: left;
+    padding-left: 10px;
+    padding-right: 10px; 
+}
+
+.modal-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+}
+
 .modal-title {
-    color: #000;
-    font-size: 22px;
+    padding-left: 20px;
+    float: left;
+    color: #fff;
+    font-size: 1.6em;
     font-weight: bold;
+    position: relative;
+    top: 50%;
+    margin-top: -0.8em;
 }
 
 .modal-body {
@@ -1247,6 +1271,10 @@ select.done {
     font-size: 17px;
 
 }
+
+
+
+
 
 /*Конец окна записи на тренировку*/
 
