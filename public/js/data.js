@@ -1,7 +1,6 @@
 
 $(function () {
 
-
     $(window).scroll(function () {
         if ($(this).scrollTop() > 100) {
             $('.scrollup').fadeIn();
@@ -12,6 +11,76 @@ $(function () {
     $('.scrollup').click(function () {
         $("html, body").animate({scrollTop: 0}, 600);
         return false;
+    });
+
+    // Hiding elements of modal at start
+    $('.set_hide').each( function() {
+        $(this).css('display', 'none');
+    });
+
+    // Hiding elements and value of modal after close modal
+    $('#cloooose').on( 'hidden.bs.modal', function () {
+        $('#phone_box').css('display', 'block');
+        $('#modal-order').css('height', '375px');
+        $('.set_hide').each( function() {
+            $(this).css('display', 'none');
+        });
+
+        $('#sms_code').val('');
+        $('#name_user').val('');
+        $('#adult-selected').removeAttr('id');
+        $('#amount_adults').html('0');
+        $('#kids-selected').removeAttr('id');
+        $('#amount_kids').html('0');
+        $('#record').css('display', 'none');
+        $('#attention').css('display', 'none')
+    });
+
+    // Click handler for swithcing views
+    $('.modal_next').each( function () {
+        $(this).click( function () {
+            var current_modal = parseInt( $(this).attr('modal') );
+            var option = $(this).attr('option');
+            switch_modals( current_modal, option ) 
+        });
+    });
+
+    // Get amount of adults
+    $('#modal-count-adults div').each( function ( ) {
+        $(this).click( function () {
+
+            $('#adult-selected').removeAttr('id');
+            $(this).attr('id', 'adult-selected');
+            
+            var amount_adults = $(this).attr('value');
+            $('#amount_adults').html(amount_adults);
+
+        });
+    });
+
+    // Get amount of kids
+    $('#modal-count-kids div').each( function ( ) {
+        $(this).click( function () {
+
+            $('#kids-selected').removeAttr('id');
+            $(this).attr('id', 'kids-selected');
+            
+            var amount_kids = $(this).attr('value');
+            $('#amount_kids').html(amount_kids);
+
+        });
+    });
+
+    // Select pay option
+    $('#order_pay_option input').each( function () {
+        $(this).click( function () {
+
+            var pay_option = $(this).attr('option');
+
+            $('#order_pay_option').css('display', 'none');
+            $('#order_attention').css('display', 'block')
+            $('#record').css('display', 'block');
+        });
     });
 
     $('#record').click(function () {
@@ -142,6 +211,83 @@ $(function () {
         });
     }
 
+    function switch_modals ( current_modal, option ) {
+
+        switch (option) {
+            case 'order_single': {
+                $('#order_single').css('display', 'block');
+                // $('#order_attention').css('display', 'block');
+                $('#order_pay_option').css('display', 'block');
+                break;
+            }
+            case 'order_rent': {
+                $('#order_rent').css('display', 'block');
+                // $('#order_attention').css('display', 'block');
+                $('#order_pay_option').css('display', 'block');
+                break;
+            }
+            case 'order_adults': {
+                $('#modal-order').css('height', 'auto');
+                $('.order_adults').each( function () {
+                    $(this).css('display', 'block');
+                });
+                $('#order_pay_option').css('display', 'block');
+                break;
+            }
+            case 'order_kids': {
+                $('#modal-order').css('height', 'auto');
+                $('.order_adults').each( function () {
+                    $(this).css('display', 'block')
+                });
+                $('.order_kids').each( function () {
+                    $(this).css('display', 'block')
+                });
+                $('#order_pay_option').css('display', 'block');
+                break;
+            }
+        }
+
+        var next_modal = current_modal + 1;
+        // var current_tip = '';
+        $('.modal_record').each( function( index ) {
+
+            
+
+            if ( index == current_modal ) {
+
+                // Required fields [dev] 
+
+                // if ( index < 3 ) {
+                //     var element = '#' + $(this).attr('id');
+                //     var value =  $( element + ' .form-control' ).val();
+
+                //     if ( current_tip.length != 0 ) {
+                //         current_tip = $( element + ' .form-control' ).attr('placeholder');
+                //         console.log(current_tip);
+                //         console.log( $( element + ' .form-control' ) );
+                //     }
+                    
+                //     if (!value.length) {
+                //         $( element + ' .form-control' ).attr('placeholder', 'Поле должно быть заполнено!');
+                //         return false
+                //     } 
+
+                //     $( element + ' .form-control' ).attr('placeholder', current_tip);
+
+                // }
+
+                $(this).css('display', 'none');
+
+            }
+
+            else if ( index == next_modal ) {
+                $(this).css('display', 'block');
+            }
+
+        });
+
+    };
+
     function recorddel() {
         var phone = $('#inputDelPhone').val();
         var rec = $('#inputRecord').val();
@@ -228,7 +374,9 @@ $(function () {
 
                 $el.addClass('selectday');
                 var date = dateProperties.year + '-' + (dateProperties.month <= 9 ? '0' + dateProperties.month : dateProperties.month) + '-' + (dateProperties.day.length == 1 ? '0' + dateProperties.day : dateProperties.day);
+
                 loadTimeTable(date);
+
                 //alert(date);
                 /*if (htmlresult[date] == undefined) {
                     var a, b = activityList(date);
@@ -304,6 +452,9 @@ $(function () {
             }) : $events.remove();
         }
     }
+
+
+
 });
 $.mask.definitions['*'] = "[A-Za-zА-Яа-я -]";
 $("#inputPhone").mask("8-999-999-99-99", {placeholder: " "});
@@ -311,3 +462,5 @@ $("#inputDelPhone").mask("8-999-999-99-99", {placeholder: " "});
 $("#inputName").mask('*?*************************************************', {placeholder: ""});
 $("#inputSurname").mask('*?*************************************************', {placeholder: ""});
 //$("#phone").mask("8-999-999-9999");
+
+

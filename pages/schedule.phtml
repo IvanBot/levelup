@@ -32,8 +32,7 @@
 
             </div>
 
-            <div class="col-lg-7" id="datatable_record">
-            </div>
+            <div class="col-lg-7" id="datatable_record"></div>
         </div>
         <div class="text rules">
             <ul><li>Дети до 5 лет допускаются к прыжкам в присутствии родителя и инструктора в специально отведённое время. Подробности у администратора.
@@ -55,7 +54,7 @@
     </div>
 
     <!-- Окно записи на тренировку -->
-    <div class="modal fade">
+    <div class="modal fade" id="cloooose">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="formx">
@@ -65,11 +64,119 @@
                         <h1 class="modal-title">Записаться на тренировку</h1>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" id='modal-order'>
 
-                        <div class="form-group modal-center">
-                            <label for="inputPhone">Введите номер телефона</label>
-                            <input name="phone" type="phone" class="form-control" id="inputPhone" placeholder="Телефон*" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['phone'])) ? $_COOKIE['phone'] : "") ?>">
+                        <div class="form-group modal-center modal_record" id="phone_box">
+                            <label class="modal-label" for="inputPhone">Введите номер телефона</label>
+                            <input name="phone" type="phone" class="form-control modal-form" id="inputPhone" placeholder="" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['phone'])) ? $_COOKIE['phone'] : "") ?>">
+                            <input type="button" modal="0" class="btn btn-secondary modal-btn modal_next" value="Продолжить">
+                            <div class="modal-divide">
+                                <div class="modal-line"></div>
+                                <span>или</span>
+                                <div class="modal-line"></div>
+                            </div>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal-vk">
+                                <span class="modal-img fa fa-facebook"></span>
+                                <span>Войти через Вконтакте</span>
+                            </div>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal-fb">
+                                <span class="modal-img fa fa-facebook"></span>
+                                <span>Войти через Facebook</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group modal-center modal_record set_hide" id="sms_box">
+                            <label class="modal-label" for="sms_code">Введите код смс-сообщения</label>
+                            <input name="sms_code" class="form-control modal-form" id="sms_code" placeholder="Код подтверждения" value="<?=((isset($_COOKIE['save']) && $_COOKIE['save']==1 && isset($_COOKIE['sms_code'])) ? $_COOKIE['sms_code'] : "") ?>">
+                            
+                            <input type="button" modal="1" class="btn btn-secondary modal-btn modal_next" value="Продолжить">
+                        </div>
+
+                        <div class="form-group modal-center modal_record set_hide" id="user_box">
+                            <label class="modal-label" for="name_user">Укажите Ваше имя</label>
+                            <input name="name_user" class="form-control modal-form" id="name_user" placeholder="Имя">
+                            <input type="button" modal="2" class="btn btn-secondary modal-btn modal_next" value="Продолжить">
+                        </div>
+
+                        <div class="form-group modal-center modal_record set_hide">
+                            <label class="modal-label" for="inputPhone">Укажите количество человек</label>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal_next" modal="3" option="order_single">
+                                <span class="modal-img modal-icon-count modal-icon-single"></span>
+                                <span>Я один</span>
+                            </div>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal_next" modal="3" option="order_adults">
+                                <span class="modal-img modal-icon-count modal-icon-people"></span>
+                                <span>Компания</span>
+                            </div>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal_next" modal="3" option="order_kids">
+                                <span class="modal-img modal-icon-count modal-icon-family"></span>
+                                <span>Я с детьми</span>
+                            </div>
+                            <div class="btn btn-secondary modal-btn modal-btn-img modal_next " modal="3" option="order_rent">
+                                <span class="modal-img modal-icon-count modal-icon-hall"></span>
+                                <span>Аренда зала</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group modal_record set_hide" style="">
+                            <label class="modal-label order_adults set_hide">Нас будет:</label>
+                            <label class="modal-label set_hide" id="order_single">Один человек</label>
+                            <label class="modal-label set_hide" id="order_rent">Аренда зала</label>
+                            <div class="order_adults set_hide">
+                                <p class="modal-count-label">Взрослых:</p>
+                                <div class="modal-count" id="modal-count-adults">
+                                    <div class="modal-count-block" value="1">1</div>
+                                    <div class="modal-count-block" value="2">2</div>
+                                    <div class="modal-count-block" value="3">3</div>
+                                    <div class="modal-count-block" value="4">4</div>
+                                    <div class="modal-count-block" value="5">5</div>
+                                    <div class="modal-count-block" value="6">6</div>
+                                    <div class="modal-count-block" value="7">7</div>
+                                    <div class="modal-count-block" value="8">8</div>
+                                    <div class="modal-count-block" value="9">9</div>
+                                    <div class="modal-count-block" value="10">10</div>
+                                    <div class="modal-count-block" value="11">11</div>
+                                    <div class="modal-count-block" value="12">12</div>
+                                </div>
+                                <p class="modal-count-total"><span id="amount_adults">0</span> человек(а)</p>
+                            </div>
+                            <div class="order_kids set_hide" id=''>
+                                <p class="modal-count-label">Детей:</p>
+                                <div class="modal-count" id="modal-count-kids">
+                                    <div class="modal-count-block" value="1">1</div>
+                                    <div class="modal-count-block" value="2">2</div>
+                                    <div class="modal-count-block" value="3">3</div>
+                                    <div class="modal-count-block" value="4">4</div>
+                                    <div class="modal-count-block" value="5">5</div>
+                                    <div class="modal-count-block" value="6">6</div>
+                                    <div class="modal-count-block" value="7">7</div>
+                                    <div class="modal-count-block" value="8">8</div>
+                                    <div class="modal-count-block" value="9">9</div>
+                                    <div class="modal-count-block" value="10">10</div>
+                                    <div class="modal-count-block" value="11">11</div>
+                                    <div class="modal-count-block" value="12">12</div>
+                                </div>
+                                <div class="modal-count-total"><span id='amount_kids'>0</span> человек(а)</div>
+                                <div>
+                                    <div class="modal-count-label">Возраст каждого ребенка</div>
+                                    <input name="name_user" class="form-control modal-form" id="name_user" placeholder="Введите через запятую">
+                                </div>
+                            </div>
+                            
+                            <div id="order_attention" class="set_hide">
+                                <div class="modal-attention">
+                                    <div class="modal-attention-img"></div>
+                                    <div class="modal-attention-txt">
+                                        <p>Внимание, запись возможна только по предоплате.</p>
+                                        <p>Сумма к оплате - <span>300</span> рублей</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="order_pay_option" class="set_hide">
+                                <input type="button" option="pay_card" class="btn btn-secondary modal-btn" value="Оплатить картой сейчас">
+                                <input type="button" option="pay_cash" class="btn btn-secondary modal-btn" value="Оплатить в зале">
+                            </div>
+                            <input type="button" id="record" class="btn btn-secondary modal-btn order_pay set_hide" value="Оплатить">
                         </div>
 
 <!--                         <p class="error error_name hidden">Представьтесь, пожалуйста.</p>
@@ -118,9 +225,9 @@ for ($i = 1; $i <= 10; $i++) { print "<option ".($i == 1 ? "selected" : "")." va
 
                     </div>
 
-                    <div class="modal-footer">
+               <!--      <div class="modal-footer">
                         <input type="button" id="record" class="btn btn-secondary" value="Записаться">
-                    </div>
+                    </div> -->
 
                 </form>
             </div><!-- /.modal-content -->

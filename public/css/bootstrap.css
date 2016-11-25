@@ -5951,7 +5951,7 @@ button.close {
 .modal-body {
   /*position: relative;*/
   text-align: center;
-  padding: 15px;
+  padding: 30px;
   /*min-height: 375px;*/
   height: 375px;
 }
